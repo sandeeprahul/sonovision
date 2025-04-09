@@ -1,0 +1,125 @@
+{
+  "saleEndTime": "2025-04-10T23:59:59Z",
+  "widgets": [
+    {
+      "widgetType": "search"
+    },
+    {
+      "widgetType": "group",
+      "type": "category",
+      "label": "Popular Categories",
+      "data": [
+        {
+          "id": "c201",
+          "name": "Refrigerator",
+          "image": "https://images.pexels.com/photos/267394/pexels-photo-267394.jpeg"
+        },
+        {
+          "id": "c201",
+          "name": "Phones",
+          "image": "https://www.apple.com/newsroom/images/2024/09/apple-introduces-iphone-16-and-iphone-16-plus/article/geo/Apple-iPhone-16-hero-geo-240909_inline.jpg.large_2x.jpg"
+        },
+        {
+          "id": "c201",
+          "name": "AC's",
+          "image": "https://images.pexels.com/photos/267394/pexels-photo-267394.jpeg"
+        },{
+          "id": "c201",
+          "name": "Coolers",
+          "image": "https://images.pexels.com/photos/267394/pexels-photo-267394.jpeg"
+        },
+        {
+          "id": "c201",
+          "name": "Washing Machines",
+          "image": "https://images.pexels.com/photos/267394/pexels-photo-267394.jpeg"
+        }, {
+          "id": "c201",
+          "name": "Laptops",
+          "image": "https://images.pexels.com/photos/267394/pexels-photo-267394.jpeg"
+        },{
+          "id": "c201",
+          "name": "Televisions",
+          "image": "https://images.pexels.com/photos/267394/pexels-photo-267394.jpeg"
+        },
+        {
+          "id": "c202",
+          "name": "Wearables",
+          "image": "https://images.pexels.com/photos/267394/pexels-photo-267394.jpeg"
+        }
+      ]
+    },
+    {
+      "widgetType": "banners",
+      "data": [
+        {
+          "image": "https://images.unsplash.com/photo-1587829741301-dc798b83add3",
+          "type": "product",
+          "targetId": "p101"
+        },
+        {
+          "image": "https://images.unsplash.com/photo-1609943247048-b7c5ef3a1780",
+          "type": "category",
+          "targetId": "c202"
+        }
+      ]
+    },
+
+    {
+      "widgetType": "group",
+      "type": "product",
+      "label": "Trending Products",
+      "data": [
+        {
+          "id": "p101",
+          "name": "Bluetooth Speaker",
+          "image": "https://images.pexels.com/photos/63703/pexels-photo-63703.jpeg",
+          "price": 1499,
+          "strikeOffPrice": 1999,
+          "rating": 4.5,
+          "discount": "25%"
+        },
+        {
+          "id": "p102",
+          "name": "Smartphone",
+          "image": "https://www.apple.com/newsroom/images/2024/09/apple-introduces-iphone-16-and-iphone-16-plus/article/geo/Apple-iPhone-16-hero-geo-240909_inline.jpg.large_2x.jpg",
+          "price": 18999,
+          "strikeOffPrice": 21999,
+          "rating": 4.2,
+          "discount": "14%"
+        }
+      ]
+    },
+    {
+      "widgetType": "sale",
+      "data": {
+        "image": "https://www.apple.com/newsroom/images/2024/09/apple-introduces-iphone-16-and-iphone-16-plus/article/geo/Apple-iPhone-16-hero-geo-240909_inline.jpg.large_2x.jpg"
+      }
+    },
+
+    {
+      "widgetType": "group",
+      "type": "product",
+      "label": "Festive Sale",
+      "data": [
+        {
+          "id": "p201",
+          "name": "Wireless Headphones",
+          "image": "https://images.pexels.com/photos/3394658/pexels-photo-3394658.jpeg",
+          "price": 2999,
+          "strikeOffPrice": 3999,
+          "rating": 4.6,
+          "discount": "25%"
+        },
+        {
+          "id": "p202",
+          "name": "Smart LED TV",
+          "image": "https://images.pexels.com/photos/757855/pexels-photo-757855.jpeg",
+          "price": 21999,
+          "strikeOffPrice": 26999,
+          "rating": 4.3,
+          "discount": "19%"
+        }
+      ]
+    }
+  ]
+}
