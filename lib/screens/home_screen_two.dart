@@ -1,10 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
 import '../theme/app_theme.dart';
 import '../controllers/home_controller.dart';
-import 'animated_hint_textfield_widget.dart';
+import '../widgets/animated_hint_textfield_widget.dart';
 
 class HomeScreenTwo extends StatefulWidget {
   const HomeScreenTwo({Key? key}) : super(key: key);
@@ -25,21 +27,28 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
     final HomeController controller = Get.put(HomeController());
 
     return Scaffold(
-      body: SafeArea(
-        child: Obx(() {
-          if (controller.isLoading.value) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      backgroundColor: Colors.grey.shade100,
 
-          if (controller.error.isNotEmpty) {
-            return _buildErrorWidget(controller);
-          }
+      body: Stack(
+        children: [
 
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: _buildHomeContent(context, controller),
-          );
-        }),
+          SafeArea(
+            child: Obx(() {
+              if (controller.isLoading.value) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (controller.error.isNotEmpty) {
+                return _buildErrorWidget(controller);
+              }
+
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: _buildHomeContent(context, controller),
+              );
+            }),
+          ),
+        ],
       ),
     );
   }
@@ -330,24 +339,71 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
             itemCount: products.length,
             itemBuilder: (context, index) {
               final product = products[index];
-              return Container(
-                width: 200,
-                margin: const EdgeInsets.only(right: 16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, 5),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Stack(
+              return GestureDetector(
+                onTap: () {
+                  print("ONTAP");
+
+                  // Create static product data for testing
+                  final staticProduct = {
+                    'id': '20250426',
+                    'name': 'Galaxy S24',
+                    'brand': 'Samsung',
+                    'category': 'Mobile Phones',
+                    'categoryId': 'mobile_phones',
+                    'price': 150000,
+                    'discountPercentage': 10,
+                    'description': 'Samsung galaxy S24',
+                    'highlights': 'SPen AI',
+                    'deliveryTime': '7-10 days',
+                    'isFeatured': true,
+                    'colors': ['Red', 'Black', 'White', 'Blue', 'Green', 'Grey'],
+                    'images': [
+                      'https://sonovision.in/wp-content/uploads/2022/08/samsung-s225g-white.jpg'
+                    ],
+                    'stock': 80,
+                    'storeCode': 'SONO55',
+                    'specifications': {
+                      'battery': '6700',
+                      'display': 'Amoled',
+                      'displaySize': '6.7',
+                      'frontCamera': '56',
+                      'mainCamera': '68',
+                      'networkType': '5G',
+                      'os': 'Android',
+                      'processor': 'Exzonys',
+                      'ram': '12',
+                      'storage': '250'
+                    }
+                  };
+                  
+              /*    Navigator.pushNamed(
+                    context,
+                    '/product-details',
+                    arguments: staticProduct,
+                  );*/
+                  Get.toNamed('/product-details', arguments: staticProduct);
+
+                  print("ONTAP2");
+
+                },
+                child: Container(
+                  width: 200,
+                  margin: const EdgeInsets.only(right: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Stack(
                       children: [
                         ClipRRect(
                           borderRadius: const BorderRadius.vertical(
@@ -378,13 +434,14 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                                   .textTheme
                                   .labelMedium
                                   ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
-                      ],
+                      ]
+
                     ),
                     Padding(
                       padding: const EdgeInsets.all(12),
@@ -451,7 +508,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                     ),
                   ],
                 ),
-              );
+              ));
             },
           ),
         ),
@@ -538,7 +595,8 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                     Text(
                       category['name'],
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 11,
                             color: Colors.black87,
                           ),
                       textAlign: TextAlign.center,

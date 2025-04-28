@@ -1,0 +1,474 @@
+{
+  "version": "1.0.0",
+  "saleEndTime": "2025-04-10T23:59:59Z",
+  "theme": {
+    "colors": {
+      "primary": "#2196F3",
+      "secondary": "#FF5722",
+      "accent": "#4CAF50",
+      "background": "#F5F5F5",
+      "text": {
+        "primary": "#212121",
+        "secondary": "#757575",
+        "light": "#FFFFFF"
+      }
+    },
+    "typography": {
+      "heading": "Poppins",
+      "body": "Roboto",
+      "price": "Montserrat"
+    },
+    "animations": {
+      "duration": 300.0,
+      "curve": "easeInOut"
+    }
+  },
+  "widgets": [
+    {
+      "widgetType": "search",
+      "style": {
+        "height": 60.0,
+        "margin": 20.0,
+        "borderRadius": 16.0,
+        "placeholder": "Search mobiles, laptops & more...",
+        "viewType": "full_width",
+        "elevation": 4.0,
+        "shadowColor": "#2196F3",
+        "shadowOpacity": 0.2,
+        "shadowBlur": 12.0,
+        "gradient": {
+          "start": "#2196F3",
+          "end": "#1976D2"
+        }
+      }
+    },
+    {
+      "widgetType": "quickLinks",
+      "style": {
+        "height": 120.0,
+        "spacing": 20.0,
+        "margin": 20.0,
+        "viewType": "horizontal_scroll",
+        "cardStyle": {
+          "borderRadius": 16.0,
+          "elevation": 4.0,
+          "padding": 16.0,
+          "animation": {
+            "scale": 1.05,
+            "duration": 200.0
+          }
+        }
+      },
+      "data": {
+        "data": [
+          {
+            "id": "ql1",
+            "title": "Exchange",
+            "description": "Upgrade your device",
+            "icon": "swap",
+            "color": "#FF5722",
+            "gradient": {
+              "start": "#FF5722",
+              "end": "#F4511E"
+            }
+          },
+          {
+            "id": "ql2",
+            "title": "Compare",
+            "description": "Compare products",
+            "icon": "compare",
+            "color": "#2196F3",
+            "gradient": {
+              "start": "#2196F3",
+              "end": "#1976D2"
+            }
+          },
+          {
+            "id": "ql3",
+            "title": "EMI",
+            "description": "Easy payments",
+            "icon": "credit_card",
+            "color": "#4CAF50",
+            "gradient": {
+              "start": "#4CAF50",
+              "end": "#388E3C"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "banners",
+      "style": {
+        "height": 220.0,
+        "aspectRatio": 2.5,
+        "margin": 20.0,
+        "spacing": 16.0,
+        "viewType": "carousel",
+        "cardStyle": {
+          "borderRadius": 20.0,
+          "elevation": 8.0,
+          "overlayGradient": {
+            "start": "transparent",
+            "end": "rgba(0,0,0,0.7)"
+          },
+          "titleStyle": {
+            "fontSize": 28.0,
+            "fontWeight": "bold",
+            "color": "#FFFFFF"
+          },
+          "subtitleStyle": {
+            "fontSize": 18.0,
+            "color": "#FFFFFF"
+          }
+        }
+      },
+      "data": {
+        "data": [
+          {
+            "id": "b1",
+            "image": "https://images.unsplash.com/photo-1696446702239-e76f33239098?w=800&q=80",
+            "type": "sale",
+            "title": "iPhone 15 Series",
+            "subtitle": "Starting ₹69,999",
+            "badge": {
+              "text": "NEW",
+              "color": "#FF5722",
+              "position": "top-right"
+            }
+          },
+          {
+            "id": "b2",
+            "image": "https://images.unsplash.com/photo-1675785732511-74d56370bb6d?w=800&q=80",
+            "type": "launch",
+            "title": "Samsung S24 Ultra",
+            "subtitle": "Pre-order Now",
+            "badge": {
+              "text": "LAUNCH",
+              "color": "#2196F3",
+              "position": "top-right"
+            }
+          },
+          {
+            "id": "b3",
+            "image": "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=800&q=80",
+            "type": "offer",
+            "title": "Republic Day Sale",
+            "subtitle": "Up to 40% Off",
+            "badge": {
+              "text": "SALE",
+              "color": "#4CAF50",
+              "position": "top-right"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "group",
+      "type": "category",
+      "label": "Shop By Category",
+      "style": {
+        "columns": 4,
+        "aspectRatio": 1.0,
+        "spacing": 16.0,
+        "padding": 20.0,
+        "viewType": "grid",
+        "cardStyle": {
+          "borderRadius": 16.0,
+          "elevation": 4.0,
+          "padding": 12.0,
+          "animation": {
+            "scale": 1.05,
+            "duration": 200.0
+          },
+          "titleStyle": {
+            "fontSize": 14.0,
+            "fontWeight": "bold",
+            "color": "#212121"
+          }
+        }
+      },
+      "data": {
+        "data": [
+          {
+            "id": "c1",
+            "name": "Smartphones",
+            "image": "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=400&q=80",
+            "color": "#E3F2FD",
+            "gradient": {
+              "start": "#E3F2FD",
+              "end": "#BBDEFB"
+            },
+            "count": "1200+",
+            "deepLink": "category/phones"
+          },
+          {
+            "id": "c2",
+            "name": "Laptops",
+            "image": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&q=80",
+            "color": "#E8F5E9",
+            "gradient": {
+              "start": "#E8F5E9",
+              "end": "#C8E6C9"
+            },
+            "count": "800+",
+            "deepLink": "category/laptops"
+          },
+          {
+            "id": "c3",
+            "name": "Tablets",
+            "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400&q=80",
+            "color": "#FFF3E0",
+            "gradient": {
+              "start": "#FFF3E0",
+              "end": "#FFE0B2"
+            },
+            "count": "500+",
+            "deepLink": "category/tablets"
+          },
+          {
+            "id": "c4",
+            "name": "Audio",
+            "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80",
+            "color": "#F3E5F5",
+            "gradient": {
+              "start": "#F3E5F5",
+              "end": "#E1BEE7"
+            },
+            "count": "1000+",
+            "deepLink": "category/audio"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "dealOfDay",
+      "label": "Deal of the Day",
+      "style": {
+        "height": 240.0,
+        "margin": 20.0,
+        "timerColor": "#FF0000",
+        "viewType": "card",
+        "cardStyle": {
+          "borderRadius": 20.0,
+          "elevation": 8.0,
+          "gradient": {
+            "start": "#FF5722",
+            "end": "#F4511E"
+          },
+          "badge": {
+            "text": "HOT DEAL",
+            "color": "#FF0000",
+            "position": "top-left"
+          },
+          "titleStyle": {
+            "fontSize": 24.0,
+            "fontWeight": "bold",
+            "color": "#FFFFFF"
+          },
+          "priceStyle": {
+            "fontSize": 28.0,
+            "fontWeight": "bold",
+            "color": "#FFFFFF"
+          }
+        }
+      },
+      "data": {
+        "endTime": "2025-04-10T23:59:59Z",
+        "product": {
+          "id": "p1",
+          "name": "Samsung S24 Ultra",
+          "image": "https://images.unsplash.com/photo-1675785732511-74d56370bb6d?w=800&q=80",
+          "price": 129999.0,
+          "strikePrice": 149999.0,
+          "discount": "15%",
+          "features": [
+            "200MP Camera",
+            "Snapdragon 8 Gen 3",
+            "5000mAh Battery"
+          ],
+          "deepLink": "product/s24-ultra"
+        }
+      }
+    },
+    {
+      "widgetType": "brandStrip",
+      "style": {
+        "height": 140.0,
+        "spacing": 20.0,
+        "margin": 20.0,
+        "viewType": "horizontal_scroll",
+        "cardStyle": {
+          "borderRadius": 16.0,
+          "elevation": 4.0,
+          "padding": 16.0,
+          "animation": {
+            "scale": 1.05,
+            "duration": 200.0
+          }
+        }
+      },
+      "data": {
+        "data": [
+          {
+            "id": "br1",
+            "name": "Apple",
+            "logo": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg",
+            "color": "#000000",
+            "gradient": {
+              "start": "#000000",
+              "end": "#333333"
+            },
+            "count": "250+ Products",
+            "deepLink": "brand/apple"
+          },
+          {
+            "id": "br2",
+            "name": "Samsung",
+            "logo": "https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg",
+            "color": "#1428A0",
+            "gradient": {
+              "start": "#1428A0",
+              "end": "#1A237E"
+            },
+            "count": "300+ Products",
+            "deepLink": "brand/samsung"
+          },
+          {
+            "id": "br3",
+            "name": "OnePlus",
+            "logo": "https://upload.wikimedia.org/wikipedia/commons/f/f1/OnePlus_Logo.svg",
+            "color": "#EB0028",
+            "gradient": {
+              "start": "#EB0028",
+              "end": "#C62828"
+            },
+            "count": "150+ Products",
+            "deepLink": "brand/oneplus"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "flashSale",
+      "label": "Flash Sale",
+      "style": {
+        "height": 280.0,
+        "spacing": 16.0,
+        "margin": 20.0,
+        "viewType": "horizontal_card_scroll",
+        "cardStyle": {
+          "borderRadius": 16.0,
+          "elevation": 4.0,
+          "padding": 12.0,
+          "badge": {
+            "text": "FLASH SALE",
+            "color": "#FF0000",
+            "position": "top-left"
+          },
+          "progressBar": {
+            "height": 4.0,
+            "color": "#FF5722",
+            "backgroundColor": "#E0E0E0"
+          }
+        }
+      },
+      "data": {
+        "endTime": "2025-04-10T18:00:00Z",
+        "products": [
+          {
+            "id": "fs1",
+            "name": "OnePlus 12",
+            "image": "https://images.unsplash.com/photo-1614796740292-50ae67262ff0?q=80&w=2678&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "price": 64999.0,
+            "flashPrice": 59999.0,
+            "stockLeft": 100.0,
+            "features": ["50MP Camera", "120Hz Display"],
+            "deepLink": "flash-sale/oneplus12"
+          },
+          {
+            "id": "fs2",
+            "name": "iPhone 15",
+            "image": "https://images.unsplash.com/photo-1702184117235-56002cb13663?q=80&w=2727&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "price": 79999.0,
+            "flashPrice": 72999.0,
+            "stockLeft": 50.0,
+            "features": ["48MP Camera", "A16 Bionic"],
+            "deepLink": "flash-sale/iphone15"
+          }
+        ]
+      }
+    },
+    {
+      "widgetType": "recentlyViewed",
+      "label": "Recently Viewed",
+      "style": {
+        "height": 220.0,
+        "spacing": 20.0,
+        "margin": 20.0,
+        "viewType": "horizontal_scroll",
+        "cardStyle": {
+          "borderRadius": 16.0,
+          "elevation": 4.0,
+          "padding": 12.0,
+          "animation": {
+            "scale": 1.05,
+            "duration": 200.0
+          },
+          "titleStyle": {
+            "fontSize": 16.0,
+            "fontWeight": "bold",
+            "color": "#212121"
+          },
+          "priceStyle": {
+            "fontSize": 18.0,
+            "fontWeight": "bold",
+            "color": "#FF5722"
+          }
+        }
+      },
+      "data": {
+        "data": [
+          {
+            "id": "rv1",
+            "name": "MacBook Air M2",
+            "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&q=80",
+            "price": 114999.0,
+            "timestamp": "2 hours ago",
+            "deepLink": "product/macbook-air-m2"
+          },
+          {
+            "id": "rv2",
+            "name": "iPad Air",
+            "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400&q=80",
+            "price": 54999.0,
+            "timestamp": "1 day ago",
+            "deepLink": "product/ipad-air"
+          },
+          {
+            "id": "rv3",
+            "name": "Sony WH-1000XM5",
+            "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80",
+            "price": 34999.0,
+            "timestamp": "3 days ago",
+            "deepLink": "product/sony-wh1000xm5"
+          }
+        ]
+      }
+    }
+  ],
+  "animations": {
+    "scroll": "smooth",
+    "lazyLoading": true,
+    "pullToRefresh": true
+  },
+  "accessibility": {
+    "contrast": "AA",
+    "darkMode": true,
+    "fontSize": {
+      "min": 14,
+      "max": 18
+    }
+  }
+} 
