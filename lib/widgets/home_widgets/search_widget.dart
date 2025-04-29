@@ -51,52 +51,70 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar>
     return ScaleTransition(
       scale: _scaleAnimation,
       child: Padding(
-        padding: const EdgeInsets.only(
-            top: 12.0, bottom: 22.0, left: 8.0, right: 8.0),
-        // padding: EdgeInsets.all(style['margin']?.toDouble() ?? 16.0),
-        child: Material(
-          elevation: _isFocused ? 12 : 6,
-          shadowColor: Theme.of(context).shadowColor.withOpacity(0.3),
-          borderRadius: BorderRadius.circular(24),
-
-          /*borderRadius:
-              BorderRadius.circular(style['borderRadius']?.toDouble() ?? 16.0),*/
-          color: Theme.of(context).cardColor,
-          child: Container(
-            height: style['height']?.toDouble() ?? 56.0,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(
-                  style['borderRadius']?.toDouble() ?? 16.0),
-            ),
-            child: Row(
-              children: [
-                const SizedBox(width: 16),
-                Icon(Icons.search, color: Theme.of(context).iconTheme.color),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: TextField(
-                    focusNode: _focusNode,
-                    style: TextStyle(
-                        color: Theme.of(context).textTheme.bodyLarge?.color),
-                    cursorColor: Theme.of(context).colorScheme.primary,
-                    decoration: InputDecoration(
-                      hintText: style['placeholder'] ?? 'Search...',
-                      hintStyle: TextStyle(color: Theme.of(context).hintColor),
-                      border: InputBorder.none,
-                    ),
+        padding: const EdgeInsets.only(top: 2.0, bottom: 22.0, left: 8.0, right: 8.0),
+        child: Row(
+          children: [
+            // Search Box Material
+            Expanded(
+              child: Material(
+                elevation: _isFocused ? 12 : 6,
+                shadowColor: Theme.of(context).shadowColor.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(24),
+                child: Container(
+                  height: style['height']?.toDouble() ?? 56.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                        style['borderRadius']?.toDouble() ?? 16.0),
+                  ),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 16),
+                      Icon(Icons.search_rounded, color: Theme.of(context).iconTheme.color),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          style['placeholder'] ?? 'Search...',
+                          style: TextStyle(
+                            color: Theme.of(context).textTheme.bodyLarge?.color,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(width: 12),
-                Icon(Icons.mic_none_rounded,
-                    color: Theme.of(context).iconTheme.color?.withOpacity(0.6)),
-                const SizedBox(width: 16),
-              ],
+              ),
             ),
-          ),
+
+            const SizedBox(width: 12),
+
+            // Camera Icon Material
+            Material(
+              elevation: 6,
+              shadowColor: Theme.of(context).shadowColor.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(16),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(16),
+                onTap: () {
+                  // Handle camera tap
+                },
+                child: Container(
+                  height: style['height']?.toDouble() ?? 56.0,
+                  width: style['height']?.toDouble() ?? 56.0,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                        style['borderRadius']?.toDouble() ?? 16.0),
+                  ),
+                  child: Icon(Icons.camera_alt_rounded, color: Theme.of(context).iconTheme.color),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
+
 }
 
 //

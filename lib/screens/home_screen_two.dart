@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
 import '../controllers/home_controller.dart';
 import '../utils/hex_color.dart';
@@ -69,59 +70,92 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
 
   Widget _buildHomeContent(BuildContext context, HomeController controller) {
     final widgets = controller.homeData.value['widgets'] as List<dynamic>;
-    final saleEndTime =
-        DateTime.parse(controller.homeData.value['saleEndTime']);
+    final saleEndTime = DateTime.parse(controller.homeData.value['saleEndTime']);
 
     return RefreshIndicator(
       onRefresh: () {
         return controller.refreshHomeData();
       },
-      // onRefresh: () {  },
-      child: SingleChildScrollView(
+      child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                // const SizedBox(height: 76),
-                profileWidget(context),
+        slivers: [
+          // Add SliverAppBar
+          SliverAppBar(
 
+            expandedHeight: 110.0,
+            backgroundColor: Colors.transparent,
+            floating: false,
+            pinned: false,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Stack(
+                children: [
+                  profileWidget(context),
+/*
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      textAlign: TextAlign.start,
+                      'Your Hub for\nSmart Electronics', // Replace with dynamic username if needed
+                      style: GoogleFonts.lato(
+                        fontWeight: FontWeight.w900,
+                        color: Colors.black,
+                        fontSize: 24
+                      ),
+                    ),
+                  ),*/
+                ],
+              ),
+            ),
+          ),
+          // Add SliverList for main content
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                const SizedBox(height: 20),
                 ...widgets.map((widget) {
-                  switch (widget['widgetType']) {
-                    case 'search':
-                      return _buildSearchBar(widget['style']);
-                  /*  case 'quickLinks':
-                      return _buildQuickLinks(widget);*/
-                    case 'flashSale':
-                      return FlashSaleWidget(
-                        widgetData: widget,
+                  return AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 500),
+                    transitionBuilder: (child, animation) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
                       );
-
-                    case 'banners':
-                      final bannerData = widget['data']?['data'] ?? [];
-                      final style = widget['style'] ?? {};
-                      return BannerCarousel(banners: bannerData, style: style);
-
-                    case 'group':
-                      return _buildGroupWidget(context, widget);
-                    case 'dealOfDay':
-                      return _buildDealOfDay(widget);
-                    case 'brandStrip':
-                      return buildBrandStripWidget(widget);
-
-                    case 'recentlyViewed':
-                      return _buildRecentlyViewed(widget);
-                    default:
-                      return const SizedBox.shrink();
-                  }
+                    },
+                    child: _buildDynamicWidget(context, widget),
+                  );
                 }).toList(),
                 const SizedBox(height: 20),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
+  }
+
+  Widget _buildDynamicWidget(BuildContext context, Map<String, dynamic> widget) {
+    switch (widget['widgetType']) {/*
+      case 'search':
+        return _buildSearchBar(widget['style']);*/
+      case 'flashSale':
+        return FlashSaleWidget(
+          widgetData: widget,
+        );
+      case 'banners':
+        final bannerData = widget['data']?['data'] ?? [];
+        final style = widget['style'] ?? {};
+        return BannerCarousel(banners: bannerData, style: style);
+      case 'group':
+        return _buildGroupWidget(context, widget);
+      case 'dealOfDay':
+        return _buildDealOfDay(widget);
+      case 'brandStrip':
+        return buildBrandStripWidget(widget);
+      case 'recentlyViewed':
+        return _buildRecentlyViewed(widget);
+      default:
+        return const SizedBox.shrink();
+    }
   }
 
   Widget _buildDealOfDay(Map<String, dynamic> widget) {
@@ -500,7 +534,6 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                   onTap: () {
                     print("ONTAP");
 
-                    // Create static product data for testing
                     final staticProduct = {
                       'id': '20250426',
                       'name': 'Galaxy S24',
@@ -540,11 +573,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                       }
                     };
 
-                    /*    Navigator.pushNamed(
-                    context,
-                    '/product-details',
-                    arguments: staticProduct,
-                  );*/
+
                     Get.toNamed('/product-details', arguments: staticProduct);
 
                     print("ONTAP2");
@@ -848,8 +877,8 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Colors.red,
-                Colors.red.withOpacity(0.05),
+                Colors.black,
+                Colors.black.withOpacity(0.05),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -875,8 +904,8 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                 bottom: -40,
                 child: Icon(
                   Icons.blur_on,
-                  size: 200,
-                  color: Colors.white.withOpacity(0.03),
+                  size: 150,
+                  color: Colors.white.withOpacity(0.29),
                 ),
               ),
               Padding(
@@ -885,19 +914,24 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    IconButton(
+                     Icon(Icons.location_on,color:Colors.white.withOpacity(0.9) ,),
+                 /*   IconButton(
                       onPressed: () {},
-                      icon: const Icon(Icons.menu),
+                      icon:
                       color: Colors.white.withOpacity(0.9),
-                      iconSize: 28,
-                    ),
-                    const SizedBox(width: 12),
+                      iconSize: 20,
+                    ),*/
+                    const SizedBox(width: 8),
                     Text(
-                      'Hi, Sahithi',
+                      'Vijayawada 2',
+
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
-                            fontSize: 20,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Colors.white,
+
+                        fontSize: 16,
                           ),
                     ),
                     const Spacer(),

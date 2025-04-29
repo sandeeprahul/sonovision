@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class FlashSaleWidget extends StatelessWidget {
@@ -45,7 +46,7 @@ class FlashSaleWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Flash Sale',
+            'Best selling',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.black),
           ),
           // _buildCountdownTimer(endTime),
@@ -83,107 +84,155 @@ class FlashSaleWidget extends StatelessWidget {
     final stockTotal = 100.0; // you may replace this with real total stock
        final remainingText = '${stockLeft.toInt()} left';
 
-    return Container(
-      width: 180,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(borderRadius),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(borderRadius),
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: CachedNetworkImage(
-                    imageUrl: product['image'],
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Positioned(
-                left: badge['position'] == 'top-left' ? 8 : null,
-                right: badge['position'] == 'top-right' ? 8 : null,
-                top: 8,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Color(_hexToColor(badge['color'])),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    remainingText,
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
-                  ),
-                ),
-              ),
+    return Material(
+      child: InkWell(
+        onTap: (){
 
-              Positioned(
-                left: badge['position'] == 'top-left' ? 8 : null,
-                right: badge['position'] == 'top-right' ? 8 : null,
-                bottom: 8,
-                child:  Container(
-                  padding: const EdgeInsets.only(left: 12,right: 12,top: 2,bottom: 2),
-                  decoration: BoxDecoration(
+          final staticProduct = {
+            'id': '20250426',
+            'name': 'Galaxy S24',
+            'brand': 'Samsung',
+            'category': 'Mobile Phones',
+            'categoryId': 'mobile_phones',
+            'price': 150000,
+            'discountPercentage': 10,
+            'description': 'Samsung galaxy S24',
+            'highlights': 'SPen AI',
+            'deliveryTime': '7-10 days',
+            'isFeatured': true,
+            'colors': [
+              'Red',
+              'Black',
+              'White',
+              'Blue',
+              'Green',
+              'Grey'
+            ],
+            'images': [
+              'https://sonovision.in/wp-content/uploads/2022/08/samsung-s225g-white.jpg'
+            ],
+            'stock': 80,
+            'storeCode': 'SONO55',
+            'specifications': {
+              'battery': '6700',
+              'display': 'Amoled',
+              'displaySize': '6.7',
+              'frontCamera': '56',
+              'mainCamera': '68',
+              'networkType': '5G',
+              'os': 'Android',
+              'processor': 'Exzonys',
+              'ram': '12',
+              'storage': '250'
+            }
+          };
+
+
+          Get.toNamed('/product-details', arguments: staticProduct);
+        },
+        child: Container(
+          width: 180,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(borderRadius),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.08),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  ClipRRect(
                     borderRadius: BorderRadius.circular(borderRadius),
-                    color: Colors.white.withOpacity(0.89),
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: CachedNetworkImage(
+                        imageUrl: product['image'],
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
-                  child: const Row(
-                    children: [
-                      Text('4.2',style: TextStyle(fontSize: 10,color: Colors.black),),
-                      Icon(Icons.star,size: 12,color: Colors.blue,)
-                    ],
+                  Positioned(
+                    left: badge['position'] == 'top-left' ? 8 : null,
+                    right: badge['position'] == 'top-right' ? 8 : null,
+                    top: 8,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Color(_hexToColor(badge['color'])),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        remainingText,
+                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                      ),
+                    ),
                   ),
+
+                  Positioned(
+                    left: badge['position'] == 'top-left' ? 8 : null,
+                    right: badge['position'] == 'top-right' ? 8 : null,
+                    bottom: 8,
+                    child:  Container(
+                      padding: const EdgeInsets.only(left: 12,right: 12,top: 2,bottom: 2),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(borderRadius),
+                        color: Colors.white.withOpacity(0.89),
+                      ),
+                      child: const Row(
+                        children: [
+                          Text('4.2',style: TextStyle(fontSize: 10,color: Colors.black),),
+                          Icon(Icons.star,size: 12,color: Colors.blue,)
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.all(padding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      product['name'],
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Text(
+                          '₹${product['flashPrice']}',
+                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.red),
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          '₹${product['price']}',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                      ],
+                    ),
+                    // _buildProgressBar(stockLeft, stockTotal, progressBar,borderRadius)
+                    /*
+                    const SizedBox(height: 6),
+                    _buildProgressBar(stockLeft, stockTotal, progressBar),*/
+                  ],
                 ),
               ),
             ],
           ),
-          Padding(
-            padding: EdgeInsets.all(padding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  product['name'],
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Text(
-                      '₹${product['flashPrice']}',
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.red),
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      '₹${product['price']}',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                        decoration: TextDecoration.lineThrough,
-                      ),
-                    ),
-                  ],
-                ),
-                // _buildProgressBar(stockLeft, stockTotal, progressBar,borderRadius)
-                /*
-                const SizedBox(height: 6),
-                _buildProgressBar(stockLeft, stockTotal, progressBar),*/
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

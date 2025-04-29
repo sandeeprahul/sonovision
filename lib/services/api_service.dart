@@ -43,6 +43,20 @@ class ApiService {
     throw Exception('Failed to add address');
   }
 
+  static Future<Map<String, dynamic>> fetchFirstProduct() async {
+    final response = await http.get(Uri.parse('$baseUrl/api/products'));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data is List && data.isNotEmpty) {
+        return data[0];
+      } else {
+        throw Exception('Product list is empty');
+      }
+    } else {
+      throw Exception('Failed to load product');
+    }
+  }
   // Orders
   Future<Map<String, dynamic>> placeOrder(Map<String, dynamic> order) async {
     final response = await http.post(

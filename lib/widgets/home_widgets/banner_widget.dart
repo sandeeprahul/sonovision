@@ -20,7 +20,8 @@ class BannerCarousel extends StatelessWidget {
 
     return SizedBox(
       // margin: EdgeInsets.all(style['margin']?.toDouble() ?? 16.0),
-      height: style['height']?.toDouble() ?? 220.0,
+      height:  160.0,
+      // height: style['height']?.toDouble() ?? 220.0,
       child: CarouselSlider.builder(
         itemCount: banners.length,
         options: CarouselOptions(
@@ -55,7 +56,7 @@ class BannerCarousel extends StatelessWidget {
                 ),
 
                 // Gradient overlay
-                Container(
+              /*  Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -68,7 +69,7 @@ class BannerCarousel extends StatelessWidget {
                       ],
                     ),
                   ),
-                ),
+                ),*/
 
                 // Badge (top-right default)
                 if (banner['badge'] != null)

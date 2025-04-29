@@ -92,7 +92,7 @@ class CategoryListScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Categories'),
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Colors.black,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
