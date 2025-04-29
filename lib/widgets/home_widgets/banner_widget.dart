@@ -47,7 +47,8 @@ class BannerCarousel extends StatelessWidget {
               children: [
                 // Background image
                 Image.network(
-                  banner['image'],
+                  banners[2]['image'],
+                  // banner['image'],
                   fit: BoxFit.cover,
                   loadingBuilder: (context, child, progress) {
                     if (progress == null) return child;

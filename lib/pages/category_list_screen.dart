@@ -82,6 +82,8 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+import 'category_details_page.dart';
+
 class CategoryListScreen extends StatelessWidget {
   final List<Map<String, dynamic>> categories;
 
@@ -108,10 +110,14 @@ class CategoryListScreen extends StatelessWidget {
             final category = categories[index];
             return GestureDetector(
               onTap: () {
-                Navigator.pushNamed(
+                Navigator.push(
                   context,
-                  '/categoryDetails',
-                  arguments: category,
+                  MaterialPageRoute(
+                    builder: (context) => CategoryDetailsPage(
+                      categoryId: category['id'],
+                      categoryName: category['name'],
+                    ),
+                  ),
                 );
               },
               child: ClipRRect(

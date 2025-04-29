@@ -19,6 +19,8 @@ class FlashSaleWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: 16),
+
           _buildHeader(endTime),
           const SizedBox(height: 16),
           SizedBox(
@@ -34,6 +36,8 @@ class FlashSaleWidget extends StatelessWidget {
               },
             ),
           ),
+          // const SizedBox(height: 12),
+
         ],
       ),
     );

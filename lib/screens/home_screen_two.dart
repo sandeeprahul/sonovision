@@ -14,6 +14,7 @@ import '../widgets/home_widgets/banner_widget.dart';
 import '../widgets/home_widgets/brand_strip_widget.dart';
 import '../widgets/home_widgets/flash_sale_widget.dart';
 import '../widgets/home_widgets/search_widget.dart';
+import '../pages/category_details_page.dart';
 
 class HomeScreenTwo extends StatefulWidget {
   const HomeScreenTwo({Key? key}) : super(key: key);
@@ -164,10 +165,11 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
 
     return Container(
       margin:
-          EdgeInsets.symmetric(vertical: style['margin']?.toDouble() ?? 20.0),
+          EdgeInsets.symmetric(vertical: style['margin']?.toDouble() ?? 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Text(
@@ -295,6 +297,8 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
               ],
             ),
           ),
+          const SizedBox(height: 16),
+
         ],
       ),
     );
@@ -764,48 +768,61 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
             itemCount: categories.length,
             itemBuilder: (context, index) {
               final category = categories[index];
-              return Container(
-                width: itemWidth,
-                height: itemWidth,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, 5),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: itemWidth * 0.8,
-                      height: itemWidth * 0.8,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: CachedNetworkImage(
-                          imageUrl: category['image'],
-                          fit: BoxFit.cover,
-                        ),
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CategoryDetailsPage(
+                        categoryId: category['_id'],
+                        categoryName: category['name'],
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      category['name'],
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 11,
-                            color: Colors.black87,
+                  );
+                },
+                child: Container(
+                  width: itemWidth,
+                  height: itemWidth,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: itemWidth * 0.8,
+                        height: itemWidth * 0.8,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: CachedNetworkImage(
+                            imageUrl: category['image'],
+                            fit: BoxFit.cover,
                           ),
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        category['name'],
+                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 11,
+                              color: Colors.black87,
+                            ),
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
-              );
+              ));
             },
           ),
         ],

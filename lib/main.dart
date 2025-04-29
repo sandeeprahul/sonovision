@@ -1,7 +1,11 @@
 import 'dart:io';
 
+import 'package:electronic_store/pages/login_page.dart';
+import 'package:electronic_store/pages/register_page.dart';
 import 'package:electronic_store/screens/home_screen_two.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'pages/main_page.dart';
 import 'package:get/get.dart';
 import 'package:electronic_store/theme/app_theme.dart';
 import 'controllers/home_controller.dart';
@@ -16,6 +20,12 @@ import 'pages/order_history_page.dart';
 void main() {
   HttpOverrides.global = MyHttpOverrides();
 
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+    ),
+  );
   runApp(const MyApp());
 }
 
@@ -28,7 +38,16 @@ class MyApp extends StatelessWidget {
       title: 'Electronic Store',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: const HomeScreenTwo(),
+   /*   theme: ThemeData(
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          elevation: 0,
+        ),
+      ),*/
+      home:  const MainPage(),
       routes: {
       /*  '/product-details': (context) => ProductDetailsPage(
               product: ModalRoute.of(context)!.settings.arguments
@@ -42,6 +61,8 @@ class MyApp extends StatelessWidget {
         '/add-address': (context) => const AddAddressPage(),
         '/order-success': (context) => const OrderSuccessPage(),
         '/order-history': (context) => const OrderHistoryPage(),
+        '/login': (context) => const LoginPage(),
+        '/register': (context) => const RegisterPage(),
       },
     );
   }

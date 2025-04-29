@@ -1,32 +1,33 @@
-import 'package:electronic_store/pages/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import '../services/auth_service.dart';
-import 'register_page.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   bool _isPasswordVisible = false;
-  bool _rememberMe = false;
+  bool _isConfirmPasswordVisible = false;
   bool _isLoading = false;
   final _authService = AuthService();
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -61,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
 
                   // Welcome Text
                   Text(
-                    'Welcome Back!',
+                    'Create Account',
                     style: GoogleFonts.poppins(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
@@ -70,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                   ).animate().fadeIn(duration: 600.ms).slideX(),
 
                   Text(
-                    'Sign in to continue',
+                    'Sign up to get started',
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       color: Colors.white.withOpacity(0.8),
@@ -79,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
 
                   const SizedBox(height: 40),
 
-                  // Login Form
+                  // Registration Form
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -98,6 +99,26 @@ class _LoginPageState extends State<LoginPage> {
                         key: _formKey,
                         child: Column(
                           children: [
+                            // Name Field
+                            TextFormField(
+                              controller: _nameController,
+                              decoration: InputDecoration(
+                                labelText: 'Full Name',
+                                prefixIcon: const Icon(Iconsax.user),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your name';
+                                }
+                                return null;
+                              },
+                            ).animate().fadeIn(duration: 800.ms).slideX(),
+
+                            const SizedBox(height: 16),
+
                             // Email Field
                             TextFormField(
                               controller: _emailController,
@@ -118,21 +139,22 @@ class _LoginPageState extends State<LoginPage> {
                                 }
                                 return null;
                               },
-                            ).animate().fadeIn(duration: 800.ms).slideX(),
+                            ).animate().fadeIn(duration: 900.ms).slideX(),
 
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 16),
 
                             // Password Field
                             TextFormField(
                               controller: _passwordController,
+                              obscureText: !_isPasswordVisible,
                               decoration: InputDecoration(
                                 labelText: 'Password',
                                 prefixIcon: const Icon(Iconsax.lock),
                                 suffixIcon: IconButton(
                                   icon: Icon(
                                     _isPasswordVisible
-                                        ? Iconsax.eye
-                                        : Iconsax.eye_slash,
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
                                   ),
                                   onPressed: () {
                                     setState(() {
@@ -144,7 +166,6 @@ class _LoginPageState extends State<LoginPage> {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
-                              obscureText: !_isPasswordVisible,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter your password';
@@ -154,53 +175,48 @@ class _LoginPageState extends State<LoginPage> {
                                 }
                                 return null;
                               },
-                            ).animate().fadeIn(duration: 900.ms).slideX(),
-
-                            const SizedBox(height: 20),
-
-                            // Remember Me & Forgot Password
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                // Remember Me
-                                Row(
-                                  children: [
-                                    Checkbox(
-                                      value: _rememberMe,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _rememberMe = value!;
-                                        });
-                                      },
-                                    ),
-                                    Text(
-                                      'Remember me',
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                                // Forgot Password
-                              ],
                             ).animate().fadeIn(duration: 1000.ms).slideX(),
-                            TextButton(
-                              onPressed: () {
-                                // TODO: Implement forgot password
-                              },
-                              child: Text(
-                                'Forgot Password?',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14,
-                                  color: Theme.of(context).colorScheme.primary,
+
+                            const SizedBox(height: 16),
+
+                            // Confirm Password Field
+                            TextFormField(
+                              controller: _confirmPasswordController,
+                              obscureText: !_isConfirmPasswordVisible,
+                              decoration: InputDecoration(
+                                labelText: 'Confirm Password',
+                                prefixIcon: const Icon(Iconsax.lock),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _isConfirmPasswordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _isConfirmPasswordVisible =
+                                          !_isConfirmPasswordVisible;
+                                    });
+                                  },
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please confirm your password';
+                                }
+                                if (value != _passwordController.text) {
+                                  return 'Passwords do not match';
+                                }
+                                return null;
+                              },
                             ).animate().fadeIn(duration: 1100.ms).slideX(),
 
-                            const SizedBox(height: 30),
+                            const SizedBox(height: 24),
 
-                            // Login Button
+                            // Register Button
                             SizedBox(
                               width: double.infinity,
                               height: 56,
@@ -211,14 +227,21 @@ class _LoginPageState extends State<LoginPage> {
                                         if (_formKey.currentState!.validate()) {
                                           setState(() => _isLoading = true);
                                           try {
-                                            await _authService.login(
+                                            await _authService.register(
+                                              _nameController.text,
                                               _emailController.text,
                                               _passwordController.text,
                                             );
                                             if (mounted) {
-                                              Get.to(const MainPage());
-                                           /*   Navigator.pushReplacementNamed(
-                                                  context, '/home');*/
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                  content: Text(
+                                                      'Registration successful! Please login.'),
+                                                  backgroundColor: Colors.green,
+                                                ),
+                                              );
+                                              Navigator.pop(context);
                                             }
                                           } catch (e) {
                                             if (mounted) {
@@ -226,7 +249,7 @@ class _LoginPageState extends State<LoginPage> {
                                                   .showSnackBar(
                                                 SnackBar(
                                                   content: Text(
-                                                      'Login failed: ${e.toString()}'),
+                                                      'Registration failed: ${e.toString()}'),
                                                   backgroundColor: Colors.red,
                                                 ),
                                               );
@@ -255,73 +278,31 @@ class _LoginPageState extends State<LoginPage> {
                                         ),
                                       )
                                     : Text(
-                                        'Login',
+                                        'Register',
                                         style: GoogleFonts.poppins(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                               ),
-                            ).animate().fadeIn(duration: 500.ms).slideX(),
+                            ).animate().fadeIn(duration: 1200.ms).slideX(),
 
-                            const SizedBox(height: 30),
+                            const SizedBox(height: 24),
 
-                            // Social Login
-                            Visibility(
-                              visible: false,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  // Google
-                                  _buildSocialButton(
-                                    icon: 'assets/images/google.png',
-                                    onTap: () {
-                                      // TODO: Implement Google login
-                                    },
-                                  ),
-                                  const SizedBox(width: 20),
-                                  // Facebook
-                                  _buildSocialButton(
-                                    icon: 'assets/images/facebook.png',
-                                    onTap: () {
-                                      // TODO: Implement Facebook login
-                                    },
-                                  ),
-                                  const SizedBox(width: 20),
-                                  // Apple
-                                  _buildSocialButton(
-                                    icon: 'assets/images/apple.png',
-                                    onTap: () {
-                                      // TODO: Implement Apple login
-                                    },
-                                  ),
-                                ],
-                              ).animate().fadeIn(duration: 550.ms).slideX(),
-                            ),
-
-                            const SizedBox(height: 30),
-
-                            // Sign Up Link
+                            // Login Link
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Don't have an account?",
+                                  'Already have an account?',
                                   style: GoogleFonts.poppins(
                                     fontSize: 14,
                                   ),
                                 ),
                                 TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const RegisterPage(),
-                                      ),
-                                    );
-                                  },
+                                  onPressed: () => Navigator.pop(context),
                                   child: Text(
-                                    'Register',
+                                    'Login',
                                     style: GoogleFonts.poppins(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
@@ -330,12 +311,12 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                               ],
-                            ).animate().fadeIn(duration: 600.ms).slideX(),
+                            ).animate().fadeIn(duration: 1300.ms).slideX(),
                           ],
                         ),
                       ),
                     ),
-                  ).animate().fadeIn(duration: 650.ms).scale(),
+                  ).animate().fadeIn(duration: 1400.ms).scale(),
                 ],
               ),
             ),
@@ -344,35 +325,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-  Widget _buildSocialButton({
-    required String icon,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 50,
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: Center(
-          child: Image.asset(
-            icon,
-            width: 24,
-            height: 24,
-          ),
-        ),
-      ),
-    );
-  }
-} 
+}
