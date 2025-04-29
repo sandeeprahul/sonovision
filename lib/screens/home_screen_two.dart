@@ -8,6 +8,7 @@ import '../theme/app_theme.dart';
 import '../controllers/home_controller.dart';
 import '../utils/hex_color.dart';
 import '../utils/loadImageBasedOnExtension.dart';
+import '../widgets/_buildCategoryGroup.dart';
 import '../widgets/home_widgets/banner_widget.dart';
 import '../widgets/home_widgets/brand_strip_widget.dart';
 import '../widgets/home_widgets/flash_sale_widget.dart';
@@ -89,21 +90,18 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                   switch (widget['widgetType']) {
                     case 'search':
                       return _buildSearchBar(widget['style']);
-                    // case 'quickLinks':
-                    //   return _buildQuickLinks(widget);
+                  /*  case 'quickLinks':
+                      return _buildQuickLinks(widget);*/
                     case 'flashSale':
                       return FlashSaleWidget(
                         widgetData: widget,
                       );
-                    /*       case 'flashSale':
-                      return _buildFlashSale(widget);*/
+
                     case 'banners':
                       final bannerData = widget['data']?['data'] ?? [];
                       final style = widget['style'] ?? {};
                       return BannerCarousel(banners: bannerData, style: style);
-                    // case 'banners':
-                    //   return _buildBanners(widget['data']['data']);
-                    // return _buildBanners(widget);
+
                     case 'group':
                       return _buildGroupWidget(context, widget);
                     case 'dealOfDay':
@@ -142,8 +140,8 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
               // textAlign: TextAlign.center,
               'Deal of the Day',
               style: TextStyle(
-                  fontSize:  20,
-                // color: Colors.black,
+                  fontSize: 20,
+                  // color: Colors.black,
                   // fontSize: style['cardStyle']?['titleStyle']?['fontSize']
                   //         ?.toDouble() ??
                   //     20,
@@ -325,130 +323,6 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
     );
   }
 
-  Widget _buildFlashSale(Map<String, dynamic> widget) {
-    final style = widget['style'];
-    final products = widget['data']['products'] as List;
-    final endTime = DateTime.parse(widget['data']['endTime']);
-
-    return Container(
-      margin:
-          EdgeInsets.symmetric(vertical: style['margin']?.toDouble() ?? 20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Flash Sale',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                _buildCountdownTimer(endTime),
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-          SizedBox(
-            height: style['height']?.toDouble() ?? 280.0,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.symmetric(
-                horizontal: style['spacing']?.toDouble() ?? 20.0,
-              ),
-              itemCount: products.length,
-              itemBuilder: (context, index) {
-                final product = products[index];
-                return Container(
-                  width: 180,
-                  margin: EdgeInsets.only(
-                    right: style['spacing']?.toDouble() ?? 20.0,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(
-                      style['cardStyle']['borderRadius']?.toDouble() ?? 16.0,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(
-                            style['cardStyle']['borderRadius']?.toDouble() ??
-                                16.0,
-                          ),
-                        ),
-                        child: AspectRatio(
-                          aspectRatio: 1,
-                          child: CachedNetworkImage(
-                            imageUrl: product['image'],
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              product['name'],
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                Text(
-                                  '\$${product['price']}',
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  '\$${product['originalPrice']}',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey[600],
-                                    decoration: TextDecoration.lineThrough,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildRecentlyViewed(Map<String, dynamic> widget) {
     final style = widget['style'];
     final products = widget['data']['data'] as List;
@@ -463,9 +337,12 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Text(
               'Recently Viewed',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.black),
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
 
-          /*    style: TextStyle(
+              /*    style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),*/
@@ -557,12 +434,15 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
         return _buildProductGroup(context, widget);
 
       case 'category':
-        return _buildCategoryGroup(widget);
+        return buildCategoryGroupWidget(widget);
+      /*   case 'category':
+        return _buildCategoryGroup(widget);*/
 
       default:
         return const SizedBox.shrink();
     }
   }
+
   Widget _buildSearchBar(Map<String, dynamic> style) {
     return const AnimatedSearchBar(
       style: {
@@ -571,202 +451,6 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
         "borderRadius": 20,
         "placeholder": "Search products, categories...",
       },
-    );
-  }
-
-  Widget _buildSearchBard(Map<String, dynamic> style) {
-    return Padding(
-      padding: EdgeInsets.all(style['margin']?.toDouble() ?? 16.0),
-      child: Container(
-        height: style['height']?.toDouble() ?? 60.0,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              HexColor(style['gradient']['start']),
-              HexColor(style['gradient']['end']),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius:
-              BorderRadius.circular(style['borderRadius']?.toDouble() ?? 16.0),
-          boxShadow: [
-            BoxShadow(
-              color: HexColor(style['shadowColor'])
-                  .withOpacity(style['shadowOpacity']?.toDouble() ?? 0.2),
-              blurRadius: style['shadowBlur']?.toDouble() ?? 12.0,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: TextField(
-          decoration: InputDecoration(
-            hintText: style['placeholder'] ?? 'Search...',
-            hintStyle: const TextStyle(color: Colors.white70),
-            prefixIcon: const Icon(Icons.search, color: Colors.white),
-            border: InputBorder.none,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          ),
-          style: const TextStyle(color: Colors.white),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBannersssssss(List<dynamic> banners) {
-    return Container(
-      margin: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: Colors.transparent,
-      ),
-      height: 76,
-      // color: Colors.white,
-      child: CarouselSlider.builder(
-        itemCount: banners.length,
-        options: CarouselOptions(
-          height: 76,
-          autoPlay: true,
-          enlargeCenterPage: false,
-          viewportFraction: 1,
-          autoPlayInterval: const Duration(seconds: 3),
-        ),
-        itemBuilder: (context, index, realIndex) {
-          final banner = banners[index];
-          return Container(
-            // margin: const EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 10,
-                  offset: const Offset(0, 5),
-                ),
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: CachedNetworkImage(
-                imageUrl: banner['image'],
-                fit: BoxFit.fill,
-                placeholder: (context, url) => Container(
-                  color: Colors.grey[200],
-                  child: const Center(child: CircularProgressIndicator()),
-                ),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildBanners(List<dynamic> banners) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
-      height: 76,
-      child: CarouselSlider.builder(
-        itemCount: banners.length,
-        options: CarouselOptions(
-          height: 76,
-          autoPlay: true,
-          enlargeCenterPage: false,
-          viewportFraction: 1,
-          autoPlayInterval: const Duration(seconds: 3),
-        ),
-        itemBuilder: (context, index, realIndex) {
-          final banner = banners[index];
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: banner['color'] ?? Colors.white, // expects Color
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              banner['title'], // expects a String title
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildSaleBanner(Map<String, dynamic> saleData, DateTime saleEndTime) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Container(
-        height: 150,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          gradient: const LinearGradient(
-            colors: [AppTheme.primaryColor, AppTheme.secondaryColor],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              right: 0,
-              top: 0,
-              bottom: 0,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: CachedNetworkImage(
-                    imageUrl: saleData['image'],
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Flash Sale',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Up to 50% off',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  _buildCountdownTimer(saleEndTime),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -1196,7 +880,8 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -1210,10 +895,10 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                     Text(
                       'Hi, Sahithi',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
                     ),
                     const Spacer(),
                     Container(

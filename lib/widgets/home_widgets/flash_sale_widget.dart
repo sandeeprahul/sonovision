@@ -39,12 +39,12 @@ class FlashSaleWidget extends StatelessWidget {
   }
 
   Widget _buildHeader(DateTime endTime) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
+          Text(
             'Flash Sale',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.black),
           ),
@@ -135,12 +135,12 @@ class FlashSaleWidget extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 12,right: 12,top: 2,bottom: 2),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(borderRadius),
-                    color: Colors.white.withOpacity(0.5),
+                    color: Colors.white.withOpacity(0.89),
                   ),
                   child: const Row(
                     children: [
                       Text('4.2',style: TextStyle(fontSize: 10,color: Colors.black),),
-                      Icon(Icons.star_border_rounded,size: 12,color: Colors.blue,)
+                      Icon(Icons.star,size: 12,color: Colors.blue,)
                     ],
                   ),
                 ),
@@ -198,7 +198,7 @@ class FlashSaleWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(borderRadius),
         color: Colors.grey.shade100.withOpacity(0.5),
       ),
-      child: Text('4.2'),
+      child: const Text('4.2'),
     );
   }
 
