@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:electronic_store/screens/home_screen_two.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,6 +14,8 @@ import 'pages/order_success_page.dart';
 import 'pages/order_history_page.dart';
 
 void main() {
+  HttpOverrides.global = MyHttpOverrides();
+
   runApp(const MyApp());
 }
 
@@ -48,5 +52,12 @@ class HomeBinding extends Bindings {
   void dependencies() {
     Get.lazyPut<HomeRepository>(() => HomeRepository());
     Get.lazyPut<HomeController>(() => HomeController());
+  }
+}
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
   }
 }

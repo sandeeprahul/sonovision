@@ -238,19 +238,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   child: const Text('ADD TO CART'),
                 ),
               ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Buy now functionality
 
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  child: const Text('BUY NOW'),
-                ),
-              ),
             ],
           ),
         ),

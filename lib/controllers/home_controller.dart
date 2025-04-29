@@ -1,7 +1,5 @@
-import 'dart:convert';
-
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import '../services/api_service.dart';
 
 class HomeController extends GetxController {
   final Rx<Map<String, dynamic>> homeData = Rx<Map<String, dynamic>>({});
@@ -14,15 +12,14 @@ class HomeController extends GetxController {
     loadHomeData();
   }
 
+  final ApiService _apiService = ApiService();
+
   Future<void> loadHomeData() async {
     try {
       isLoading.value = true;
       error.value = '';
       
-      // Load the JSON file from assets
-      final String jsonString = await rootBundle.loadString('assets/home_data.json');
-      final Map<String, dynamic> jsonData = json.decode(jsonString);
-      
+      final jsonData = await _apiService.getHomeData();
       homeData.value = jsonData;
     } catch (e) {
       error.value = 'Failed to load home data: ${e.toString()}';
@@ -30,8 +27,7 @@ class HomeController extends GetxController {
       isLoading.value = false;
     }
   }
-
-  void refreshHomeData() {
-    loadHomeData();
+  Future<void> refreshHomeData() async {
+    await loadHomeData();
   }
 }
