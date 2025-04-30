@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:electronic_store/pages/login_page.dart';
 import 'package:electronic_store/pages/register_page.dart';
 import 'package:electronic_store/screens/home_screen_two.dart';
+import 'package:electronic_store/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
           elevation: 0,
         ),
       ),*/
-      home: const MainPage(),
+      home:  const SplashScreen(),
       routes: {
         /*  '/product-details': (context) => ProductDetailsPage(
               product: ModalRoute.of(context)!.settings.arguments

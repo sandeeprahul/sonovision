@@ -240,377 +240,381 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 _isAppBarExpanded ? Brightness.light : Brightness.dark,
           ),
         ),
-        body: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Product Image Carousel
-              const SizedBox(
-                height: 74,
-              ),
-              Stack(
-                children: [
-                  Container(
-                    height: 400, // ✅ Add height to avoid zero-size error
-
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          _isAppBarExpanded ? Colors.black : Colors.red,
-                          _isAppBarExpanded
-                              ? Colors.black.withOpacity(0.05)
-                              : Colors.red.withOpacity(0.05),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      border: Border.all(
-                        color: Colors.white.withOpacity(0.2),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(24),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 30,
-                          offset: const Offset(0, 10),
-                        ),
-                      ],
-                    ),
-                    margin: const EdgeInsets.all(12.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(24),
-                      child: PageView.builder(
-                        controller: _pageController,
-                        itemCount: widget.product['images'].length,
-                        onPageChanged: (index) {
-                          setState(() => _currentImageIndex = index);
-                        },
-                        itemBuilder: (context, index) {
-                          final image = widget.product['images'][index];
-                          return Hero(
-                            tag: 'product-${widget.product['id']}-$image',
-                            child: CachedNetworkImage(
-                              imageUrl: image,
-                              fit: BoxFit.cover,
-                              width: MediaQuery.of(context).size.width,
-                              placeholder: (context, url) => const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 16,
-                    left: 0,
-                    right: 0,
-                    child: Center(
-                      child: AnimatedSmoothIndicator(
-                        activeIndex: _currentImageIndex,
-                        count: widget.product['images'].length,
-                        effect: const ExpandingDotsEffect(
-                          dotHeight: 8,
-                          dotWidth: 8,
-                          spacing: 4,
-                          expansionFactor: 4,
-                          activeDotColor: Colors.white,
-                          dotColor: Colors.white54,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              // Product Info Section
-              Container(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Product Image Carousel
+                const SizedBox(
+                  height: 74,
+                ),
+                Stack(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Container(
+                      height: 400, // ✅ Add height to avoid zero-size error
+
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            _isAppBarExpanded ? Colors.black : Colors.red,
+                            _isAppBarExpanded
+                                ? Colors.black.withOpacity(0.05)
+                                : Colors.red.withOpacity(0.05),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.2),
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 30,
+                            offset: const Offset(0, 10),
+                          ),
+                        ],
+                      ),
+                      margin: const EdgeInsets.all(12.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(24),
+                        child: PageView.builder(
+                          controller: _pageController,
+                          itemCount: widget.product['images'].length,
+                          onPageChanged: (index) {
+                            setState(() => _currentImageIndex = index);
+                          },
+                          itemBuilder: (context, index) {
+                            final image = widget.product['images'][index];
+                            return Hero(
+                              tag: 'product-${widget.product['id']}-$image',
+                              child: CachedNetworkImage(
+                                imageUrl: image,
+                                fit: BoxFit.cover,
+                                width: MediaQuery.of(context).size.width,
+                                placeholder: (context, url) => const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 16,
+                      left: 0,
+                      right: 0,
+                      child: Center(
+                        child: AnimatedSmoothIndicator(
+                          activeIndex: _currentImageIndex,
+                          count: widget.product['images'].length,
+                          effect: const ExpandingDotsEffect(
+                            dotHeight: 8,
+                            dotWidth: 8,
+                            spacing: 4,
+                            expansionFactor: 4,
+                            activeDotColor: Colors.white,
+                            dotColor: Colors.white54,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                // Product Info Section
+                Container(
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.product['name'],
+                                  style: theme.textTheme.headlineSmall!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  widget.product['brand'],
+                                  style: theme.textTheme.titleMedium!.copyWith(
+                                    color: Colors.grey[700],
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: Colors.blue[50],
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.star,
+                                    color: Colors.blue[700], size: 18),
+                                const SizedBox(width: 4),
+                                Text(
+                                  '4.2',
+                                  // '${widget.product['rating']}'??'4.2',
+                                  style: TextStyle(
+                                      color: Colors.blue[700],
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            '₹${discountedPrice.toStringAsFixed(2)}',
+                            style: theme.textTheme.headlineSmall!.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: theme.primaryColor,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            '₹${widget.product['price']}',
+                            style: theme.textTheme.titleMedium!.copyWith(
+                              decoration: TextDecoration.lineThrough,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: Colors.red[50],
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              '${widget.product['discountPercentage']}% OFF',
+                              style: TextStyle(
+                                color: Colors.red[700],
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      // const SizedBox(height: 26),
+                      // Delivery Info
+                      /* Container(
+                        // padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.local_shipping_outlined,
+                                color: theme.primaryColor),
+                            const SizedBox(width: 12),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Free Delivery',
+                                  style: theme.textTheme.titleMedium!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  'Delivery in ${widget.product['deliveryTime']}',
+                                  style: theme.textTheme.bodyMedium,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),*/
+                    ],
+                  ),
+                ),
+
+                // const SizedBox(height: 16),
+                // const AvailabilityOptions(), // 🌟 Add this
+                // const SizedBox(height: 16),
+                // Description Section
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Description',
+                        style: theme.textTheme.titleLarge!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      ReadMoreText(
+                        'Samsung Galaxy S25 Ultra 5G AI Smartphone (Titanium Black, 12GB RAM, 512GB Storage), 200MP Camera, S Pen Included, Long Battery Life ',
+
+                        // "${widget.product['description']}  " ,
+                        trimLines: 3,
+                        colorClickableText: theme.primaryColor,
+                        trimMode: TrimMode.Line,
+                        trimCollapsedText: 'Show more',
+                        trimExpandedText: 'Show less',
+
+                        style: theme.textTheme.bodyLarge!.copyWith(
+                          color: Colors.black,
+                          fontSize: 12
+                          // height: 1.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const StoreAvailabilityCard(
+                  storeCount: 15,
+                  // No onTap for read-only display
+                ),
+
+                // Specifications Section
+                if (specifications.isNotEmpty)
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                widget.product['name'],
-                                style: theme.textTheme.headlineSmall!.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                widget.product['brand'],
-                                style: theme.textTheme.titleMedium!.copyWith(
-                                  color: Colors.grey[700],
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
+                        Text(
+                          'Specifications',
+                          style: theme.textTheme.titleLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: Colors.blue[50],
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.star,
-                                  color: Colors.blue[700], size: 18),
-                              const SizedBox(width: 4),
-                              Text(
-                                '4.2',
-                                // '${widget.product['rating']}'??'4.2',
-                                style: TextStyle(
-                                    color: Colors.blue[700],
-                                    fontWeight: FontWeight.bold),
+                        const SizedBox(height: 16),
+                        ...specifications.entries.map((entry) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(color: Colors.grey[200]!),
                               ),
-                            ],
-                          ),
-                        ),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    entry.key
+                                            .toString()
+                                            .substring(0, 1)
+                                            .toUpperCase() +
+                                        entry.key.toString().substring(1),
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: Text(
+                                    entry.value.toString(),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }).toList(),
                       ],
                     ),
-                    const SizedBox(height: 16),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                  ),
+
+                // Highlights Section
+                if (widget.product['highlights'] != null)
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '₹${discountedPrice.toStringAsFixed(2)}',
-                          style: theme.textTheme.headlineSmall!.copyWith(
+                          'Highlights',
+                          style: theme.textTheme.titleLarge!.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: theme.primaryColor,
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        Text(
-                          '₹${widget.product['price']}',
-                          style: theme.textTheme.titleMedium!.copyWith(
-                            decoration: TextDecoration.lineThrough,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.red[50],
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            '${widget.product['discountPercentage']}% OFF',
-                            style: TextStyle(
-                              color: Colors.red[700],
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
+                        const SizedBox(height: 12),
+                        ...widget.product['highlights']
+                            .split('\n')
+                            .map<Widget>((highlight) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.check_circle,
+                                  color: theme.primaryColor,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    highlight.trim(),
+                                    style: theme.textTheme.bodyLarge!.copyWith(
+                                      height: 1.5,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ),
+                          );
+                        }).toList(),
                       ],
                     ),
-                    // const SizedBox(height: 26),
-                    // Delivery Info
-                    /* Container(
-                      // padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[100],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(Icons.local_shipping_outlined,
-                              color: theme.primaryColor),
-                          const SizedBox(width: 12),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Free Delivery',
-                                style: theme.textTheme.titleMedium!.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                'Delivery in ${widget.product['deliveryTime']}',
-                                style: theme.textTheme.bodyMedium,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),*/
-                  ],
-                ),
-              ),
-
-              // const SizedBox(height: 16),
-              // const AvailabilityOptions(), // 🌟 Add this
-              // const SizedBox(height: 16),
-              // Description Section
-              Container(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Description',
-                      style: theme.textTheme.titleLarge!.copyWith(
+                  ),
+                // const SizedBox(height: 6),
+                const Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Text(
+                    'Related Products',
+                    style: TextStyle(
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    ReadMoreText(
-                      'Samsung Galaxy S25 Ultra 5G AI Smartphone (Titanium Black, 12GB RAM, 512GB Storage), 200MP Camera, S Pen Included, Long Battery Life ',
-
-                      // "${widget.product['description']}  " ,
-                      trimLines: 3,
-                      colorClickableText: theme.primaryColor,
-                      trimMode: TrimMode.Line,
-                      trimCollapsedText: 'Show more',
-                      trimExpandedText: 'Show less',
-
-                      style: theme.textTheme.bodyLarge!.copyWith(
-                        color: Colors.black,
-                        height: 1.5,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-              const StoreAvailabilityCard(
-                storeCount: 15,
-                // No onTap for read-only display
-              ),
-
-              // Specifications Section
-              if (specifications.isNotEmpty)
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Specifications',
-                        style: theme.textTheme.titleLarge!.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      ...specifications.entries.map((entry) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(color: Colors.grey[200]!),
-                            ),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                flex: 2,
-                                child: Text(
-                                  entry.key
-                                          .toString()
-                                          .substring(0, 1)
-                                          .toUpperCase() +
-                                      entry.key.toString().substring(1),
-                                  style: TextStyle(
-                                    color: Colors.grey[600],
-                                    fontSize: 15,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 3,
-                                child: Text(
-                                  entry.value.toString(),
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                    ],
+                        color: Colors.black),
                   ),
                 ),
-
-              // Highlights Section
-              if (widget.product['highlights'] != null)
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Highlights',
-                        style: theme.textTheme.titleLarge!.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      ...widget.product['highlights']
-                          .split('\n')
-                          .map<Widget>((highlight) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Icon(
-                                Icons.check_circle,
-                                color: theme.primaryColor,
-                                size: 20,
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  highlight.trim(),
-                                  style: theme.textTheme.bodyLarge!.copyWith(
-                                    height: 1.5,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                    ],
-                  ),
-                ),
-              // const SizedBox(height: 6),
-              const Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Text(
-                  'Related Products',
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                ),
-              ),
-              HorizontalProductList(),
-            ],
+                HorizontalProductList(),
+              ],
+            ),
           ),
         ));
   }

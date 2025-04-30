@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../controllers/checkout_controller.dart';
 
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({Key? key}) : super(key: key);
@@ -24,6 +27,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
     },
   ];
 
+  final controller = Get.put(CheckoutController());
+
+  @override
+  void initState() {
+    super.initState();
+    controller.fetchAddresses();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,26 +65,32 @@ class _CheckoutPageState extends State<CheckoutPage> {
             title: const Text('Delivery Address'),
             content: Column(
               children: [
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: addresses.length,
-                  itemBuilder: (context, index) {
-                    final address = addresses[index];
-                    return RadioListTile(
-                      value: address['id'],
-                      groupValue: selectedAddress,
-                      title: Text(address['name']!),
-                      subtitle: Text(
-                        '${address['address']}, ${address['city']}, ${address['state']} ${address['zip']}\n${address['phone']}',
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          selectedAddress = value as String;
-                        });
+                Obx(
+                   () {
+                     if (controller.isLoading.value) {
+                       return const CircularProgressIndicator();
+                     }
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: controller.addresses.length,
+                      itemBuilder: (context, index) {
+                        final address = controller.addresses[index];
+                        return RadioListTile(
+                          value: address.id,
+                          groupValue: selectedAddress,
+                          title: Text(address.name),
+                          subtitle: Text(
+                            '${address.addressLine1}, ${address.addressLine2}, ${address.city}, ${address.postalCode}',
+                          ),
+                          onChanged: (value) {
+                            controller.selectedAddressId.value = value.toString();
+
+                          },
+                        );
                       },
                     );
-                  },
+                  }
                 ),
                 ElevatedButton.icon(
                   onPressed: () {
@@ -153,9 +169,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const SizedBox(height: 8),
-                Card(
+                const Card(
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
