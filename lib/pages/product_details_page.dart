@@ -11,7 +11,6 @@ import '../controllers/cart_controller.dart';
 import '../screens/product_list_screen.dart';
 import '../widgets/horizontal_product_list.dart';
 
-
 class ProductDetailsPage extends StatefulWidget {
   final Map<String, dynamic> product;
 
@@ -102,11 +101,21 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         final controller = Get.put(CartController());
                         controller.addItem(CartItem(
                           name: 'Galaxy S24',
-                          image: 'https://sonovision.in/wp-content/uploads/2022/08/samsung-s225g-white.jpg',
+                          image:
+                              'https://sonovision.in/wp-content/uploads/2022/08/samsung-s225g-white.jpg',
                           color: 'Black',
-                          price: 150000.0, productId: '84848484848',
+                          price: 150000.0,
+                          productId: '84848484848',
                         ));
-                        Get.snackbar('Success', "Add to success");
+                        Get.snackbar(
+                          'Success',
+                          "Add to success",
+                          backgroundColor: Colors.green,
+                          snackPosition: SnackPosition.BOTTOM,
+                          overlayBlur: 2,
+                          overlayColor: Colors.black54,
+                          colorText: Colors.white,
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: theme.primaryColor,
@@ -192,8 +201,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                         _isAppBarExpanded? Colors.black:Colors.red,
-                          _isAppBarExpanded?  Colors.black.withOpacity(0.05):Colors.red.withOpacity(0.05),
+                          _isAppBarExpanded ? Colors.black : Colors.red,
+                          _isAppBarExpanded
+                              ? Colors.black.withOpacity(0.05)
+                              : Colors.red.withOpacity(0.05),
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -524,7 +535,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 padding: EdgeInsets.all(20.0),
                 child: Text(
                   'Related Products',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.black),
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
                 ),
               ),
               HorizontalProductList(),

@@ -78,7 +78,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
           // Add SliverAppBar
           SliverAppBar(
 
-            expandedHeight: 52.0,
+            expandedHeight: 66.0,
             backgroundColor: Colors.transparent,
             floating: false,
             pinned: false,
@@ -86,7 +86,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
               background: Stack(
                 children: [
 
-                  // profileWidget(context),
+                  profileWidget(context),
 
 /*
                   Align(
@@ -718,7 +718,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
         borderRadius: BorderRadius.circular(24),
         child: Container(
           // height: 160,
-        /*  decoration: BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 Colors.black,
@@ -739,11 +739,11 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                 offset: const Offset(0, 10),
               ),
             ],
-          ),*/
+          ),
           child: Stack(
             children: [
               // Glassy floating bubble behind
-              Positioned(
+              const Positioned(
                 right: -40,
                 bottom: -40,
                 child: Icon(
@@ -758,7 +758,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                     Icon(Icons.location_on,color:Colors.black.withOpacity(0.9) ,),
+                     // Icon(Icons.location_on,color:Colors.white.withOpacity(0.9) ,),
                  /*   IconButton(
                       onPressed: () {},
                       icon:
@@ -767,13 +767,13 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                     ),*/
                     const SizedBox(width: 8),
                     Text(
-                      'Vijayawada 2',
+                      'Welcome,User',
 
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                        decoration: TextDecoration.underline,
-                        decorationColor: Colors.black26,
+                            color: Colors.white,
+                        // decoration: TextDecoration.underline,
+                        // decorationColor: Colors.white,
 
                         fontSize: 16,
                           ),
