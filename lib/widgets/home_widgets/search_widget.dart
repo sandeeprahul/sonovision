@@ -50,67 +50,99 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar>
 
     return ScaleTransition(
       scale: _scaleAnimation,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 2.0, bottom: 22.0, left: 8.0, right: 8.0),
-        child: Row(
-          children: [
-            // Search Box Material
-            Expanded(
-              child: Material(
-                elevation: _isFocused ? 12 : 6,
-                shadowColor: Theme.of(context).shadowColor.withOpacity(0.3),
+      child: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(left: 2.0, right: 2.0,),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.black,
+                    Colors.black.withOpacity(0.05),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.2),
+                  width: 1,
+                ),
                 borderRadius: BorderRadius.circular(24),
-                child: Container(
-                  height: style['height']?.toDouble() ?? 56.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                        style['borderRadius']?.toDouble() ?? 16.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 3,
+                    offset: const Offset(0, 5),
                   ),
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 16),
-                      Icon(Icons.search_rounded, color: Theme.of(context).iconTheme.color),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          style['placeholder'] ?? 'Search...',
-                          style: TextStyle(
-                            color: Theme.of(context).textTheme.bodyLarge?.color,
-                          ),
+                ],
+              ),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 2.0, bottom: 2.0, left: 2.0, right: 2.0),
+              child: Row(
+                children: [
+                  // Search Box Material
+                  Expanded(
+                    child: Material(
+                      elevation: _isFocused ? 12 : 6,
+                      shadowColor: Theme.of(context).shadowColor.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(24),
+                      child: Container(
+                        height: style['height']?.toDouble() ?? 56.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                              style['borderRadius']?.toDouble() ?? 16.0),
+                        ),
+                        child: Row(
+                          children: [
+                            const SizedBox(width: 16),
+                            Icon(Icons.search_rounded, color: Colors.black),
+                            // Icon(Icons.search_rounded, color: Theme.of(context).iconTheme.color),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                style['placeholder'] ?? 'Search...',
+                                style: TextStyle(
+                                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
+
+                  const SizedBox(width: 12),
+
+                  // Camera Icon Material
+                  Material(
+                    elevation: 6,
+                    shadowColor: Theme.of(context).shadowColor.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(24),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(24),
+                      onTap: () {
+                        // Handle camera tap
+                      },
+                      child: Container(
+                        height: style['height']?.toDouble() ?? 56.0,
+                        width: style['height']?.toDouble() ?? 56.0,
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                              style['borderRadius']?.toDouble() ?? 16.0),
+                        ),
+                        child: Icon(Icons.notifications, color: Colors.black),
+                      ),
+                    ),
+                  ),
+
+                ],
               ),
             ),
-
-            const SizedBox(width: 12),
-
-            // Camera Icon Material
-            Material(
-              elevation: 6,
-              shadowColor: Theme.of(context).shadowColor.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(16),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(16),
-                onTap: () {
-                  // Handle camera tap
-                },
-                child: Container(
-                  height: style['height']?.toDouble() ?? 56.0,
-                  width: style['height']?.toDouble() ?? 56.0,
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                        style['borderRadius']?.toDouble() ?? 16.0),
-                  ),
-                  child: Icon(Icons.camera_alt_rounded, color: Theme.of(context).iconTheme.color),
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+          SizedBox(height: 22,),
+        ],
       ),
     );
   }

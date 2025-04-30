@@ -13,12 +13,12 @@ class AnimatedBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 65,
+      height: 75,
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.grey.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, -5),
           ),
@@ -29,9 +29,9 @@ class AnimatedBottomBar extends StatelessWidget {
         children: [
           _buildNavItem(0, Icons.home_rounded, 'Home'),
           _buildNavItem(1, Icons.shopping_cart_rounded, 'Cart'),
-          _buildNavItem(2, Icons.search_rounded, 'Search'),
-          _buildNavItem(3, Icons.favorite_rounded, 'Wishlist'),
-          _buildNavItem(4, Icons.person_rounded, 'Profile'),
+          // _buildNavItem(2, Icons.search_rounded, 'Search'),
+          _buildNavItem(2, Icons.favorite_rounded, 'Wishlist'),
+          _buildNavItem(3, Icons.person_rounded, 'Profile'),
         ],
       ),
     );

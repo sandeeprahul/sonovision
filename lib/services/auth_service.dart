@@ -3,7 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  static const String baseUrl = 'https://sonovision.asquare.org.in'; // Replace with your actual API base URL
+  static const String baseUrl =
+      'https://sonovision.asquare.org.in'; // Replace with your actual API base URL
 
   // static const String baseUrl = 'YOUR_API_BASE_URL'; // Replace with your actual API base URL
   static const String tokenKey = 'auth_token';
@@ -13,9 +14,9 @@ class AuthService {
       Uri.parse('$baseUrl/api/auth/login'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({
-        "email":"sandeeprahul156@gmail.com",
-        "password":"123456"
-      }),/*   body: json.encode({
+        "email": "sandeeprahul156@gmail.com",
+        "password": "123456"
+      }), /*   body: json.encode({
         'email': email,
         'password': password,
       }),*/
@@ -23,19 +24,17 @@ class AuthService {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      print(data);
       final token = data['token'];
       await _saveToken(token);
       return token;
     } else {
-      print(      response.statusCode
-      );
-
+      print(response.statusCode);
       throw Exception('Failed to login');
     }
   }
 
-  Future<Map<String, dynamic>> register(String name, String email, String password) async {
+  Future<Map<String, dynamic>> register(
+      String name, String email, String password) async {
     final response = await http.post(
       Uri.parse('$baseUrl/api/auth/register'),
       headers: {'Content-Type': 'application/json'},

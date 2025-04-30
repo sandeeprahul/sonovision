@@ -3,6 +3,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../screens/product_list_screen.dart';
+
 class FlashSaleWidget extends StatelessWidget {
   final Map<String, dynamic> widgetData;
 
@@ -20,7 +22,7 @@ class FlashSaleWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 16),
-
+          //
           _buildHeader(endTime),
           const SizedBox(height: 16),
           SizedBox(
@@ -59,24 +61,6 @@ class FlashSaleWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildCountdownTimer(DateTime endTime) {
-    final remaining = endTime.difference(DateTime.now());
-    final hours = remaining.inHours.toString().padLeft(2, '0');
-    final minutes = (remaining.inMinutes % 60).toString().padLeft(2, '0');
-    final seconds = (remaining.inSeconds % 60).toString().padLeft(2, '0');
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.red[600],
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: Text(
-        '$hours:$minutes:$seconds',
-        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
 
   Widget _buildProductCard(BuildContext context, Map<String, dynamic> product, Map<String, dynamic> cardStyle) {
     final borderRadius = (cardStyle['borderRadius'] ?? 16.0).toDouble();
@@ -133,6 +117,9 @@ class FlashSaleWidget extends StatelessWidget {
 
 
           Get.toNamed('/product-details', arguments: staticProduct);
+
+          // Get.to(  ProductListScreen());
+
         },
         child: Container(
           width: 180,

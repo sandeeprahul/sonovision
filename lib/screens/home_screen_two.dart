@@ -1,20 +1,15 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
 import '../controllers/home_controller.dart';
-import '../utils/hex_color.dart';
 import '../utils/loadImageBasedOnExtension.dart';
 import '../widgets/_buildCategoryGroup.dart';
 import '../widgets/home_widgets/banner_widget.dart';
 import '../widgets/home_widgets/brand_strip_widget.dart';
 import '../widgets/home_widgets/flash_sale_widget.dart';
 import '../widgets/home_widgets/search_widget.dart';
-import '../pages/category_details_page.dart';
 
 class HomeScreenTwo extends StatefulWidget {
   const HomeScreenTwo({Key? key}) : super(key: key);
@@ -83,14 +78,16 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
           // Add SliverAppBar
           SliverAppBar(
 
-            expandedHeight: 110.0,
+            expandedHeight: 52.0,
             backgroundColor: Colors.transparent,
             floating: false,
             pinned: false,
             flexibleSpace: FlexibleSpaceBar(
               background: Stack(
                 children: [
-                  profileWidget(context),
+
+                  // profileWidget(context),
+
 /*
                   Align(
                     alignment: Alignment.centerLeft,
@@ -135,9 +132,9 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
   }
 
   Widget _buildDynamicWidget(BuildContext context, Map<String, dynamic> widget) {
-    switch (widget['widgetType']) {/*
+    switch (widget['widgetType']) {
       case 'search':
-        return _buildSearchBar(widget['style']);*/
+        return _buildSearchBar();
       case 'flashSale':
         return FlashSaleWidget(
           widgetData: widget,
@@ -481,7 +478,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
     }
   }
 
-  Widget _buildSearchBar(Map<String, dynamic> style) {
+  Widget _buildSearchBar() {
     return const AnimatedSearchBar(
       style: {
         "margin": 16,
@@ -712,177 +709,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
     );
   }
 
-  Widget _buildCategoryGroup(Map<String, dynamic> group) {
-    final categories = (group['data']?['data'] ?? []) as List<dynamic>;
 
-    // final categories = group['data'] as List<dynamic>;
-    return LayoutBuilder(builder: (context, constraints) {
-      final screenWidth = constraints.maxWidth;
-      final itemWidth = (screenWidth - (5 * 16)) / 4;
-
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 28,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  group['label'],
-                  style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                ),
-                TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      'See all',
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                    ))
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 6,
-          ),
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(6),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-              childAspectRatio: 1.0,
-              crossAxisSpacing: 6,
-              mainAxisSpacing: 6,
-            ),
-            itemCount: categories.length,
-            itemBuilder: (context, index) {
-              final category = categories[index];
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CategoryDetailsPage(
-                        categoryId: category['_id'],
-                        categoryName: category['name'],
-                      ),
-                    ),
-                  );
-                },
-                child: Container(
-                  width: itemWidth,
-                  height: itemWidth,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 10,
-                        offset: const Offset(0, 5),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: itemWidth * 0.8,
-                        height: itemWidth * 0.8,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: CachedNetworkImage(
-                            imageUrl: category['image'],
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        category['name'],
-                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 11,
-                              color: Colors.black87,
-                            ),
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ));
-            },
-          ),
-        ],
-      );
-    });
-  }
-
-  Widget _buildCountdownTimer(DateTime endTime) {
-    return StreamBuilder<DateTime>(
-      stream:
-          Stream.periodic(const Duration(seconds: 1), (_) => DateTime.now()),
-      builder: (context, snapshot) {
-        final now = DateTime.now();
-        final difference = endTime.difference(now);
-        final hours = difference.inHours;
-        final minutes = difference.inMinutes.remainder(60);
-        final seconds = difference.inSeconds.remainder(60);
-
-        return Row(
-          children: [
-            _buildTimeBox(hours.toString().padLeft(2, '0'), 'H'),
-            const Text(':', style: TextStyle(color: Colors.white)),
-            _buildTimeBox(minutes.toString().padLeft(2, '0'), 'M'),
-            const Text(':', style: TextStyle(color: Colors.white)),
-            _buildTimeBox(seconds.toString().padLeft(2, '0'), 'S'),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildTimeBox(String time, String label) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 4),
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        children: [
-          Text(
-            time,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            label,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 12,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget profileWidget(BuildContext context) {
     return Padding(
@@ -891,7 +718,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
         borderRadius: BorderRadius.circular(24),
         child: Container(
           // height: 160,
-          decoration: BoxDecoration(
+        /*  decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 Colors.black,
@@ -912,7 +739,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                 offset: const Offset(0, 10),
               ),
             ],
-          ),
+          ),*/
           child: Stack(
             children: [
               // Glassy floating bubble behind
@@ -922,16 +749,16 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                 child: Icon(
                   Icons.blur_on,
                   size: 150,
-                  color: Colors.white.withOpacity(0.29),
+                  color: Colors.transparent,
                 ),
               ),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                    const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                     Icon(Icons.location_on,color:Colors.white.withOpacity(0.9) ,),
+                     Icon(Icons.location_on,color:Colors.black.withOpacity(0.9) ,),
                  /*   IconButton(
                       onPressed: () {},
                       icon:
@@ -944,9 +771,9 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
 
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w600,
-                            color: Colors.white,
+                            color: Colors.black,
                         decoration: TextDecoration.underline,
-                        decorationColor: Colors.white,
+                        decorationColor: Colors.black26,
 
                         fontSize: 16,
                           ),
@@ -964,13 +791,13 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                         ),
                       ),
                       child: CircleAvatar(
-                        radius: 28,
+                        radius: 16,
                         backgroundColor: Colors.transparent,
                         child: ClipOval(
                           child: Image.network(
                             'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=2576&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                            width: 56,
-                            height: 56,
+                            width: 42,
+                            height: 42,
                             fit: BoxFit.cover,
                           ),
                         ),

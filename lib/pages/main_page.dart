@@ -22,13 +22,12 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
   late final TabController _tabController;
   final List<Widget> _pages = [
     const HomeScreenTwo(),
-    const CartPage(),
+     CartPage(),
 
-    const SearchPage(),
     const WishlistPage(),
     const ProfilePage(),
   ];
-
+///    // const SearchPage(),
   @override
   void initState() {
     super.initState();
@@ -50,12 +49,9 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
 
 
     setState(() => _selectedIndex = index);
-    print("ttttttttoken");
-    print(_selectedIndex);
-    if(_selectedIndex==4){
+
+    if(_selectedIndex==3){
       final token = await AuthService().getToken();
-      print("ttttttttoken");
-      print(token);
       if (token == null || token.isEmpty) {
         Get.to(const LoginPage());
       }

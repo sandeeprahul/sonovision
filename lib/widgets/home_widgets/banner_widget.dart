@@ -23,10 +23,12 @@ class BannerCarousel extends StatelessWidget {
       height:  160.0,
       // height: style['height']?.toDouble() ?? 220.0,
       child: CarouselSlider.builder(
+
         itemCount: banners.length,
         options: CarouselOptions(
           height: style['height']?.toDouble() ?? 220.0,
           autoPlay: true,
+
           enlargeCenterPage: true,
           viewportFraction: 0.955,
           autoPlayInterval: const Duration(seconds: 3),

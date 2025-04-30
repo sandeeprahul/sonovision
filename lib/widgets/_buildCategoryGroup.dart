@@ -20,7 +20,7 @@ Widget buildCategoryGroupWidget(Map<String, dynamic> group) {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 30),
-       /*   Padding(
+          Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -52,7 +52,7 @@ Widget buildCategoryGroupWidget(Map<String, dynamic> group) {
                 ),
               ],
             ),
-          ),*/
+          ),
           const SizedBox(height: 6),
           GridView.builder(
             shrinkWrap: true,
@@ -64,10 +64,10 @@ Widget buildCategoryGroupWidget(Map<String, dynamic> group) {
               crossAxisSpacing: 6,
               mainAxisSpacing: 6,
             ),
-            itemCount: visibleItemCount + 1, // +1 for "See All"
+            itemCount: categories.length, // +1 for "See All"
             // itemCount: categories.length,
             itemBuilder: (context, index) {
-              if (index == visibleItemCount) {
+         /*     if (index == visibleItemCount) {
                 // Show "See All" tile
                 return GestureDetector(
                   onTap: () {
@@ -108,7 +108,7 @@ Widget buildCategoryGroupWidget(Map<String, dynamic> group) {
                     ),
                   ),
                 );
-              }
+              }*/
 
               final category = categories[index];
               return InkWell(

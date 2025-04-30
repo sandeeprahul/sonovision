@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
         '/product-details': (context) => ProductDetailsPage(
           product: Get.arguments as Map<String, dynamic>,
         ),
-        '/cart': (context) => const CartPage(),
+        '/cart': (context) =>  CartPage(),
         '/checkout': (context) => const CheckoutPage(),
         '/add-address': (context) => const AddAddressPage(),
         '/order-success': (context) => const OrderSuccessPage(),

@@ -94,7 +94,21 @@ class CategoryListScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Categories'),
-        backgroundColor: Colors.black,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.black,
+                  Colors.black.withOpacity(0.5),
+                  Colors.black.withOpacity(0.05),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+          ),
+          backgroundColor: Colors.transparent, // Make background transparent to see gradient
+          elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
