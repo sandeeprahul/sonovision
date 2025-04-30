@@ -5,6 +5,7 @@ import 'package:electronic_store/pages/register_page.dart';
 import 'package:electronic_store/screens/home_screen_two.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_storage/get_storage.dart';
 import 'pages/main_page.dart';
 import 'package:get/get.dart';
 import 'package:electronic_store/theme/app_theme.dart';
@@ -17,9 +18,9 @@ import 'pages/add_address_page.dart';
 import 'pages/order_success_page.dart';
 import 'pages/order_history_page.dart';
 
-void main() {
+void main() async {
   HttpOverrides.global = MyHttpOverrides();
-
+  await GetStorage.init(); // initialize once
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
       title: 'Electronic Store',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-   /*   theme: ThemeData(
+      /*   theme: ThemeData(
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: const AppBarTheme(
@@ -47,16 +48,16 @@ class MyApp extends StatelessWidget {
           elevation: 0,
         ),
       ),*/
-      home:  const MainPage(),
+      home: const MainPage(),
       routes: {
-      /*  '/product-details': (context) => ProductDetailsPage(
+        /*  '/product-details': (context) => ProductDetailsPage(
               product: ModalRoute.of(context)!.settings.arguments
                   as Map<String, dynamic>,
             ),*/
         '/product-details': (context) => ProductDetailsPage(
-          product: Get.arguments as Map<String, dynamic>,
-        ),
-        '/cart': (context) =>  CartPage(),
+              product: Get.arguments as Map<String, dynamic>,
+            ),
+        '/cart': (context) => CartPage(),
         '/checkout': (context) => const CheckoutPage(),
         '/add-address': (context) => const AddAddressPage(),
         '/order-success': (context) => const OrderSuccessPage(),
@@ -75,10 +76,12 @@ class HomeBinding extends Bindings {
     Get.lazyPut<HomeController>(() => HomeController());
   }
 }
+
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }

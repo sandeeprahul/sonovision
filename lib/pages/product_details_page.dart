@@ -10,6 +10,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../controllers/cart_controller.dart';
 import '../screens/product_list_screen.dart';
 import '../widgets/horizontal_product_list.dart';
+import '../widgets/product_details_widgets/availability_options_widget.dart';
+import '../widgets/product_details_widgets/store_availability_card.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   final Map<String, dynamic> product;
@@ -78,44 +80,98 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               padding: const EdgeInsets.all(16.0),
               child: Row(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: theme.primaryColor),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.shopping_cart_outlined,
-                        color: theme.primaryColor,
+                  Stack(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: theme.primaryColor),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: IconButton(
+                          onPressed: () {
+                            Get.toNamed('/cart');
+                          },
+                          icon: Icon(
+                            Icons.shopping_cart_outlined,
+                            color: theme.primaryColor,
+                          ),
+                        ),
+                      )
+                          .animate()
+                          .fadeIn(duration: 300.ms)
+                          .slideX(begin: -0.3, duration: 300.ms),
+
+                      // Cart count badge
+                      Positioned(
+                        right: 4,
+                        top: 4,
+                        child: Obx(() {
+                          final controller = Get.put(CartController());
+                          return controller.cartItems.isNotEmpty
+                              ? Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.red,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  constraints: const BoxConstraints(
+                                      minWidth: 20, minHeight: 20),
+                                  child: Text(
+                                    '${controller.cartItems.length}',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                )
+                              : const SizedBox.shrink();
+                        }),
                       ),
-                    ),
-                  )
-                      .animate()
-                      .fadeIn(duration: 300.ms)
-                      .slideX(begin: -0.3, duration: 300.ms),
+                    ],
+                  ),
                   const SizedBox(width: 16),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
                         final controller = Get.put(CartController());
-                        controller.addItem(CartItem(
-                          name: 'Galaxy S24',
-                          image:
-                              'https://sonovision.in/wp-content/uploads/2022/08/samsung-s225g-white.jpg',
-                          color: 'Black',
-                          price: 150000.0,
-                          productId: '84848484848',
-                        ));
-                        Get.snackbar(
-                          'Success',
-                          "Add to success",
-                          backgroundColor: Colors.green,
-                          snackPosition: SnackPosition.BOTTOM,
-                          overlayBlur: 2,
-                          overlayColor: Colors.black54,
-                          colorText: Colors.white,
-                        );
+
+                        final productId = '84848484848';
+                        final exists = controller.cartItems
+                            .any((item) => item.productId == productId);
+
+                        if (exists) {
+                          Get.snackbar(
+                            'Info',
+                            'Item already in cart',
+                            overlayBlur: 2,
+                            overlayColor: Colors.black26,
+                            backgroundColor: Colors.white,
+                            colorText: Colors.black,
+                            snackPosition: SnackPosition.BOTTOM,
+                            duration: const Duration(milliseconds: 1500),
+                          );
+                        } else {
+                          controller.addItem(CartItem(
+                            name: 'Galaxy S24',
+                            image:
+                                'https://sonovision.in/wp-content/uploads/2022/08/samsung-s225g-white.jpg',
+                            color: 'Black',
+                            price: 150000.0,
+                            productId: productId,
+                          ));
+                          Get.snackbar(
+                            'Success',
+                            'Added to cart successfully',
+                            backgroundColor: Colors.white,
+                            overlayBlur: 2,
+                            overlayColor: Colors.black26,
+                            colorText: Colors.black,
+                            snackPosition: SnackPosition.BOTTOM,
+                            duration: const Duration(milliseconds: 1500),
+                          );
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: theme.primaryColor,
@@ -367,9 +423,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 26),
+                    // const SizedBox(height: 26),
                     // Delivery Info
-                    Container(
+                    /* Container(
                       // padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: Colors.grey[100],
@@ -397,10 +453,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           ),
                         ],
                       ),
-                    ),
+                    ),*/
                   ],
                 ),
               ),
+
+              // const SizedBox(height: 16),
+              // const AvailabilityOptions(), // 🌟 Add this
+              // const SizedBox(height: 16),
               // Description Section
               Container(
                 padding: const EdgeInsets.all(16),
@@ -415,19 +475,27 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     ),
                     const SizedBox(height: 8),
                     ReadMoreText(
-                      widget.product['description'],
+                      'Samsung Galaxy S25 Ultra 5G AI Smartphone (Titanium Black, 12GB RAM, 512GB Storage), 200MP Camera, S Pen Included, Long Battery Life ',
+
+                      // "${widget.product['description']}  " ,
                       trimLines: 3,
                       colorClickableText: theme.primaryColor,
                       trimMode: TrimMode.Line,
                       trimCollapsedText: 'Show more',
                       trimExpandedText: 'Show less',
+
                       style: theme.textTheme.bodyLarge!.copyWith(
-                        color: Colors.grey[800],
+                        color: Colors.black,
                         height: 1.5,
                       ),
                     ),
                   ],
                 ),
+              ),
+              const SizedBox(height: 16),
+              const StoreAvailabilityCard(
+                storeCount: 15,
+                // No onTap for read-only display
               ),
 
               // Specifications Section
@@ -547,353 +615,3 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         ));
   }
 }
-
-// class ProductDetailsPage extends StatelessWidget {
-//   final Map<String, dynamic> product;
-//
-//   ProductDetailsPage({required this.product});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     // Get the specifications from the product
-//     final Map<String, dynamic> specifications = product['specifications'] ?? {};
-//
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(product['name']),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-//         child: SingleChildScrollView(
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               // Product images
-//               SizedBox(
-//                 height: 200,
-//                 child: ListView.builder(
-//                   scrollDirection: Axis.horizontal,
-//                   itemCount: product['images'].length,
-//                   itemBuilder: (context, index) {
-//                     return Image.network(product['images'][index]);
-//                   },
-//                 ),
-//               ),
-//
-//               const SizedBox(height: 16),
-//               // Product Details
-//               Text(
-//                 product['name'],
-//                 style: Theme.of(context).textTheme.headline5!.copyWith(fontWeight: FontWeight.bold),
-//               ),
-//               Text(
-//                 product['brand'],
-//                 style: Theme.of(context).textTheme.subtitle1,
-//               ),
-//               const SizedBox(height: 8),
-//               Text('Price: ₹${product['price']}'),
-//               const SizedBox(height: 8),
-//               Text('Discount: ${product['discountPercentage']}%'),
-//               const SizedBox(height: 8),
-//               Text('Delivery Time: ${product['deliveryTime']}'),
-//               const SizedBox(height: 16),
-//
-//               // Specifications Section
-//               Text(
-//                 'Specifications',
-//                 style: Theme.of(context).textTheme.subtitle1!.copyWith(fontWeight: FontWeight.bold),
-//               ),
-//               const SizedBox(height: 8),
-//
-//               // Dynamically display all specifications
-//               for (var entry in specifications.entries)
-//                 _buildSpecification(entry.key, entry.value.toString()),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// import 'package:flutter/material.dart';
-// import 'package:carousel_slider/carousel_slider.dart';
-//
-// class ProductDetailsPage extends StatefulWidget {
-//   final Map<String, dynamic> product;
-//
-//   const ProductDetailsPage({Key? key, required this.product}) : super(key: key);
-//
-//   @override
-//   _ProductDetailsPageState createState() => _ProductDetailsPageState();
-// }
-//
-// class _ProductDetailsPageState extends State<ProductDetailsPage> {
-//   String selectedColor = '';
-//   int quantity = 1;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     selectedColor = widget.product['colors'][0];
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     double discountedPrice = widget.product['price'] *
-//         (1 - widget.product['discountPercentage'] / 100);
-//
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(widget.product['name']),
-//         actions: [
-//           IconButton(
-//             icon: const Icon(Icons.favorite_border),
-//             onPressed: () {
-//               // Add to wishlist functionality
-//             },
-//           ),
-//           IconButton(
-//             icon: const Icon(Icons.shopping_cart),
-//             onPressed: () {
-//               Navigator.pushNamed(context, '/cart');
-//             },
-//           ),
-//         ],
-//       ),
-//       body: SingleChildScrollView(
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             // Image Carousel
-//             CarouselSlider(
-//               options: CarouselOptions(
-//                 height: 300,
-//                 viewportFraction: 1.0,
-//                 enlargeCenterPage: false,
-//                 autoPlay: true,
-//               ),
-//               items: widget.product['images'].map<Widget>((image) {
-//                 return Builder(
-//                   builder: (BuildContext context) {
-//                     return Container(
-//                       width: MediaQuery.of(context).size.width,
-//                       decoration: BoxDecoration(
-//                         image: DecorationImage(
-//                           image: NetworkImage(image),
-//                           fit: BoxFit.cover,
-//                         ),
-//                       ),
-//                     );
-//                   },
-//                 );
-//               }).toList(),
-//             ),
-//
-//             Padding(
-//               padding: const EdgeInsets.all(16.0),
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   // Product Name and Brand
-//                   Text(
-//                     widget.product['name'],
-//                     style: Theme.of(context).textTheme.headlineMedium,
-//                   ),
-//                   Text(
-//                     widget.product['brand'],
-//                     style: Theme.of(context).textTheme.titleMedium,
-//                   ),
-//                   const SizedBox(height: 16),
-//
-//                   // Price Information
-//                   Row(
-//                     children: [
-//                       Text(
-//                         '₹${discountedPrice.toStringAsFixed(2)}',
-//                         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-//                           color: Theme.of(context).primaryColor,
-//                           fontWeight: FontWeight.bold,
-//                         ),
-//                       ),
-//                       const SizedBox(width: 8),
-//                       Text(
-//                         '₹${widget.product['price']}',
-//                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-//                           decoration: TextDecoration.lineThrough,
-//                           color: Colors.grey,
-//                         ),
-//                       ),
-//                       const SizedBox(width: 8),
-//                       Container(
-//                         padding: const EdgeInsets.symmetric(
-//                           horizontal: 8,
-//                           vertical: 4,
-//                         ),
-//                         decoration: BoxDecoration(
-//                           color: Colors.green,
-//                           borderRadius: BorderRadius.circular(4),
-//                         ),
-//                         child: Text(
-//                           '${widget.product['discountPercentage']}% OFF',
-//                           style: const TextStyle(
-//                             color: Colors.white,
-//                             fontWeight: FontWeight.bold,
-//                           ),
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                   const SizedBox(height: 16),
-//
-//                   // Color Selection
-//                   Text(
-//                     'Select Color',
-//                     style: Theme.of(context).textTheme.titleMedium,
-//                   ),
-//                   const SizedBox(height: 8),
-//                   Wrap(
-//                     spacing: 8,
-//                     children: widget.product['colors'].map<Widget>((color) {
-//                       return ChoiceChip(
-//                         label: Text(color),
-//                         selected: selectedColor == color,
-//                         onSelected: (bool selected) {
-//                           setState(() {
-//                             selectedColor = color;
-//                           });
-//                         },
-//                       );
-//                     }).toList(),
-//                   ),
-//                   const SizedBox(height: 16),
-//
-//                   // Specifications
-//                   Text(
-//                     'Specifications',
-//                     style: Theme.of(context).textTheme.titleMedium,
-//                   ),
-//                   const SizedBox(height: 8),
-//                   ...widget.product['specifications'].entries.map((entry) {
-//                     return Padding(
-//                       padding: const EdgeInsets.symmetric(vertical: 4),
-//                       child: Row(
-//                         children: [
-//                           Expanded(
-//                             flex: 2,
-//                             child: Text(
-//                               entry.key.toString().toUpperCase(),
-//                               style: const TextStyle(
-//                                 color: Colors.grey,
-//                                 fontWeight: FontWeight.w500,
-//                               ),
-//                             ),
-//                           ),
-//                           Expanded(
-//                             flex: 3,
-//                             child: Text(
-//                               entry.value.toString(),
-//                               style: const TextStyle(
-//                                 fontWeight: FontWeight.w500,
-//                               ),
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     );
-//                   }).toList(),
-//                   const SizedBox(height: 16),
-//
-//                   // Delivery Time
-//                   Row(
-//                     children: [
-//                       const Icon(Icons.local_shipping_outlined),
-//                       const SizedBox(width: 8),
-//                       Text(
-//                         'Delivery in ${widget.product['deliveryTime']}',
-//                         style: Theme.of(context).textTheme.bodyLarge,
-//                       ),
-//                     ],
-//                   ),
-//                   const SizedBox(height: 16),
-//
-//                   // Description
-//                   Text(
-//                     'Description',
-//                     style: Theme.of(context).textTheme.titleMedium,
-//                   ),
-//                   const SizedBox(height: 8),
-//                   Text(widget.product['description']),
-//                   const SizedBox(height: 16),
-//
-//                   // Highlights
-//                   Text(
-//                     'Highlights',
-//                     style: Theme.of(context).textTheme.titleMedium,
-//                   ),
-//                   const SizedBox(height: 8),
-//                   Text(widget.product['highlights']),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//       bottomNavigationBar: Container(
-//         decoration: BoxDecoration(
-//           color: Colors.white,
-//           boxShadow: [
-//             BoxShadow(
-//               color: Colors.black.withOpacity(0.05),
-//               offset: const Offset(0, -4),
-//               blurRadius: 8,
-//             ),
-//           ],
-//         ),
-//         child: SafeArea(
-//           child: Padding(
-//             padding: const EdgeInsets.all(16.0),
-//             child: Row(
-//               children: [
-//                 Container(
-//                   decoration: BoxDecoration(
-//                     border: Border.all(color: Theme.of(context).primaryColor),
-//                     borderRadius: BorderRadius.circular(8),
-//                   ),
-//                   child: IconButton(
-//                     onPressed: () {},
-//                     icon: Icon(Icons.shopping_cart_outlined,
-//                       color: Theme.of(context).primaryColor,
-//                     ),
-//                   ),
-//                 ),
-//                 const SizedBox(width: 16),
-//                 Expanded(
-//                   child: ElevatedButton(
-//                     onPressed: () {
-//                       // Buy Now functionality
-//                     },
-//                     style: ElevatedButton.styleFrom(
-//                       backgroundColor: Theme.of(context).primaryColor,
-//                       padding: const EdgeInsets.symmetric(vertical: 16),
-//                       shape: RoundedRectangleBorder(
-//                         borderRadius: BorderRadius.circular(8),
-//                       ),
-//                     ),
-//                     child: const Text(
-//                       'BUY NOW',
-//                       style: TextStyle(
-//                         fontSize: 16,
-//                         fontWeight: FontWeight.bold,
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

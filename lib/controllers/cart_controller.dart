@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class CartItem {
   final String productId;
@@ -22,16 +23,22 @@ class CartItem {
 
 
 class CartController extends GetxController {
+  final _storage = GetStorage();
+  final _cartKey = 'cart_items';
+
   var cartItems = <CartItem>[].obs;
   var discount = 0.0.obs;
   var deliveryCharge = 0.0.obs;
   var isCouponApplied = false.obs;
 
-  double get subtotal =>
-      cartItems.fold(0, (sum, item) => sum + item.total);
+  @override
+  void onInit() {
+    super.onInit();
+    loadCart();
+  }
 
-  double get total =>
-      subtotal - discount.value + deliveryCharge.value;
+  double get subtotal => cartItems.fold(0, (sum, item) => sum + item.total);
+  double get total => subtotal - discount.value + deliveryCharge.value;
 
   void addItem(CartItem item) {
     int index = cartItems.indexWhere((e) => e.productId == item.productId);
@@ -40,28 +47,33 @@ class CartController extends GetxController {
     } else {
       cartItems.add(item);
     }
+    saveCart();
   }
 
   void removeItem(CartItem item) {
     cartItems.remove(item);
-  }
-
-  void increaseQuantity(int index) {
-    cartItems[index].quantity++;
-    cartItems.refresh();
-  }
-
-  void decreaseQuantity(int index) {
-    if (cartItems[index].quantity > 1) {
-      cartItems[index].quantity--;
-      cartItems.refresh();
-    }
+    saveCart();
   }
 
   void applyCoupon(String? code) {
     if (code != null && code.isNotEmpty && !isCouponApplied.value) {
       discount.value = subtotal * 0.1;
       isCouponApplied.value = true;
+      saveCart(); // 🔥 Save changes
+    }
+  }
+
+  void increaseQuantity(int index) {
+    cartItems[index].quantity++;
+    cartItems.refresh();
+    saveCart();
+  }
+
+  void decreaseQuantity(int index) {
+    if (cartItems[index].quantity > 1) {
+      cartItems[index].quantity--;
+      cartItems.refresh();
+      saveCart();
     }
   }
 
@@ -70,5 +82,33 @@ class CartController extends GetxController {
     discount.value = 0.0;
     deliveryCharge.value = 0.0;
     isCouponApplied.value = false;
+    _storage.remove(_cartKey);
+  }
+
+  void saveCart() {
+    final cartData = cartItems.map((item) => {
+      'productId': item.productId,
+      'name': item.name,
+      'image': item.image,
+      'color': item.color,
+      'price': item.price,
+      'quantity': item.quantity,
+    }).toList();
+
+    _storage.write(_cartKey, cartData);
+  }
+
+  void loadCart() {
+    final stored = _storage.read<List>(_cartKey);
+    if (stored != null) {
+      cartItems.value = stored.map((item) => CartItem(
+        productId: item['productId'],
+        name: item['name'],
+        image: item['image'],
+        color: item['color'],
+        price: item['price'],
+        quantity: item['quantity'],
+      )).toList();
+    }
   }
 }

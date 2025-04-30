@@ -183,115 +183,161 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
             ),
           ),
           const SizedBox(height: 16),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(
-                style['cardStyle']['borderRadius']?.toDouble() ?? 16.0,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(
-                          style['cardStyle']['borderRadius']?.toDouble() ??
-                              16.0,
-                        ),
-                      ),
-                      child: AspectRatio(
-                        aspectRatio: 16 / 9,
-                        child: CachedNetworkImage(
-                          imageUrl:
-                              'https://sonovision.in/wp-content/uploads/2022/08/samsung-s225g-white.jpg',
-                          // imageUrl: deal['product']?['image'] ?? '',
+          InkWell(
+            onTap:(){
 
-                          //
-                          // fit: BoxFit.cover,
+              final staticProduct = {
+                'id': '20250426',
+                'name': 'Galaxy S24',
+                'brand': 'Samsung',
+                'category': 'Mobile Phones',
+                'categoryId': 'mobile_phones',
+                'price': 150000,
+                'discountPercentage': 10,
+                'description': 'Samsung galaxy S24',
+                'highlights': 'SPen AI',
+                'deliveryTime': '7-10 days',
+                'isFeatured': true,
+                'colors': [
+                  'Red',
+                  'Black',
+                  'White',
+                  'Blue',
+                  'Green',
+                  'Grey'
+                ],
+                'images': [
+                  'https://sonovision.in/wp-content/uploads/2022/08/samsung-s225g-white.jpg'
+                ],
+                'stock': 80,
+                'storeCode': 'SONO55',
+                'specifications': {
+                  'battery': '6700',
+                  'display': 'Amoled',
+                  'displaySize': '6.7',
+                  'frontCamera': '56',
+                  'mainCamera': '68',
+                  'networkType': '5G',
+                  'os': 'Android',
+                  'processor': 'Exzonys',
+                  'ram': '12',
+                  'storage': '250'
+                }
+              };
+
+
+              Get.toNamed('/product-details', arguments: staticProduct);
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(
+                  style['cardStyle']['borderRadius']?.toDouble() ?? 16.0,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Stack(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(
+                            style['cardStyle']['borderRadius']?.toDouble() ??
+                                16.0,
+                          ),
+                        ),
+                        child: AspectRatio(
+                          aspectRatio: 16 / 9,
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                'https://sonovision.in/wp-content/uploads/2022/08/samsung-s225g-white.jpg',
+                            // imageUrl: deal['product']?['image'] ?? '',
+
+                            //
+                            // fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            deal['product']?['name'] ?? '',
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          /*     Text(
-                            deal['product']?['description']??'',
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 14,
-                            ),
-                          ),
-                          const SizedBox(height: 16),*/
-                          Row(
-                            children: [
-                              Text(
-                                '₹${deal['product']?['price']}' ?? '',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.green,
-                                ),
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              deal['product']?['name'] ?? '',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
                               ),
-                              const SizedBox(width: 8),
-                              Text(
-                                '\$${deal['product']?['strikePrice']}' ?? '',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey[600],
-                                  decoration: TextDecoration.lineThrough,
-                                ),
+                            ),
+                            const SizedBox(height: 8),
+                            /*     Text(
+                              deal['product']?['description']??'',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 14,
                               ),
-                            ],
-                          ),
-                        ],
+                            ),
+                            const SizedBox(height: 16),*/
+                            Row(
+                              children: [
+                                Text(
+                                  '₹${deal['product']?['price']}' ?? '',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.green,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  '\$${deal['product']?['strikePrice']}' ?? '',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey[600],
+                                    decoration: TextDecoration.lineThrough,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Positioned(
-                  top: 16,
-                  right: 16,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Text(
-                      '${deal['product']?['discount']}% OFF' ?? '',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                    ],
+                  ),
+                  Positioned(
+                    top: 16,
+                    right: 16,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        '${deal['product']?['discount']}% OFF' ?? '',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 16),
