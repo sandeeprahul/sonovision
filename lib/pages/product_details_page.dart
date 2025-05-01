@@ -528,7 +528,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                             .toUpperCase() +
                                         entry.key.toString().substring(1),
                                     style: TextStyle(
-                                      color: Colors.grey[600],
+                                      color: Colors.black,
                                       fontSize: 15,
                                     ),
                                   ),
@@ -540,6 +540,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     style: const TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 15,
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),

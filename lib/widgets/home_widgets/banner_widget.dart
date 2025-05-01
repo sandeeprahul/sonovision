@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:get/get.dart';
 
 class BannerCarousel extends StatelessWidget {
   final List<dynamic> banners;
@@ -44,94 +45,139 @@ class BannerCarousel extends StatelessWidget {
             borderRadius: BorderRadius.circular(24),
 
             clipBehavior: Clip.antiAlias,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                // Background image
-                Image.network(
-                  banners[2]['image'],
-                  // banner['image'],
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, progress) {
-                    if (progress == null) return child;
-                    return const Center(child: CircularProgressIndicator());
-                  },
-                ),
+            child: InkWell(
+              onTap: (){
+                final staticProduct = {
+                  'id': '20250426',
+                  'name': 'Galaxy S24',
+                  'brand': 'Samsung',
+                  'category': 'Mobile Phones',
+                  'categoryId': 'mobile_phones',
+                  'price': 150000,
+                  'discountPercentage': 10,
+                  'description': 'Samsung galaxy S24',
+                  'highlights': 'SPen AI',
+                  'deliveryTime': '7-10 days',
+                  'isFeatured': true,
+                  'colors': [
+                    'Red',
+                    'Black',
+                    'White',
+                    'Blue',
+                    'Green',
+                    'Grey'
+                  ],
+                  'images': [
+                    'https://sonovision.in/wp-content/uploads/2022/08/samsung-s225g-white.jpg'
+                  ],
+                  'stock': 80,
+                  'storeCode': 'SONO55',
+                  'specifications': {
+                    'battery': '6700',
+                    'display': 'Amoled',
+                    'displaySize': '6.7',
+                    'frontCamera': '56',
+                    'mainCamera': '68',
+                    'networkType': '5G',
+                    'os': 'Android',
+                    'processor': 'Exzonys',
+                    'ram': '12',
+                    'storage': '250'
+                  }
+                };
 
-                // Gradient overlay
-              /*  Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        _parseColor(overlayGradient['start']) ??
-                            Colors.transparent,
-                        _parseColor(overlayGradient['end']) ??
-                            Colors.black.withOpacity(0.7),
+
+                Get.toNamed('/product-details', arguments: staticProduct);
+              },
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  // Background image
+                  Image.network(
+                    banners[2]['image'],
+                    // banner['image'],
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, progress) {
+                      if (progress == null) return child;
+                      return const Center(child: CircularProgressIndicator());
+                    },
+                  ),
+
+                  // Gradient overlay
+                /*  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          _parseColor(overlayGradient['start']) ??
+                              Colors.transparent,
+                          _parseColor(overlayGradient['end']) ??
+                              Colors.black.withOpacity(0.7),
+                        ],
+                      ),
+                    ),
+                  ),*/
+
+                  // Badge (top-right default)
+                  if (banner['badge'] != null)
+                    Positioned(
+                      top: 12,
+                      right: 12,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                          color:
+                              _parseColor(banner['badge']['color']) ?? Colors.red,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          banner['badge']['text'],
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                  // Text content
+                  Positioned(
+                    left: 16,
+                    right: 16,
+                    bottom: 20,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          banner['title'] ?? '',
+                          style: TextStyle(
+                            color:
+                                _parseColor(titleStyle['color']) ?? Colors.white,
+                            fontSize: 20,
+                            // fontSize: titleStyle['fontSize']?.toDouble() ?? 22,
+                            fontWeight:
+                                _parseFontWeight(titleStyle['fontWeight']) ??
+                                    FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          banner['subtitle'] ?? '',
+                          style: TextStyle(
+                            color: _parseColor(subtitleStyle['color']) ??
+                                Colors.white70,
+                            fontSize: 14,
+                            // fontSize: subtitleStyle['fontSize']?.toDouble() ?? 18,
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                ),*/
-
-                // Badge (top-right default)
-                if (banner['badge'] != null)
-                  Positioned(
-                    top: 12,
-                    right: 12,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 4),
-                      decoration: BoxDecoration(
-                        color:
-                            _parseColor(banner['badge']['color']) ?? Colors.red,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        banner['badge']['text'],
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 10,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                // Text content
-                Positioned(
-                  left: 16,
-                  right: 16,
-                  bottom: 20,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        banner['title'] ?? '',
-                        style: TextStyle(
-                          color:
-                              _parseColor(titleStyle['color']) ?? Colors.white,
-                          fontSize: 20,
-                          // fontSize: titleStyle['fontSize']?.toDouble() ?? 22,
-                          fontWeight:
-                              _parseFontWeight(titleStyle['fontWeight']) ??
-                                  FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        banner['subtitle'] ?? '',
-                        style: TextStyle(
-                          color: _parseColor(subtitleStyle['color']) ??
-                              Colors.white70,
-                          fontSize: 14,
-                          // fontSize: subtitleStyle['fontSize']?.toDouble() ?? 18,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

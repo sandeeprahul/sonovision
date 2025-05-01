@@ -1,7 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../theme/app_theme.dart';
 import '../controllers/home_controller.dart';
 import '../utils/loadImageBasedOnExtension.dart';
@@ -19,6 +22,13 @@ class HomeScreenTwo extends StatefulWidget {
 }
 
 class _HomeScreenTwoState extends State<HomeScreenTwo> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getCurrentLocation();
+  }
   @override
   Widget build(BuildContext context) {
     final HomeController controller = Get.put(HomeController());
@@ -79,10 +89,11 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
           SliverAppBar(
 
             expandedHeight: 66.0,
-            backgroundColor: Colors.transparent,
-            floating: false,
+            backgroundColor: Colors.grey.withAlpha(2),
+            floating: true,
             pinned: false,
             flexibleSpace: FlexibleSpaceBar(
+              // collapseMode: CollapseMode.pin,
               background: Stack(
                 children: [
 
@@ -347,62 +358,6 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
     );
   }
 
-  Widget _buildBrandStripsss(Map<String, dynamic> widget) {
-    final style = widget['style'];
-    final brands = widget['data']['data'] as List;
-
-    return Container(
-      height: style['height']?.toDouble() ?? 100.0,
-      margin:
-          EdgeInsets.symmetric(vertical: style['margin']?.toDouble() ?? 20.0),
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(
-            horizontal: style['spacing']?.toDouble() ?? 20.0),
-        itemCount: brands.length,
-        itemBuilder: (context, index) {
-          final brand = brands[index];
-          return Container(
-            width: 100,
-            margin: EdgeInsets.only(
-                right: style['spacing']?.toDouble() ?? 20.0, bottom: 16),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(
-                style['cardStyle']['borderRadius']?.toDouble() ?? 16.0,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(
-                  style['cardStyle']['borderRadius']?.toDouble() ?? 16.0,
-                ),
-                child: loadImageBasedOnExtension(brand['logo'],
-                    width: 50, height: 50)
-                /*CachedNetworkImage(
-                imageUrl: brand['logo'],
-                fit: BoxFit.contain,
-                placeholder: (context, url) => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-                errorWidget: (context, url, error) => const Icon(
-                  Icons.error,
-                  color: Colors.red,
-                ),
-              ),*/
-                ),
-          );
-        },
-      ),
-    );
-  }
 
   Widget _buildRecentlyViewed(Map<String, dynamic> widget) {
     final style = widget['style'];
@@ -755,6 +710,96 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
     );
   }
 
+  String? _addressLine1;
+  String? _addressLine2;
+  String? _city;
+  String? _postalCode;
+
+  var latitude = 0.0;
+  var longitude = 0.0;
+
+  Future<void> _getAddressFromLatLng(double lat, double lng) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(lat, lng);
+
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks.first;
+
+        print('Full Address: ${place.street}, ${place.locality}, ${place.postalCode}, ${place.country}');
+
+        setState(() {
+          _addressLine1 = place.street;
+          _addressLine2 = place.subLocality;
+          _city = place.locality;
+          _postalCode = place.postalCode;
+        });
+      }
+    } catch (e) {
+      print('Failed to get address: $e');
+    }
+  }
+
+
+  Future<void> _getCurrentLocation() async {
+    // Request location permission
+    var status = await Permission.location.request();
+
+    if (status.isGranted) {
+      try {
+        // Use platform-specific location settings
+        LocationSettings locationSettings = const LocationSettings(
+          accuracy: LocationAccuracy.bestForNavigation,
+          distanceFilter: 0,
+        );
+        Position position = await Geolocator.getCurrentPosition(
+          locationSettings: locationSettings,
+        );
+
+        setState(() {
+          latitude = position.latitude;
+          longitude = position.longitude;
+        });
+        _getAddressFromLatLng(latitude, longitude);
+
+
+
+      } catch (e) {
+        Get.snackbar('Error', 'Could not get location: $e');
+      }
+    } else if (status.isDenied) {
+      Get.defaultDialog(
+        title: "Permission Denied",
+        middleText: "Location permission is required to get your current position.",
+        confirm: ElevatedButton(
+          onPressed: () {
+            openAppSettings(); // Open settings to enable manually
+            Get.back();
+          },
+          child: const Text("Open Settings"),
+        ),
+        cancel: TextButton(
+          onPressed: () => Get.back(),
+          child: const Text("Cancel"),
+        ),
+      );
+    } else if (status.isPermanentlyDenied) {
+      Get.defaultDialog(
+        title: "Permission Permanently Denied",
+        middleText: "Please enable location permission from app settings.",
+        confirm: ElevatedButton(
+          onPressed: () {
+            openAppSettings();
+            Get.back();
+          },
+          child: const Text("Open Settings"),
+        ),
+        cancel: TextButton(
+          onPressed: () => Get.back(),
+          child: const Text("Cancel"),
+        ),
+      );
+    }
+  }
 
 
   Widget profileWidget(BuildContext context) {
@@ -805,23 +850,23 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                      // Icon(Icons.location_on,color:Colors.white.withOpacity(0.9) ,),
-                 /*   IconButton(
+                    IconButton(
                       onPressed: () {},
-                      icon:
+                      icon:const Icon(Icons.location_on),
                       color: Colors.white.withOpacity(0.9),
                       iconSize: 20,
-                    ),*/
+                    ),
                     const SizedBox(width: 8),
                     Text(
-                      'Welcome,User',
+                      '$_addressLine1, $_addressLine2, $_city, $_postalCode',
 
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
-                        // decoration: TextDecoration.underline,
-                        // decorationColor: Colors.white,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Colors.white,
 
-                        fontSize: 16,
+                        fontSize: 12,
                           ),
                     ),
                     const Spacer(),
@@ -831,21 +876,21 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                         shape: BoxShape.circle,
                         gradient: LinearGradient(
                           colors: [
-                            Colors.white.withOpacity(0.6),
-                            Colors.white.withOpacity(0.2),
+                            Colors.black.withOpacity(0.6),
+                            Colors.black.withOpacity(0.2),
                           ],
                         ),
                       ),
-                      child: CircleAvatar(
-                        radius: 16,
+                      child: const CircleAvatar(
+                        radius: 20,
                         backgroundColor: Colors.transparent,
                         child: ClipOval(
-                          child: Image.network(
+                          child:Icon(Icons.notifications) /*Image.network(
                             'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=2576&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
                             width: 42,
                             height: 42,
                             fit: BoxFit.cover,
-                          ),
+                          ),*/
                         ),
                       ),
                     ),

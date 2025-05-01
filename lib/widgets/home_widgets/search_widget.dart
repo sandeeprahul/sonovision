@@ -103,15 +103,29 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar>
                       onTap: () {
                         // Handle camera tap
                       },
-                      child: Container(
-                        height: style['height']?.toDouble() ?? 56.0,
-                        width: style['height']?.toDouble() ?? 56.0,
-                        padding: const EdgeInsets.all(12),
+                      child:   Container(
+                        padding: const EdgeInsets.all(3),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                              style['borderRadius']?.toDouble() ?? 16.0),
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.black.withOpacity(0.6),
+                              Colors.black.withOpacity(0.2),
+                            ],
+                          ),
                         ),
-                        child: Icon(Icons.notifications, color: Colors.black),
+                        child: CircleAvatar(
+                          radius: 22,
+                          backgroundColor: Colors.transparent,
+                          child: ClipOval(
+                              child:Icon(Icons.camera_alt_rounded,size: 20,) /*Image.network(
+                            'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=2576&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                            width: 42,
+                            height: 42,
+                            fit: BoxFit.cover,
+                          ),*/
+                          ),
+                        ),
                       ),
                     ),
                   ),

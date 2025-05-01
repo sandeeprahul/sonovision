@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import '../utils/cart_bottom_sheet.dart';
 import 'product_details_page.dart';
 
 class CategoryDetailsPage extends StatefulWidget {
@@ -191,6 +192,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
           widget.categoryName,
           style: const TextStyle(color: Colors.white),
         ),
+        centerTitle: true,
         background: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -221,10 +223,14 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
               child: FilterChip(
                 label: Text(filter),
                 selected: isSelected,
+
                 onSelected: (selected) {
                   setState(() => _selectedFilter = filter);
                   _loadProducts(); // Reload with new filter
                 },
+                checkmarkColor: Colors.white, // <-- sets the icon color when selected
+
+
                 backgroundColor: Colors.grey[200],
                 selectedColor: Colors.black87,
                 labelStyle: TextStyle(
@@ -321,6 +327,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                                           style: const TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
+                                            color: Colors.black
                                           ),
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
@@ -341,6 +348,8 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                                               style: const TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
+                                                  color: Colors.black
+
                                               ),
                                             ),
                                             const SizedBox(width: 8),
@@ -454,6 +463,8 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
+                      color: Colors.black,
+
                       fontSize: 14,
                     ),
                   ),
@@ -461,33 +472,49 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                   Text(
                     product['brand'],
                     style: TextStyle(
-                      color: Colors.grey[600],
+                      color: Colors.black,
                       fontSize: 12,
+
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Text(
-                        '₹${discountedPrice.toStringAsFixed(2)}',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      if (discountPercentage > 0) ...[
-                        const SizedBox(width: 4),
-                        Text(
-                          '₹${originalPrice.toStringAsFixed(2)}',
-                          style: TextStyle(
-                            decoration: TextDecoration.lineThrough,
-                            color: Colors.grey[600],
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ],
+                  Text(
+                    '₹${discountedPrice.toStringAsFixed(2)}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
                   ),
+                  // if (discountPercentage > 0) ...[
+                  //   const SizedBox(width: 4),
+                  //   Text(
+                  //     '₹${originalPrice.toStringAsFixed(2)}',
+                  //     style: TextStyle(
+                  //       decoration: TextDecoration.lineThrough,
+                  //       color: Colors.grey[600],
+                  //       fontSize: 10,
+                  //     ),
+                  //   ),
+                  // ],
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      ),
+                      onPressed: () {
+
+                        CartBottomSheet.show();
+
+                        // Get.snackbar("Cart", "${product['name']} added to cart",snackPosition:SnackPosition.BOTTOM,overlayBlur: 2);
+                      },
+                      child: const Text("Add", style: TextStyle(fontSize: 12)),
+                    ),
+                  ),
+
                 ],
               ),
             ),
