@@ -49,7 +49,7 @@ class OrderSuccessPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushNamedAndRemoveUntil(
                     context,
-                    '/',
+                    '/main',
                     (route) => false,
                   );
                 },

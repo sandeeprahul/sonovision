@@ -5,11 +5,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends GetxController {
-  static AuthController get to => Get.find<AuthController>();
+  static AuthController get to => Get.put(AuthController());
 
   static const String tokenKey = 'auth_token';
   static const String userKey = 'auth_user';

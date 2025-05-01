@@ -15,17 +15,13 @@ class WishlistPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              Icons.favorite_border,
-              size: 64,
-              color: Colors.grey,
+              Icons.heart_broken,
+               size: 120,color: Colors.black,
             ),
             SizedBox(height: 16),
             Text(
-              'Your wishlist is empty',
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.grey,
-              ),
+              'Your wishlist is empty'
+                ,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.black)
             ),
           ],
         ),

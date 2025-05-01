@@ -220,7 +220,8 @@ class _LoginPageState extends State<LoginPage> {
                                             _passwordController.text,
                                           );
                                           if (mounted) {
-                                            Get.off( const MainPage());
+                                            // Get.off( const MainPage());
+                                            Get.toNamed('/main');
                                          /*   Navigator.pushReplacementNamed(
                                                 context, '/home');*/
                                           }

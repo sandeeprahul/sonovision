@@ -1,7 +1,11 @@
 import 'dart:io';
 
+import 'package:electronic_store/pages/add_address_form_page.dart';
+import 'package:electronic_store/pages/help_support_page.dart';
 import 'package:electronic_store/pages/login_page.dart';
+import 'package:electronic_store/pages/order_screen.dart';
 import 'package:electronic_store/pages/register_page.dart';
+import 'package:electronic_store/pages/settings_page.dart';
 import 'package:electronic_store/screens/home_screen_two.dart';
 import 'package:electronic_store/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -59,13 +63,15 @@ class MyApp extends StatelessWidget {
               product: Get.arguments as Map<String, dynamic>,
             ),
         '/cart': (context) => CartPage(),
-        '/': (context) => const MainPage(),
+        '/main': (context) => const MainPage(),
         '/checkout': (context) => const CheckoutPage(),
-        '/add-address': (context) => const AddAddressPage(),
-        '/order-success': (context) =>  OrderSuccessPage(orderId: '0',),
-        '/order-history': (context) => const OrderHistoryPage(),
+        '/add-address': (context) =>  AddressFormPage(),
+        '/order-success': (context) =>  const OrderSuccessPage(orderId: '0',),
+        '/order-history': (context) => const OrderScreen(),///OrderHistoryPage
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),
+        '/settings': (context) => const SettingsPage(),
+        '/helpsupport': (context) => const HelpSupportPage(),
       },
     );
   }

@@ -8,7 +8,7 @@ import 'home_page.dart';
 import 'search_page.dart';
 import 'cart_page.dart';
 import 'wishlist_page.dart';
-import 'profile_page.dart';
+import '../screens/profile_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);

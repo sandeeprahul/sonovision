@@ -51,10 +51,25 @@ class CheckoutController extends GetxController {
   final selectedPaymentMethod = ''.obs; // A
   final Razorpay _razorpay = Razorpay();
 
+  @override
   onInit() {
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+  }
+  late String currentOrderId;
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    // You can also verify the payment with your backend here
+    Get.to(() => OrderSuccessPage(orderId: currentOrderId));
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    Get.snackbar("Payment Failed", "Please try again or use another method.");
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    Get.snackbar("Wallet Selected", response.walletName ?? "External Wallet");
   }
   @override
   void dispose() {
@@ -123,6 +138,25 @@ class CheckoutController extends GetxController {
       "address": selectedAddressId.value,
     };
 
+    final bodyy = {
+      "products":[
+        {
+          "product":"680ef09a4fbe39d34f56dd7d",
+          "quantity":1
+        },
+        {
+          "product":"680ef8674fbe39d34f56dd8b",
+          "quantity":1
+        }
+      ],
+      "total":200,
+      "address":"680efa7a4fbe39d34f56dd97"
+    };
+    var forprint = jsonEncode(body);
+    var forprint2 = jsonEncode(bodyy);
+    print(forprint);
+    print(forprint2);
+
     try {
       isLoading.value = true;
 
@@ -135,21 +169,25 @@ class CheckoutController extends GetxController {
         body: jsonEncode(body),
       );
 
+      print(response.body);
+      print("${ApiService.baseUrl}/api/orders");
+      print(body);
+      print(tokenValue);
       isLoading.value = false;
 
       if (response.statusCode == 200) {
         cartController.clearCart();
         final responseData = jsonDecode(response.body);
+        final orderId = responseData['_id']; // this is your actual order ID
 
         if(selectedPaymentMethod.value=="Cash on Delivery"){
-          final orderId = responseData['_id']; // this is your actual order ID
           Get.to(() => OrderSuccessPage(orderId: orderId));
         }else{
           // Online Payment via Razorpay
           var options = {
-            'key': 'rzp_test_YourTestKeyHere', // replace with your test key
+            'key': 'rzp_test_GmmmCvqA3JxAlP', // replace with your test key
             'amount': cartController.total* 100, // in paise
-            'name': 'Your App Name',
+            'name': 'Sonovision Electronics Pvt. Ltd.',
             'description': 'Order Payment',
             'prefill': {
               'contact': '9876543210',
@@ -167,16 +205,32 @@ class CheckoutController extends GetxController {
           }
 
           // Store the orderId in a variable accessible to the success handler
-          // currentOrderId = orderId;
+          currentOrderId = orderId;
         }
 
 
       } else {
-        Get.snackbar("Error", "Failed to place order: ${response.body}");
+        // Get.snackbar("Error", "Failed to place order: ${response.body}");
+        Get.defaultDialog(
+          title: "Error",
+          content: Text("Failed to place order: ${response.body}"),confirm: TextButton(
+            child: const Text("OK"),
+            onPressed: () {
+              Get.back();
+            },
+          ));
       }
     } catch (e) {
       isLoading.value = false;
-      Get.snackbar("Error", "An error occurred: $e");
+      // Get.snackbar("Error", "An error occurred: $e");
+      Get.defaultDialog(
+          title: "Error",
+          content: Text("Failed to place order: ${e}"),confirm: TextButton(
+        child: const Text("OK"),
+        onPressed: () {
+          Get.back();
+        },
+      ));
     }
   }
 }

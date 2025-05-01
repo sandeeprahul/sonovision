@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -14,6 +15,7 @@ class ProfilePage extends StatelessWidget {
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               title: const Text('Profile',style: TextStyle(color: Colors.white),),
+              centerTitle: true,
               background: Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
@@ -39,14 +41,16 @@ class ProfilePage extends StatelessWidget {
               ),
             ),
           ),
-          SliverList(
-            delegate: SliverChildListDelegate([
-              _buildProfileItem(Icons.person_outline, 'Edit Profile','/edit-profile'),
+          SliverList(//
+
+          delegate: SliverChildListDelegate([
+              // _buildProfileItem(Icons.person_outline, 'Edit Profile','/edit-profile'),
               _buildProfileItem(Icons.shopping_bag_outlined, 'My Orders','/order-history'),
-              _buildProfileItem(Icons.location_on_outlined, 'Shipping Address'),
-              _buildProfileItem(Icons.payment_outlined, 'Payment Methods'),
-              _buildProfileItem(Icons.settings_outlined, 'Settings'),
-              _buildProfileItem(Icons.help_outline, 'Help & Support'),
+              _buildProfileItem(Icons.location_on_outlined, 'Shipping Address','/add-address'),
+              // _buildProfileItem(Icons.payment_outlined, 'Payment Methods',''),
+              _buildProfileItem(Icons.settings_outlined, 'Settings','/settings'),
+              _buildProfileItem(Icons.help_outline, 'Help & Support','/helpsupport'),
+
               const SizedBox(height: 16),
               Padding(
                 padding: const EdgeInsets.all(16.0),

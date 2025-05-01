@@ -92,7 +92,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 ),
                 ElevatedButton.icon(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/add-address');
+                    Get.toNamed( '/add-address');
                   },
                   icon: const Icon(Icons.add),
                   label: const Text('Add New Address'),

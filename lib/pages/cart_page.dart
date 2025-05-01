@@ -19,7 +19,14 @@ class CartPage extends StatelessWidget {
       appBar: AppBar(title: const Text('Shopping Cart')),
       body: Obx(() {
         if (controller.cartItems.isEmpty) {
-          return const Center(child: Text('Your cart is empty'));
+          return Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.air,size: 120,color: Colors.black,),
+              const Center(child: Text('Your cart is empty',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.black),)),
+            ],
+          );
         }
 
         return SingleChildScrollView(

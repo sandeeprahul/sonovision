@@ -9,6 +9,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import '../controllers/cart_controller.dart';
 import '../screens/product_list_screen.dart';
+import '../utils/cart_bottom_sheet.dart';
 import '../widgets/horizontal_product_list.dart';
 import '../widgets/product_details_widgets/availability_options_widget.dart';
 import '../widgets/product_details_widgets/store_availability_card.dart';
@@ -137,7 +138,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       onPressed: () {
                         final controller = Get.put(CartController());
 
-                        final productId = '84848484848';
+                        final productId = '680ef09a4fbe39d34f56dd7d';
                         final exists = controller.cartItems
                             .any((item) => item.productId == productId);
 
@@ -161,16 +162,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             price: 150000.0,
                             productId: productId,
                           ));
-                          Get.snackbar(
-                            'Success',
-                            'Added to cart successfully',
-                            backgroundColor: Colors.white,
-                            overlayBlur: 2,
-                            overlayColor: Colors.black26,
-                            colorText: Colors.black,
-                            snackPosition: SnackPosition.BOTTOM,
-                            duration: const Duration(milliseconds: 1500),
-                          );
+                          CartBottomSheet.show();
+
                         }
                       },
                       style: ElevatedButton.styleFrom(
