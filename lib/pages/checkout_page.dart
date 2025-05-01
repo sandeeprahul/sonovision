@@ -15,17 +15,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
   String? selectedAddress;
   String selectedPaymentMethod = 'Credit Card';
 
-  final List<Map<String, String>> addresses = [
-    {
-      'id': '1',
-      'name': 'John Doe',
-      'address': '123 Main St, Apt 4B',
-      'city': 'New York',
-      'state': 'NY',
-      'zip': '10001',
-      'phone': '(555) 123-4567',
-    },
-  ];
 
   final controller = Get.put(CheckoutController());
 
@@ -76,17 +65,26 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       itemCount: controller.addresses.length,
                       itemBuilder: (context, index) {
                         final address = controller.addresses[index];
-                        return RadioListTile(
-                          value: address.id,
-                          groupValue: selectedAddress,
-                          title: Text(address.name),
-                          subtitle: Text(
-                            '${address.addressLine1}, ${address.addressLine2}, ${address.city}, ${address.postalCode}',
-                          ),
-                          onChanged: (value) {
-                            controller.selectedAddressId.value = value.toString();
+                        return Obx(
+                           () {
+                            return RadioListTile(
+                              value: address.id.toString(),
+                              activeColor: Colors.black,
+                              groupValue: controller.selectedAddressId.value, // <-- use this
+                              title: Text(address.name),
+                              subtitle: Text(
+                                '${address.addressLine1}, ${address.addressLine2}, ${address.city}, ${address.postalCode}',
+                              ),
+                              onChanged: (value) {
+                                controller.selectedAddressId.value = value;
 
-                          },
+                                controller.selectedAddress.value =
+                                    controller.addresses.firstWhere((addr) => addr.id == value);
+                                print("SELECTED ADDRESS ID");
+                                print(controller.selectedAddress.value!.id);
+                                },
+                            );
+                          }
                         );
                       },
                     );
@@ -107,53 +105,58 @@ class _CheckoutPageState extends State<CheckoutPage> {
           // Payment Method Step
           Step(
             title: const Text('Payment Method'),
-            content: Column(
-              children: [
-                RadioListTile(
-                  value: 'Credit Card',
-                  groupValue: selectedPaymentMethod,
-                  title: const Text('Credit Card'),
-                  subtitle: const Text('Visa, MasterCard, RuPay'),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedPaymentMethod = value.toString();
-                    });
-                  },
-                ),
-                RadioListTile(
-                  value: 'UPI',
-                  groupValue: selectedPaymentMethod,
-                  title: const Text('UPI'),
-                  subtitle: const Text('Google Pay, PhonePe, Paytm'),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedPaymentMethod = value.toString();
-                    });
-                  },
-                ),
-                RadioListTile(
-                  value: 'Net Banking',
-                  groupValue: selectedPaymentMethod,
-                  title: const Text('Net Banking'),
-                  subtitle: const Text('All major banks supported'),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedPaymentMethod = value.toString();
-                    });
-                  },
-                ),
-                RadioListTile(
-                  value: 'Cash on Delivery',
-                  groupValue: selectedPaymentMethod,
-                  title: const Text('Cash on Delivery'),
-                  subtitle: const Text('Pay when you receive'),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedPaymentMethod = value.toString();
-                    });
-                  },
-                ),
-              ],
+            content: Obx(
+               () {
+                 final controller = Get.put(CheckoutController());
+                return Column(
+                  children: [
+                    RadioListTile(
+                      value: 'Credit Card',
+                      groupValue: controller.selectedPaymentMethod.value,
+                      title: const Text('Credit Card'),
+                      subtitle: const Text('Visa, MasterCard, RuPay'),
+                      onChanged: (value) {
+                        setState(() {
+                          controller.selectedPaymentMethod.value = value.toString();
+                        });
+                      },
+                    ),
+                    RadioListTile(
+                      value: 'UPI',
+                      groupValue: controller.selectedPaymentMethod.value,
+                      title: const Text('UPI'),
+                      subtitle: const Text('Google Pay, PhonePe, Paytm'),
+                      onChanged: (value) {
+                        setState(() {
+                          controller.selectedPaymentMethod.value = value.toString();
+                        });
+                      },
+                    ),
+                    RadioListTile(
+                      value: 'Net Banking',
+                      groupValue: controller.selectedPaymentMethod.value,
+                      title: const Text('Net Banking'),
+                      subtitle: const Text('All major banks supported'),
+                      onChanged: (value) {
+                        setState(() {
+                          controller.selectedPaymentMethod.value = value.toString();
+                        });
+                      },
+                    ),
+                    RadioListTile(
+                      value: 'Cash on Delivery',
+                      groupValue: controller.selectedPaymentMethod.value,
+                      title: const Text('Cash on Delivery'),
+                      subtitle: const Text('Pay when you receive'),
+                      onChanged: (value) {
+                        setState(() {
+                          controller.selectedPaymentMethod.value = value.toString();
+                        });
+                      },
+                    ),
+                  ],
+                );
+              }
             ),
             isActive: _currentStep >= 1,
           ),
@@ -161,93 +164,98 @@ class _CheckoutPageState extends State<CheckoutPage> {
           // Order Review Step
           Step(
             title: const Text('Review Order'),
-            content: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Delivery Address',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 8),
-                const Card(
-                  child: Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('John Doe'),
-                        Text('123 Main St, Apt 4B'),
-                        Text('New York, NY 10001'),
-                        Text('(555) 123-4567'),
-                      ],
+            content: Obx(
+              () {
+                final controller = Get.put(CheckoutController());
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Delivery Address',
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'Payment Method',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 8),
-                Card(
-                  child: ListTile(
-                    leading: const Icon(Icons.payment),
-                    title: Text(selectedPaymentMethod),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'Order Summary',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 8),
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    const SizedBox(height: 8),
+                     Card(
+                      child: Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Subtotal'),
-                            Text('₹150000'),
+                            Text('${controller.selectedAddress.value!.name}'),
+                            Text('${controller.selectedAddress.value!.addressLine1}'),
+                            Text('${controller.selectedAddress.value!.addressLine2}'),
+                            // Text('${controller.selectedAddress.value!.}'),
                           ],
                         ),
-                        const SizedBox(height: 8),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Discount'),
-                            Text('-₹15000'),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Delivery'),
-                            Text('₹0'),
-                          ],
-                        ),
-                        const Divider(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Total',
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            Text(
-                              '₹135000',
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ],
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-              ],
+                    const SizedBox(height: 16),
+                    Text(
+                      'Payment Method',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 8),
+                    Card(
+                      child: ListTile(
+                        leading: const Icon(Icons.payment),
+                        title: Text(controller.selectedPaymentMethod.value),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Order Summary',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 8),
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          children: [
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Subtotal'),
+                                Text('₹150000'),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Discount'),
+                                Text('-₹15000'),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Delivery'),
+                                Text('₹0'),
+                              ],
+                            ),
+                            const Divider(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Total',
+                                  style: Theme.of(context).textTheme.titleMedium,
+                                ),
+                                Text(
+                                  '₹135000',
+                                  style: Theme.of(context).textTheme.titleMedium,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }
             ),
             isActive: _currentStep >= 2,
           ),
@@ -271,11 +279,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                '/order-success',
-                (route) => false,
-              );
+
+              final controller = Get.put(CheckoutController());
+
+
+              controller.placeOrder();
+
+
             },
             child: const Text('Place Order'),
           ),

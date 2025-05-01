@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class OrderSuccessPage extends StatelessWidget {
-  const OrderSuccessPage({Key? key}) : super(key: key);
+  final String orderId;
+
+  const OrderSuccessPage({Key? key, required this.orderId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final orderId = 'ORD${DateTime.now().millisecondsSinceEpoch.toString().substring(0, 10)}';
+    // final orderId = 'ORD${DateTime.now().millisecondsSinceEpoch.toString().substring(0, 10)}';
     
     return Scaffold(
       body: SafeArea(
@@ -37,7 +40,7 @@ class OrderSuccessPage extends StatelessWidget {
               const SizedBox(height: 32),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/order-history');
+                  Get.offAllNamed( '/order-history');
                 },
                 child: const Text('View Order History'),
               ),

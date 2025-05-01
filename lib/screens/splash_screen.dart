@@ -24,7 +24,7 @@ class SplashScreen extends StatelessWidget {
               'SONOVISION',
               style: TextStyle(
                 fontSize: 40,
-                color: Colors.white,
+                color: Colors.red,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 4,
               ),

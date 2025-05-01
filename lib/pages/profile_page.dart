@@ -41,8 +41,8 @@ class ProfilePage extends StatelessWidget {
           ),
           SliverList(
             delegate: SliverChildListDelegate([
-              _buildProfileItem(Icons.person_outline, 'Edit Profile'),
-              _buildProfileItem(Icons.shopping_bag_outlined, 'My Orders'),
+              _buildProfileItem(Icons.person_outline, 'Edit Profile','/edit-profile'),
+              _buildProfileItem(Icons.shopping_bag_outlined, 'My Orders','/order-history'),
               _buildProfileItem(Icons.location_on_outlined, 'Shipping Address'),
               _buildProfileItem(Icons.payment_outlined, 'Payment Methods'),
               _buildProfileItem(Icons.settings_outlined, 'Settings'),
@@ -69,12 +69,13 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileItem(IconData icon, String title) {
+  Widget _buildProfileItem(IconData icon, String title, String routeName) {
     return ListTile(
       leading: Icon(icon, color: Colors.black),
       title: Text(title),
       trailing: const Icon(Icons.chevron_right),
-      onTap: () {},
+      onTap: () => Get.toNamed(routeName),
     );
   }
 }
+//                  Navigator.pushNamed(context, '/order-history');

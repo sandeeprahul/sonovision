@@ -48,6 +48,8 @@ dependencies:
   get_storage: ^2.1.1
   readmore: ^2.1.0
   smooth_page_indicator: ^1.1.0
+  razorpay_flutter: ^1.4.0
+
 
 # The following adds the Cupertino Icons font to your application.
 # Use with the CupertinoIcons class for iOS style icons.
@@ -82,6 +84,9 @@ flutter:
     - assets/enhanced_home.json
     - assets/bg_splash.jpeg
     - assets/near_store_map.png
+    - assets/apple_icon.png
+    - assets/facebook_icon.png
+    - assets/gmail_icon.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import '../services/auth_service.dart';
@@ -20,7 +21,7 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
   bool _isLoading = false;
-  final _authService = AuthService();
+  final _authService = Get.put(AuthController());
 
   @override
   void dispose() {
@@ -56,7 +57,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   IconButton(
                     onPressed: () => Navigator.pop(context),
                     icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-                  ).animate().fadeIn(duration: 500.ms).slideX(),
+                  ).animate().fadeIn(duration: 100.ms).slideX(),
 
                   const SizedBox(height: 40),
 
@@ -68,7 +69,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
-                  ).animate().fadeIn(duration: 600.ms).slideX(),
+                  ).animate().fadeIn(duration: 100.ms).slideX(),
 
                   Text(
                     'Sign up to get started',
@@ -76,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       fontSize: 16,
                       color: Colors.white.withOpacity(0.8),
                     ),
-                  ).animate().fadeIn(duration: 700.ms).slideX(),
+                  ).animate().fadeIn(duration: 100.ms).slideX(),
 
                   const SizedBox(height: 40),
 
@@ -115,7 +116,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 }
                                 return null;
                               },
-                            ).animate().fadeIn(duration: 800.ms).slideX(),
+                            ).animate().fadeIn(duration: 100.ms).slideX(),
 
                             const SizedBox(height: 16),
 
@@ -139,7 +140,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 }
                                 return null;
                               },
-                            ).animate().fadeIn(duration: 900.ms).slideX(),
+                            ).animate().fadeIn(duration: 100.ms).slideX(),
 
                             const SizedBox(height: 16),
 
@@ -175,7 +176,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 }
                                 return null;
                               },
-                            ).animate().fadeIn(duration: 1000.ms).slideX(),
+                            ).animate().fadeIn(duration: 100.ms).slideX(),
 
                             const SizedBox(height: 16),
 
@@ -212,7 +213,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 }
                                 return null;
                               },
-                            ).animate().fadeIn(duration: 1100.ms).slideX(),
+                            ).animate().fadeIn(duration: 100.ms).slideX(),
 
                             const SizedBox(height: 24),
 
@@ -285,7 +286,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         ),
                                       ),
                               ),
-                            ).animate().fadeIn(duration: 1200.ms).slideX(),
+                            ).animate().fadeIn(duration: 100.ms).slideX(),
 
                             const SizedBox(height: 24),
 
@@ -311,12 +312,14 @@ class _RegisterPageState extends State<RegisterPage> {
                                   ),
                                 ),
                               ],
-                            ).animate().fadeIn(duration: 1300.ms).slideX(),
+                            ).animate().fadeIn(duration: 100.ms).slideX(),
                           ],
                         ),
                       ),
                     ),
-                  ).animate().fadeIn(duration: 1400.ms).scale(),
+                  ).animate().fadeIn(duration: 100.ms).scale(),
+
+                  const SizedBox(height: 200,)
                 ],
               ),
             ),

@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../services/auth_service.dart';
+
 class CartItem {
   final String productId;
   final String name;
@@ -23,6 +25,8 @@ class CartItem {
 
 
 class CartController extends GetxController {
+  final authController = AuthController.to;
+
   final _storage = GetStorage();
   final _cartKey = 'cart_items';
 

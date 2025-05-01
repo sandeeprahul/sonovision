@@ -10,8 +10,8 @@ class OrderHistoryPage extends StatelessWidget {
     final List<Map<String, dynamic>> orders = [
       {
         'orderId': 'ORD1682512345',
-        'date': DateTime.now().subtract(const Duration(days: 2)),
-        'status': 'Delivered',
+        'date': DateTime.now(),
+        'status': 'Processing',
         'items': [
           {
             'name': 'Galaxy S24',
@@ -38,7 +38,8 @@ class OrderHistoryPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 final order = orders[index];
                 return Card(
-                  margin: const EdgeInsets.all(8),
+                  margin: const EdgeInsets.all(12),
+                  elevation: 4,
                   child: ExpansionTile(
                     title: Text('Order #${order['orderId']}'),
                     subtitle: Column(

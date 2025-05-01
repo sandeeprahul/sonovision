@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import '../controllers/product_controller.dart';
+import '../utils/cart_bottom_sheet.dart';
 
 class HorizontalProductList extends StatelessWidget {
   final ProductController controller = Get.put(ProductController());
@@ -92,7 +93,10 @@ class HorizontalProductList extends StatelessWidget {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       ),
                       onPressed: () {
-                        Get.snackbar("Cart", "${product['name']} added to cart");
+
+                        CartBottomSheet.show();
+
+                        // Get.snackbar("Cart", "${product['name']} added to cart",snackPosition:SnackPosition.BOTTOM,overlayBlur: 2);
                       },
                       child: const Text("Add", style: TextStyle(fontSize: 12)),
                     ),

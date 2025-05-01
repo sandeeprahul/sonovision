@@ -109,11 +109,11 @@ class CartPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                Card(
-                  margin: const EdgeInsets.all(8),
+                const Card(
+                  margin: EdgeInsets.all(8),
                   child: ListTile(
                     leading: Icon(Icons.delivery_dining, color: Colors.blue),
-                    title: Text('Delivery by May 5 - May 7'),
+                    title: Text('Delivery with 4 hours',style: TextStyle(fontWeight: FontWeight.bold),),
                     subtitle: Text('Free express delivery available!'),
                   ),
                 )
@@ -128,11 +128,11 @@ class CartPage extends StatelessWidget {
                       children: [
                         const Text('Order Summary', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black)),
                         const SizedBox(height: 16),
-                        rowItem('Subtotal', '₹${controller.subtotal.toStringAsFixed(0)},',),
-                        rowItem('Discount', '-₹${controller.discount.value.toStringAsFixed(0)}'),
-                        rowItem('Delivery Charge', '₹${controller.deliveryCharge.value.toStringAsFixed(0)}'),
+                        rowItem('Subtotal', '₹${controller.subtotal.toStringAsFixed(0)},',Colors.black),
+                        rowItem('Discount', '-₹${controller.discount.value.toStringAsFixed(0)}',Colors.green),
+                        rowItem('Delivery Charge', '₹${controller.deliveryCharge.value.toStringAsFixed(0)}',Colors.red),
                         const Divider(),
-                        rowItem('Total', '₹${controller.total.toStringAsFixed(0)}',
+                        rowItem('Total', '₹${controller.total.toStringAsFixed(0)}',Colors.black,
                             bold: true),
                       ],
                     )),
@@ -186,7 +186,9 @@ class CartPage extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 // Navigate to checkout
-                Get.toNamed('/checkout');
+                // Get.toNamed('/checkout');
+                controller.authController.isLoggedIn ? Get.toNamed('/checkout') : Get.toNamed('/login');
+                // checkUser
 
               },
               style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16)),
@@ -198,14 +200,14 @@ class CartPage extends StatelessWidget {
     );
   }
 
-  Widget rowItem(String label, String value, {bool bold = false}) {
+  Widget rowItem(String label, String value, Color color, {bool bold = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label, style: bold ? const TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 16) : const TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 14)),
-          Text(value, style: bold ? const TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 16) : const TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 14)),
+          Text(value, style: bold ?  TextStyle(fontWeight: FontWeight.bold,color: color,fontSize: 16) :  TextStyle(fontWeight: FontWeight.bold,color: color,fontSize: 14)),
         ],
       ),
     );

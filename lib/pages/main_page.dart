@@ -51,9 +51,19 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
     setState(() => _selectedIndex = index);
 
     if(_selectedIndex==3){
-      final token = await AuthService().getToken();
-      if (token == null || token.isEmpty) {
+      final authController = Get.put(AuthController());
+      // final token = await authController.loadUserAndToken();
+      String? email = authController.user['email'];
+      String tokenValue = authController.token.value;
+      bool loggedIn = authController.isLoggedIn;
+      print(email);
+      print(tokenValue);
+      print(loggedIn);
+      if (tokenValue.isEmpty) {
         Get.to(const LoginPage());
+      }else{
+        _tabController.animateTo(index);
+
       }
       return;
     }
