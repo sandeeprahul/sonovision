@@ -19,7 +19,7 @@ import 'repositories/home_repository.dart';
 import 'pages/product_details_page.dart';
 import 'pages/cart_page.dart';
 import 'pages/checkout_page.dart';
-import 'pages/add_address_page.dart';
+import 'pages/my_address_page.dart';
 import 'pages/order_success_page.dart';
 import 'pages/order_history_page.dart';
 
@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Electronic Store',
       debugShowCheckedModeBanner: false,
+
       theme: AppTheme.lightTheme,
       /*   theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -66,6 +67,7 @@ class MyApp extends StatelessWidget {
         '/main': (context) => const MainPage(),
         '/checkout': (context) => const CheckoutPage(),
         '/add-address': (context) =>  AddressFormPage(),
+        '/my-address': (context) =>  const MyAddressPage(),
         '/order-success': (context) =>  const OrderSuccessPage(orderId: '0',),
         '/order-history': (context) => const OrderScreen(),///OrderHistoryPage
         '/login': (context) => const LoginPage(),

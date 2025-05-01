@@ -46,7 +46,7 @@ class ProfilePage extends StatelessWidget {
           delegate: SliverChildListDelegate([
               // _buildProfileItem(Icons.person_outline, 'Edit Profile','/edit-profile'),
               _buildProfileItem(Icons.shopping_bag_outlined, 'My Orders','/order-history'),
-              _buildProfileItem(Icons.location_on_outlined, 'Shipping Address','/add-address'),
+              _buildProfileItem(Icons.location_on_outlined, 'Shipping Address','/my-address'),
               // _buildProfileItem(Icons.payment_outlined, 'Payment Methods',''),
               _buildProfileItem(Icons.settings_outlined, 'Settings','/settings'),
               _buildProfileItem(Icons.help_outline, 'Help & Support','/helpsupport'),

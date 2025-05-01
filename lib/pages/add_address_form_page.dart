@@ -185,26 +185,6 @@ class _AddressFormPageState extends State<AddressFormPage> {
   }
 
 
-  Widget _buildDropdown(
-      String label, List<String> options, void Function(String?) onChanged) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 12),
-      child: DropdownButtonFormField<String>(
-        value: options.first,
-        decoration: InputDecoration(
-          labelText: label,
-          border: const OutlineInputBorder(),
-          filled: true,
-          fillColor: Colors.grey[100],
-        ),
-        items: options
-            .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-            .toList(),
-        onChanged: onChanged,
-        onSaved: onChanged,
-      ),
-    );
-  }
   Widget _buildSegmentedControl() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -224,6 +204,8 @@ class _AddressFormPageState extends State<AddressFormPage> {
       ],
     );
   }
+
+
   void _submitForm() async {
     await _getCurrentLocation();
     if (_formKey.currentState!.validate()) {

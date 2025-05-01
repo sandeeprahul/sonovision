@@ -221,7 +221,7 @@ class _LoginPageState extends State<LoginPage> {
                                           );
                                           if (mounted) {
                                             // Get.off( const MainPage());
-                                            Get.toNamed('/main');
+                                            Get.offAndToNamed('/main');
                                          /*   Navigator.pushReplacementNamed(
                                                 context, '/home');*/
                                           }

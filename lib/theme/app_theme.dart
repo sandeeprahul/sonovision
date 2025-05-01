@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
+
   // Primary Colors
   static const Color primaryColor = Colors.black; // Blue
   static const Color secondaryColor = Colors.black; // Dark Blue
@@ -208,6 +209,7 @@ class AppTheme {
   // Light Theme
   static ThemeData get lightTheme {
     return ThemeData(
+      useMaterial3: true,
       primaryColor: primaryColor,
       colorScheme: const ColorScheme.light(
         primary: primaryColor,
