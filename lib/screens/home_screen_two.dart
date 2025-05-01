@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:geocoding/geocoding.dart';
@@ -22,13 +21,13 @@ class HomeScreenTwo extends StatefulWidget {
 }
 
 class _HomeScreenTwoState extends State<HomeScreenTwo> {
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _getCurrentLocation();
   }
+
   @override
   Widget build(BuildContext context) {
     final HomeController controller = Get.put(HomeController());
@@ -76,7 +75,8 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
 
   Widget _buildHomeContent(BuildContext context, HomeController controller) {
     final widgets = controller.homeData.value['widgets'] as List<dynamic>;
-    final saleEndTime = DateTime.parse(controller.homeData.value['saleEndTime']);
+    final saleEndTime =
+        DateTime.parse(controller.homeData.value['saleEndTime']);
 
     return RefreshIndicator(
       onRefresh: () {
@@ -87,7 +87,6 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
         slivers: [
           // Add SliverAppBar
           SliverAppBar(
-
             expandedHeight: 66.0,
             backgroundColor: Colors.grey.withAlpha(2),
             floating: true,
@@ -96,7 +95,6 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
               // collapseMode: CollapseMode.pin,
               background: Stack(
                 children: [
-
                   profileWidget(context),
 
 /*
@@ -142,7 +140,8 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
     );
   }
 
-  Widget _buildDynamicWidget(BuildContext context, Map<String, dynamic> widget) {
+  Widget _buildDynamicWidget(
+      BuildContext context, Map<String, dynamic> widget) {
     switch (widget['widgetType']) {
       case 'search':
         return _buildSearchBar();
@@ -177,7 +176,6 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Text(
@@ -195,8 +193,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
           ),
           const SizedBox(height: 16),
           InkWell(
-            onTap:(){
-
+            onTap: () {
               final staticProduct = {
                 'id': '20250426',
                 'name': 'Galaxy S24',
@@ -209,14 +206,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                 'highlights': 'SPen AI',
                 'deliveryTime': '7-10 days',
                 'isFeatured': true,
-                'colors': [
-                  'Red',
-                  'Black',
-                  'White',
-                  'Blue',
-                  'Green',
-                  'Grey'
-                ],
+                'colors': ['Red', 'Black', 'White', 'Blue', 'Green', 'Grey'],
                 'images': [
                   'https://sonovision.in/wp-content/uploads/2022/08/samsung-s225g-white.jpg'
                 ],
@@ -235,7 +225,6 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                   'storage': '250'
                 }
               };
-
 
               Get.toNamed('/product-details', arguments: staticProduct);
             },
@@ -352,12 +341,10 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
             ),
           ),
           const SizedBox(height: 16),
-
         ],
       ),
     );
   }
-
 
   Widget _buildRecentlyViewed(Map<String, dynamic> widget) {
     final style = widget['style'];
@@ -575,7 +562,6 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                       }
                     };
 
-
                     Get.toNamed('/product-details', arguments: staticProduct);
 
                     print("ONTAP2");
@@ -710,8 +696,8 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
     );
   }
 
-  String? _addressLine1;
-  String? _addressLine2;
+  String? _addressLine1 = "Fetching...";
+  String? _addressLine2 = "";
   String? _city;
   String? _postalCode;
 
@@ -725,7 +711,8 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks.first;
 
-        print('Full Address: ${place.street}, ${place.locality}, ${place.postalCode}, ${place.country}');
+        print(
+            'Full Address: ${place.street}, ${place.locality}, ${place.postalCode}, ${place.country}');
 
         setState(() {
           _addressLine1 = place.street;
@@ -738,7 +725,6 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
       print('Failed to get address: $e');
     }
   }
-
 
   Future<void> _getCurrentLocation() async {
     // Request location permission
@@ -760,16 +746,14 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
           longitude = position.longitude;
         });
         _getAddressFromLatLng(latitude, longitude);
-
-
-
       } catch (e) {
         Get.snackbar('Error', 'Could not get location: $e');
       }
     } else if (status.isDenied) {
       Get.defaultDialog(
         title: "Permission Denied",
-        middleText: "Location permission is required to get your current position.",
+        middleText:
+            "Location permission is required to get your current position.",
         confirm: ElevatedButton(
           onPressed: () {
             openAppSettings(); // Open settings to enable manually
@@ -800,7 +784,6 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
       );
     }
   }
-
 
   Widget profileWidget(BuildContext context) {
     return Padding(
@@ -844,30 +827,35 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                     // Icon(Icons.location_on,color:Colors.white.withOpacity(0.9) ,),
+                    // Icon(Icons.location_on,color:Colors.white.withOpacity(0.9) ,),
                     IconButton(
-                      onPressed: () {},
-                      icon:const Icon(Icons.location_on),
+                      onPressed: () {
+                        _getCurrentLocation();
+
+                      },
+                      icon: const Icon(Icons.location_on),
                       color: Colors.white.withOpacity(0.9),
                       iconSize: 20,
                     ),
                     const SizedBox(width: 8),
-                    Text(
-                      '$_addressLine1, $_addressLine2, $_city, $_postalCode',
-
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                        decoration: TextDecoration.underline,
-                        decorationColor: Colors.white,
-
-                        fontSize: 12,
-                          ),
+                    InkWell(
+                      onTap: (){
+                        _getCurrentLocation();
+                      },
+                      child: Text(
+                        '$_addressLine1, $_addressLine2',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                              decoration: TextDecoration.underline,
+                              decorationColor: Colors.white,
+                              fontSize: 12,
+                            ),
+                      ),
                     ),
                     const Spacer(),
                     Container(
@@ -885,13 +873,14 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                         radius: 20,
                         backgroundColor: Colors.transparent,
                         child: ClipOval(
-                          child:Icon(Icons.notifications) /*Image.network(
+                            child: Icon(Icons
+                                .notifications) /*Image.network(
                             'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=2576&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
                             width: 42,
                             height: 42,
                             fit: BoxFit.cover,
                           ),*/
-                        ),
+                            ),
                       ),
                     ),
                   ],

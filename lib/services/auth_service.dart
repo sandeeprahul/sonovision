@@ -24,10 +24,10 @@ class AuthController extends GetxController {
       Uri.parse('$baseUrl/api/auth/login'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({
-        'email': "user@sonovision.com",
-        // 'email': email,
-        'password': "Test@1234",
-        // 'password': password,
+        // 'email': "user@sonovision.com",
+        'email': email,
+        // 'password': "Test@1234",
+        'password': password,
       }),
     );
 

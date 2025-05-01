@@ -40,7 +40,9 @@ class OrderSuccessPage extends StatelessWidget {
               const SizedBox(height: 32),
               ElevatedButton(
                 onPressed: () {
-                  Get.offAllNamed( '/order-history');
+                  // Get.offAllNamed( '/order-history');
+                  Get.offAndToNamed( '/order-history');
+
                 },
                 child: const Text('View Order History'),
               ),
