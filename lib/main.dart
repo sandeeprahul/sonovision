@@ -11,6 +11,7 @@ import 'package:electronic_store/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
+import 'controllers/cart_controller.dart';
 import 'pages/main_page.dart';
 import 'package:get/get.dart';
 import 'package:electronic_store/theme/app_theme.dart';
@@ -32,6 +33,8 @@ void main() async {
       statusBarIconBrightness: Brightness.dark,
     ),
   );
+  Get.put(CartController(), permanent: true); // Global instance
+
   runApp(const MyApp());
 }
 

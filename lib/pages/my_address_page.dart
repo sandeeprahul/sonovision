@@ -35,7 +35,7 @@ class _MyAddressPageState extends State<MyAddressPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Select Address')),
+      appBar: AppBar(title: const Text('My Address')),
       body: Column(
         children: [
           Expanded(
@@ -80,31 +80,56 @@ class _MyAddressPageState extends State<MyAddressPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _rowText(Icons.person, address.name),
+                              // _rowText(Icons.person, address.name),
+                              Row(
+                                children: [
+                                  Icon(Icons.person, size: 18, color: Colors.grey.shade700),
+                                  const SizedBox(width: 8),
+                                  Expanded(child: Text(address.name, style: const TextStyle(fontSize: 16,color: Colors.black,fontWeight: FontWeight.bold))),
+                                ],
+                              ),
                               const SizedBox(height: 6),
+
                               _rowText(Icons.home, address.addressLine1),
                               _rowText(Icons.location_city, address.addressLine2),
                               _rowText(Icons.place, '${address.city}, ${address.postalCode}'),
+                              const SizedBox(height: 6),
+
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.black,
+                                        padding: const EdgeInsets.symmetric(vertical: 10),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                      ),
+                                                      onPressed: () => _showEditBottomSheet(context, address),
+
+                                      child: const Text("Edit", style: TextStyle(fontSize: 12)),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 6),
+
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.red,
+                                        padding: const EdgeInsets.symmetric(vertical: 10),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                      ),
+                                      onPressed: () => _confirmDelete(context, address.id),
+
+                                      child: const Text("Delete", style: TextStyle(fontSize: 12)),
+                                    ),
+                                  ),
+                                ],
+                              )
                             ],
                           ),
                         ),
                       ),
-                      Positioned(
-                        bottom: 8,
-                        right: 16,
-                        child: Row(
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.edit, color: Colors.blue),
-                              onPressed: () => _showEditBottomSheet(context, address),
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.delete, color: Colors.red),
-                              onPressed: () => _confirmDelete(context, address.id),
-                            ),
-                          ],
-                        ),
-                      ),
+
                     ],
                   );
                 },

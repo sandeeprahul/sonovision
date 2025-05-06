@@ -3,7 +3,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../controllers/cart_controller.dart';
 import '../../screens/product_list_screen.dart';
+import '../../utils/CartHelper.dart';
+import '../../utils/cart_bottom_sheet.dart';
 
 class FlashSaleWidget extends StatelessWidget {
   final Map<String, dynamic> widgetData;
@@ -26,7 +29,7 @@ class FlashSaleWidget extends StatelessWidget {
           _buildHeader(endTime),
           const SizedBox(height: 16),
           SizedBox(
-            height: 250,
+            height: 306,
             // height: (style['height'] ?? 280.0).toDouble(),
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
@@ -134,93 +137,151 @@ class FlashSaleWidget extends StatelessWidget {
               ),
             ],
           ),
-          child: Column(
+          child: Stack(
             children: [
-              Stack(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(borderRadius),
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: CachedNetworkImage(
-                        imageUrl: product['image'],
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: badge['position'] == 'top-left' ? 8 : null,
-                    right: badge['position'] == 'top-right' ? 8 : null,
-                    top: 8,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Color(_hexToColor(badge['color'])),
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Text(
-                        remainingText,
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
-                      ),
-                    ),
-                  ),
-
-                  Positioned(
-                    left: badge['position'] == 'top-left' ? 8 : null,
-                    right: badge['position'] == 'top-right' ? 8 : null,
-                    bottom: 8,
-                    child:  Container(
-                      padding: const EdgeInsets.only(left: 12,right: 12,top: 2,bottom: 2),
-                      decoration: BoxDecoration(
+                  Stack(
+                    children: [
+                      ClipRRect(
                         borderRadius: BorderRadius.circular(borderRadius),
-                        color: Colors.white.withOpacity(0.89),
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: CachedNetworkImage(
+                            imageUrl: product['image'],
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
-                      child: const Row(
-                        children: [
-                          Text('4.2',style: TextStyle(fontSize: 10,color: Colors.black),),
-                          Icon(Icons.star,size: 12,color: Colors.blue,)
-                        ],
+                      Positioned(
+                        left: badge['position'] == 'top-left' ? 8 : null,
+                        right: badge['position'] == 'top-right' ? 8 : null,
+                        top: 8,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Color(_hexToColor(badge['color'])),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            remainingText,
+                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                          ),
+                        ),
                       ),
-                    ),
+
+                      Positioned(
+                        left: badge['position'] == 'top-left' ? 8 : null,
+                        right: badge['position'] == 'top-right' ? 8 : null,
+                        bottom: 8,
+                        child:  Container(
+                          padding: const EdgeInsets.only(left: 12,right: 12,top: 2,bottom: 2),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(borderRadius),
+                            color: Colors.white.withOpacity(0.89),
+                          ),
+                          child: const Row(
+                            children: [
+                              Text('4.2',style: TextStyle(fontSize: 10,color: Colors.black),),
+                              Icon(Icons.star,size: 12,color: Colors.blue,)
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.all(padding),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      product['name'],
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 4),
-                    Row(
+                  Padding(
+                    padding: EdgeInsets.only(top: padding, left: padding, right: padding),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
+                        Text(
+                          textAlign: TextAlign.start,
+                          product['name'],
+                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 4),
                         Text(
                           '₹${product['flashPrice']}',
                           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.red),
                         ),
-                        const SizedBox(width: 6),
-                        Text(
-                          '₹${product['price']}',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
-                            decoration: TextDecoration.lineThrough,
-                          ),
-                        ),
+                        // _buildProgressBar(stockLeft, stockTotal, progressBar,borderRadius)
+                        /*
+                        const SizedBox(height: 6),
+                        _buildProgressBar(stockLeft, stockTotal, progressBar),*/
                       ],
                     ),
-                    // _buildProgressBar(stockLeft, stockTotal, progressBar,borderRadius)
-                    /*
-                    const SizedBox(height: 6),
-                    _buildProgressBar(stockLeft, stockTotal, progressBar),*/
-                  ],
-                ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12.0),
+                    child: Text(
+                      '₹${product['price']}',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                        decoration: TextDecoration.lineThrough,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(4),
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      ),
+                      onPressed: () {
+
+
+                        final controller = Get.put(CartController());
+
+                        final productId = '680ef09a4fbe39d34f56dd7d';
+                        final exists = controller.cartItems
+                            .any((item) => item.productId == productId);
+
+                        if (exists) {
+                          Get.snackbar(
+                            'Info',
+                            'Item already in cart',
+                            overlayBlur: 2,
+                            overlayColor: Colors.black26,
+                            backgroundColor: Colors.white,
+                            colorText: Colors.black,
+                            snackPosition: SnackPosition.BOTTOM,
+                            duration: const Duration(milliseconds: 1500),
+                          );
+                        } else {
+                          controller.addItem(CartItem(
+                            name: 'Galaxy S24',
+                            image:
+                            'https://sonovision.in/wp-content/uploads/2022/08/samsung-s225g-white.jpg',
+                            color: 'Black',
+                            price: 150000.0,
+                            productId: productId,
+                          ));
+                          CartBottomSheet.show();
+                        }
+
+                        // Get.snackbar("Cart", "${product['name']} added to cart",snackPosition:SnackPosition.BOTTOM,overlayBlur: 2);
+                      },
+                      label: const Text("Add", style: TextStyle(fontSize: 12)),
+                      icon:  const Icon(
+                        Icons.add_shopping_cart_outlined,
+                        size: 12,
+                      ),
+                      // child: const Text("Add", style: TextStyle(fontSize: 12)),
+                    ),
+                  ),
+                ],
               ),
+              // Positioned(child: IconButton(onPressed: (){}, icon: icon))
             ],
           ),
         ),

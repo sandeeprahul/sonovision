@@ -163,7 +163,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             productId: productId,
                           ));
                           CartBottomSheet.show();
-
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -339,7 +338,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                               children: [
                                 Text(
                                   widget.product['name'],
-                                  style: theme.textTheme.headlineSmall!.copyWith(
+                                  style:
+                                      theme.textTheme.headlineSmall!.copyWith(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black87,
                                   ),
@@ -470,7 +470,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       ),
                       const SizedBox(height: 8),
                       ReadMoreText(
-                        'Samsung Galaxy S25 Ultra 5G AI Smartphone (Titanium Black, 12GB RAM, 512GB Storage), 200MP Camera, S Pen Included, Long Battery Life ',
+                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam ',
 
                         // "${widget.product['description']}  " ,
                         trimLines: 3,
@@ -479,11 +479,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         trimCollapsedText: 'Show more',
                         trimExpandedText: 'Show less',
 
-                        style: theme.textTheme.bodyLarge!.copyWith(
-                          color: Colors.black,
-                          fontSize: 12
-                          // height: 1.5,
-                        ),
+                        style: theme.textTheme.bodyLarge!
+                            .copyWith(color: Colors.black, fontSize: 12
+                                // height: 1.5,
+                                ),
                       ),
                     ],
                   ),
@@ -527,7 +526,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                             .substring(0, 1)
                                             .toUpperCase() +
                                         entry.key.toString().substring(1),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 15,
                                     ),

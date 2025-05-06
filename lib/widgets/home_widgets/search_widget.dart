@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../pages/search_page.dart';
 
 class AnimatedSearchBar extends StatefulWidget {
   final Map<String, dynamic> style;
@@ -57,84 +60,113 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar>
 
             child: Padding(
               padding: const EdgeInsets.only(top: 2.0, bottom: 2.0, left: 2.0, right: 2.0),
-              child: Row(
-                children: [
-                  // Search Box Material
-                  Expanded(
-                    child: Material(
-                      elevation: _isFocused ? 12 : 6,
+              child: InkWell(
+                onTap: (){
+                  Get.to(() => const SearchPage());
+
+                },
+                child: Row(
+                  children: [
+                    // Search Box Material
+                    Expanded(
+                      child: Material(
+                        elevation: _isFocused ? 12 : 6,
+                        shadowColor: Theme.of(context).shadowColor.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(24),
+                        child: Container(
+                          // padding: const EdgeInsets.all(4),
+
+                          height: 50.0,
+                          // height: style['height']?.taoDouble() ?? 56.0,
+                          decoration: BoxDecoration(
+
+                            gradient: LinearGradient(
+                              colors: [
+                              Colors.red ,
+                              Colors.white.withOpacity(0.05),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.2),
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(
+                                24),
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(
+                                24.0),
+                            ),
+                            child: Row(
+                              children: [
+                                const SizedBox(width: 16),
+                                const Icon(Icons.search_rounded, color: Colors.black),
+                                // Icon(Icons.search_rounded, color: Theme.of(context).iconTheme.color),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Text(
+                                    style['placeholder'] ?? 'Search...',
+                                    style: TextStyle(
+                                      color: Theme.of(context).textTheme.bodyLarge?.color,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(width: 12),
+
+                    // Camera Icon Material
+                    Material(
+                      elevation: 6,
                       shadowColor: Theme.of(context).shadowColor.withOpacity(0.3),
                       borderRadius: BorderRadius.circular(24),
-                      child: Container(
-                        height: style['height']?.toDouble() ?? 56.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                              style['borderRadius']?.toDouble() ?? 16.0),
-                        ),
-                        child: Row(
-                          children: [
-                            const SizedBox(width: 16),
-                            Icon(Icons.search_rounded, color: Colors.black),
-                            // Icon(Icons.search_rounded, color: Theme.of(context).iconTheme.color),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Text(
-                                style['placeholder'] ?? 'Search...',
-                                style: TextStyle(
-                                  color: Theme.of(context).textTheme.bodyLarge?.color,
-                                ),
-                              ),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(24),
+                        onTap: () {
+                          // Handle camera tap
+                        },
+                        child:   Container(
+                          padding: const EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.black.withOpacity(0.6),
+                                Colors.black.withOpacity(0.2),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(width: 12),
-
-                  // Camera Icon Material
-                  Material(
-                    elevation: 6,
-                    shadowColor: Theme.of(context).shadowColor.withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(24),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(24),
-                      onTap: () {
-                        // Handle camera tap
-                      },
-                      child:   Container(
-                        padding: const EdgeInsets.all(3),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.black.withOpacity(0.6),
-                              Colors.black.withOpacity(0.2),
-                            ],
                           ),
-                        ),
-                        child: CircleAvatar(
-                          radius: 22,
-                          backgroundColor: Colors.transparent,
-                          child: ClipOval(
-                              child:Icon(Icons.camera_alt_rounded,size: 20,) /*Image.network(
-                            'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=2576&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                            width: 42,
-                            height: 42,
-                            fit: BoxFit.cover,
-                          ),*/
+                          child: const CircleAvatar(
+                            radius: 22,
+                            backgroundColor: Colors.transparent,
+                            child: ClipOval(
+                                child:Icon(Icons.camera_alt_rounded,size: 20,) /*Image.network(
+                              'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=2576&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                              width: 42,
+                              height: 42,
+                              fit: BoxFit.cover,
+                            ),*/
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
 
-                ],
+                  ],
+                ),
               ),
             ),
           ),
-          SizedBox(height: 22,),
+          const SizedBox(height: 22,),
         ],
       ),
     );
