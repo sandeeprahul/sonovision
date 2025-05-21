@@ -272,7 +272,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ProductDetailsPage(product: product),
+          builder: (context) => ProductDetailsPage(),
         ),
       ),
       child: Container(

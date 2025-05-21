@@ -92,8 +92,9 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
         slivers: [
           // Add SliverAppBar
           SliverAppBar(
-            expandedHeight: 66.0,
-            backgroundColor: Colors.grey.withAlpha(2),
+            expandedHeight: 170.0,
+            backgroundColor: Colors.transparent,
+            // backgroundColor: Colors.grey.withAlpha(2),
             floating: true,
             pinned: false,
             flexibleSpace: FlexibleSpaceBar(
@@ -148,8 +149,8 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
   Widget _buildDynamicWidget(
       BuildContext context, Map<String, dynamic> widget) {
     switch (widget['widgetType']) {
-      case 'search':
-        return _buildSearchBar();
+     /* case 'search':
+        return _buildSearchBar();*/
       case 'flashSale':
         return FlashSaleWidget(
           widgetData: widget,
@@ -202,7 +203,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
               InkWell(
                 onTap: () {
                   final staticProduct = {
-                    'id': '20250426',
+                    '_id': '20250426',
                     'name': 'Galaxy S24',
                     'brand': 'Samsung',
                     'category': 'Mobile Phones',
@@ -828,7 +829,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(24),
         child: Container(
-          // height: 160,
+          height: 160,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
@@ -851,92 +852,115 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
               ),
             ],
           ),
+          padding: const EdgeInsets.all(12),
+
           child: Stack(
+
             children: [
-              // Glassy floating bubble behind
               const Positioned(
-                right: -40,
-                bottom: -40,
+                right: 20,
+                bottom: 20,
                 child: Icon(
-                  Icons.blur_on,
+                  Icons.graphic_eq,
                   size: 150,
-                  color: Colors.transparent,
+                  color: Colors.white24,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // Icon(Icons.location_on,color:Colors.white.withOpacity(0.9) ,),
-                    IconButton(
-                      onPressed: () {
-                        _getCurrentLocation();
-                      },
-                      icon: const Icon(Icons.location_on),
-                      color: Colors.white.withOpacity(0.9),
-                      iconSize: 20,
-                    ),
-                    // const SizedBox(width: 8),
-                    InkWell(
-                      onTap: () {
-                        _getCurrentLocation();
-                      },
-                      child: TextButton.icon(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.keyboard_arrow_down_outlined,
-                          color: Colors.transparent,
-                        ),
-                        label: Text(
-                          '$_addressLine1, $_addressLine2',
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                    // decoration: TextDecoration.underline,
-                                    // decorationColor: Colors.white,
-                                    fontSize: 12,
-                                  ),
-                        ),
-                        iconAlignment: IconAlignment.end,
-                      ),
-                    ),
+              Column(
+                // mainAxisSize: MainAxisSize.min,
+                children: [
 
-                    const Spacer(),
-                    InkWell(
-                      onTap: (){
-                        Get.to(() => NotificationsPage());
+                  Stack(
+                    children: [
+                      // Glassy floating bubble behind
 
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(3),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.black.withOpacity(0.6),
-                              Colors.black.withOpacity(0.2),
-                            ],
-                          ),
-                        ),
-                        child: const CircleAvatar(
-                          radius: 20,
-                          backgroundColor: Colors.transparent,
-                          child: ClipOval(
-                              child: Icon(Icons
-                                  .notifications) /*Image.network(
-                              'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=2576&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                              width: 42,
-                              height: 42,
-                              fit: BoxFit.cover,
-                            ),*/
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // Icon(Icons.location_on,color:Colors.white.withOpacity(0.9) ,),
+                            IconButton(
+                              onPressed: () {
+                                _getCurrentLocation();
+                              },
+                              icon: const Icon(Icons.location_on),
+                              color: Colors.white.withOpacity(0.9),
+                              iconSize: 20,
+                            ),
+                            // const SizedBox(width: 8),
+                            InkWell(
+                              onTap: () {
+                                _getCurrentLocation();
+                              },
+                              child: TextButton.icon(
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons.keyboard_arrow_down_outlined,
+                                  color: Colors.transparent,
+                                ),
+                                label: Text(
+                                  '$_addressLine1, $_addressLine2',
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium?.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white,
+                                            // decoration: TextDecoration.underline,
+                                            // decorationColor: Colors.white,
+                                            fontSize: 12,
+                                          ),
+                                ),
+                                iconAlignment: IconAlignment.end,
                               ),
+                            ),
+
+                            const Spacer(),
+                            InkWell(
+                              onTap: (){
+                                Get.to(() => NotificationsPage());
+
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(3),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.black.withOpacity(0.6),
+                                      Colors.black.withOpacity(0.2),
+                                    ],
+                                  ),
+                                ),
+                                child: const CircleAvatar(
+                                  radius: 20,
+                                  backgroundColor: Colors.transparent,
+                                  child: ClipOval(
+                                      child: Icon(Icons
+                                          .notifications) /*Image.network(
+                                      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=2576&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                                      width: 42,
+                                      height: 42,
+                                      fit: BoxFit.cover,
+                                    ),*/
+                                      ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                  const SizedBox(height: 20,),
+                  const AnimatedSearchBar(
+                    style: {
+                      "margin": 16,
+                      "height": 56,
+                      "borderRadius": 20,
+                      "placeholder": "Search products, categories...",
+                    },
+                  )
+                ],
               ),
             ],
           ),

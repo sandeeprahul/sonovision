@@ -80,14 +80,14 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar>
                           // height: style['height']?.taoDouble() ?? 56.0,
                           decoration: BoxDecoration(
 
-                            gradient: LinearGradient(
+                          /*  gradient: LinearGradient(
                               colors: [
-                              Colors.red ,
+                              Colors.white ,
                               Colors.white.withOpacity(0.05),
                               ],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
-                            ),
+                            ),*/
                             border: Border.all(
                               color: Colors.white.withOpacity(0.2),
                               width: 1,
@@ -122,51 +122,46 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar>
                       ),
                     ),
 
-                    const SizedBox(width: 12),
-
-                    // Camera Icon Material
-                    Material(
-                      elevation: 6,
-                      shadowColor: Theme.of(context).shadowColor.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(24),
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(24),
-                        onTap: () {
-                          // Handle camera tap
-                        },
-                        child:   Container(
-                          padding: const EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.black.withOpacity(0.6),
-                                Colors.black.withOpacity(0.2),
-                              ],
-                            ),
-                          ),
-                          child: const CircleAvatar(
-                            radius: 22,
-                            backgroundColor: Colors.transparent,
-                            child: ClipOval(
-                                child:Icon(Icons.camera_alt_rounded,size: 20,) /*Image.network(
-                              'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=2576&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                              width: 42,
-                              height: 42,
-                              fit: BoxFit.cover,
-                            ),*/
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    // const SizedBox(width: 12),
+                    //
+                    // // Camera Icon Material
+                    // InkWell(
+                    //   borderRadius: BorderRadius.circular(24),
+                    //   onTap: () {
+                    //     // Handle camera tap
+                    //   },
+                    //   child:   Container(
+                    //     padding: const EdgeInsets.all(3),
+                    //     decoration: BoxDecoration(
+                    //       shape: BoxShape.circle,
+                    //       gradient: LinearGradient(
+                    //         colors: [
+                    //           Colors.black.withOpacity(0.6),
+                    //           Colors.black.withOpacity(0.2),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //     child: const CircleAvatar(
+                    //       radius: 22,
+                    //       backgroundColor: Colors.transparent,
+                    //       child: ClipOval(
+                    //           child:Icon(Icons.camera_alt_rounded,size: 20,) /*Image.network(
+                    //         'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=2576&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                    //         width: 42,
+                    //         height: 42,
+                    //         fit: BoxFit.cover,
+                    //       ),*/
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
 
                   ],
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 22,),
+          const SizedBox(height: 8,),
         ],
       ),
     );

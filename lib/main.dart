@@ -46,7 +46,6 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Electronic Store',
       debugShowCheckedModeBanner: false,
-
       theme: AppTheme.lightTheme,
       /*   theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -57,22 +56,23 @@ class MyApp extends StatelessWidget {
           elevation: 0,
         ),
       ),*/
-      home:  const SplashScreen(),
+      home: const SplashScreen(),
+      getPages: [
+        GetPage(
+            name: '/product-details', page: () => const ProductDetailsPage()),
+      ],
       routes: {
-        /*  '/product-details': (context) => ProductDetailsPage(
-              product: ModalRoute.of(context)!.settings.arguments
-                  as Map<String, dynamic>,
-            ),*/
-        '/product-details': (context) => ProductDetailsPage(
-              product: Get.arguments as Map<String, dynamic>,
-            ),
         '/cart': (context) => CartPage(),
         '/main': (context) => const MainPage(),
         '/checkout': (context) => const CheckoutPage(),
-        '/add-address': (context) =>  AddressFormPage(),
-        '/my-address': (context) =>  const MyAddressPage(),
-        '/order-success': (context) =>  const OrderSuccessPage(orderId: '0',),
-        '/order-history': (context) => const OrderScreen(),///OrderHistoryPage
+        '/add-address': (context) => AddressFormPage(),
+        '/my-address': (context) => const MyAddressPage(),
+        '/order-success': (context) => const OrderSuccessPage(
+              orderId: '0',
+            ),
+        '/order-history': (context) => const OrderScreen(),
+
+        ///OrderHistoryPage
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),
         '/settings': (context) => const SettingsPage(),

@@ -13,22 +13,7 @@ class WishlistPage extends StatelessWidget {
         elevation: 0,
       ),
       body: HorizontalProductList(),
-      // body: const Center(
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: [
-      //       Icon(
-      //         Icons.heart_broken,
-      //          size: 120,color: Colors.black,
-      //       ),
-      //       SizedBox(height: 16),
-      //       Text(
-      //         'Your wishlist is empty'
-      //           ,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.black)
-      //       ),
-      //     ],
-      //   ),
-      // ),
+
     );
   }
 }
