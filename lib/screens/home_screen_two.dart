@@ -397,63 +397,73 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
               itemCount: products.length,
               itemBuilder: (context, index) {
                 final product = products[index];
-                return Container(
-                  width: 120,
-                  margin: EdgeInsets.only(
-                    right: style['spacing']?.toDouble() ?? 20.0,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(
-                      style['cardStyle']['borderRadius']?.toDouble() ?? 16.0,
+                return InkWell(
+                  onTap: (){
+                    final productJson = {
+                      '_id': product['id'],
+                      // other fields if needed
+                    };
+                    Get.toNamed('/product-details', arguments: productJson);
+
+                  },
+                  child: Container(
+                    width: 120,
+                    margin: EdgeInsets.only(
+                      right: style['spacing']?.toDouble() ?? 20.0,
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(
+                        style['cardStyle']['borderRadius']?.toDouble() ?? 16.0,
                       ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(
-                      style['cardStyle']['borderRadius']?.toDouble() ?? 16.0,
-                    ),
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        CachedNetworkImage(
-                          imageUrl: product['image'],
-                          fit: BoxFit.cover,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Colors.transparent,
-                                Colors.black.withOpacity(0.7),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 8,
-                          left: 8,
-                          right: 8,
-                          child: Text(
-                            product['name'],
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
                         ),
                       ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                        style['cardStyle']['borderRadius']?.toDouble() ?? 16.0,
+                      ),
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          CachedNetworkImage(
+                            imageUrl: product['image'],
+                            fit: BoxFit.contain,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.transparent,
+                                  Colors.black.withOpacity(0.7),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 8,
+                            left: 8,
+                            right: 8,
+                            child: Text(
+                              product['name'],
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );

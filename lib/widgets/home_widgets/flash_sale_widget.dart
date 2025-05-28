@@ -80,7 +80,12 @@ class FlashSaleWidget extends StatelessWidget {
         onTap: (){
 
 
-          Get.toNamed('/product-details', arguments: product);
+          final productJson = {
+            '_id': product['id'],
+            // other fields if needed
+          };
+
+          Get.toNamed('/product-details', arguments: productJson);
 
           // Get.to(  ProductListScreen());
 
