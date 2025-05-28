@@ -13,9 +13,9 @@ class ProductDetailsController extends GetxController {
       isLoading.value = true;
 
       final response = await http.get(
-        Uri.parse('https://sonovision.asquare.org.in/api/products/682db38b42916fcb457b89d5'),
+        Uri.parse('https://sonovision.asquare.org.in/api/products/$productId'),///682db38b42916fcb457b89d5
       );
-      print('https://sonovision.asquare.org.in/api/products/682db38b42916fcb457b89d5');
+      print('https://sonovision.asquare.org.in/api/products/$productId');
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);

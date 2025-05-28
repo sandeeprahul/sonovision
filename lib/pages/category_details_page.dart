@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:get/get.dart';
 import '../utils/cart_bottom_sheet.dart';
 import 'product_details_page.dart';
 
@@ -269,12 +270,8 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
     final discountedPrice = originalPrice - (originalPrice * discountPercentage / 100);
 
     return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProductDetailsPage(),
-        ),
-      ),
+      //          arguments: product['_id'],
+      onTap: () =>                Get.toNamed('/product-details', arguments: product),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,

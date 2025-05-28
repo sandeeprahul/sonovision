@@ -203,42 +203,18 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
               InkWell(
                 onTap: () {
                   final staticProduct = {
-                    '_id': '20250426',
-                    'name': 'Galaxy S24',
-                    'brand': 'Samsung',
-                    'category': 'Mobile Phones',
-                    'categoryId': 'mobile_phones',
-                    'price': 150000,
-                    'discountPercentage': 10,
-                    'description': 'Samsung galaxy S24',
-                    'highlights': 'SPen AI',
-                    'deliveryTime': '7-10 days',
-                    'isFeatured': true,
-                    'colors': [
-                      'Red',
-                      'Black',
-                      'White',
-                      'Blue',
-                      'Green',
-                      'Grey'
-                    ],
-                    'images': [
-                      'https://sonovision.in/wp-content/uploads/2022/08/samsung-s225g-white.jpg'
-                    ],
-                    'stock': 80,
-                    'storeCode': 'SONO55',
-                    'specifications': {
-                      'battery': '6700',
-                      'display': 'Amoled',
-                      'displaySize': '6.7',
-                      'frontCamera': '56',
-                      'mainCamera': '68',
-                      'networkType': '5G',
-                      'os': 'Android',
-                      'processor': 'Exzonys',
-                      'ram': '12',
-                      'storage': '250'
-                    }
+                    'id': deal['id'],
+                    '_id': deal['id'],
+                    // 'name': deal['name'],
+                    // 'description': deal['description'],
+                    // 'price': deal['price'],
+                    // 'discountPercentage': deal['discountPercentage'],
+                    // 'rating': deal['rating'],
+                    // 'stock': deal['stock'],
+                    // 'brand': deal['brand'],
+                    // 'category': deal['category'],
+                    // 'thumbnail': deal['thumbnail'],
+                    // 'images': deal['images'],
                   };
 
                   Get.toNamed('/product-details', arguments: staticProduct);

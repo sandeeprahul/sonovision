@@ -79,47 +79,8 @@ class FlashSaleWidget extends StatelessWidget {
       child: InkWell(
         onTap: (){
 
-          final staticProduct = {
-            'id': '20250426',
-            'name': 'Galaxy S24',
-            'brand': 'Samsung',
-            'category': 'Mobile Phones',
-            'categoryId': 'mobile_phones',
-            'price': 150000,
-            'discountPercentage': 10,
-            'description': 'Samsung galaxy S24',
-            'highlights': 'SPen AI',
-            'deliveryTime': '7-10 days',
-            'isFeatured': true,
-            'colors': [
-              'Red',
-              'Black',
-              'White',
-              'Blue',
-              'Green',
-              'Grey'
-            ],
-            'images': [
-              'https://sonovision.in/wp-content/uploads/2022/08/samsung-s225g-white.jpg'
-            ],
-            'stock': 80,
-            'storeCode': 'SONO55',
-            'specifications': {
-              'battery': '6700',
-              'display': 'Amoled',
-              'displaySize': '6.7',
-              'frontCamera': '56',
-              'mainCamera': '68',
-              'networkType': '5G',
-              'os': 'Android',
-              'processor': 'Exzonys',
-              'ram': '12',
-              'storage': '250'
-            }
-          };
 
-
-          Get.toNamed('/product-details', arguments: staticProduct);
+          Get.toNamed('/product-details', arguments: product);
 
           // Get.to(  ProductListScreen());
 
@@ -242,7 +203,7 @@ class FlashSaleWidget extends StatelessWidget {
 
                         final controller = Get.put(CartController());
 
-                        final productId = '680ef09a4fbe39d34f56dd7d';
+                        final productId = product['id'];
                         final exists = controller.cartItems
                             .any((item) => item.productId == productId);
 

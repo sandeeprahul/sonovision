@@ -37,7 +37,9 @@ class HorizontalProductList extends StatelessWidget {
 
             return InkWell(
               onTap: (){
-                Get.to(ProductDetailsPage(), arguments: product);
+                Get.toNamed('/product-details', arguments: product);
+
+                // Get.to(const ProductDetailsPage(), arguments: product);
                 print('tapppppedddd');
               },
               child: Container(
