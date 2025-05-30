@@ -20,8 +20,6 @@ class OrderService {
         'Content-Type': 'application/json',
       },
     ); // Replace with your API
-    print(response);
-    print("${ApiService.baseUrl}/api/orders");
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {

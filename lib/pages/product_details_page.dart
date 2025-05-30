@@ -144,10 +144,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       child: ElevatedButton(
                         onPressed: () {
                           final controller = Get.put(CartController());
-  
-                          const productId = '680ef09a4fbe39d34f56dd7d';
+                          final product = productDetailsController.product.value!;
+
                           final exists = controller.cartItems
-                              .any((item) => item.productId == productId);
+                              .any((item) => item.productId == product.id);
   
                           if (exists) {
                             Get.snackbar(
@@ -162,12 +162,12 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             );
                           } else {
                             controller.addItem(CartItem(
-                              name: 'Galaxy S24',
+                              name: product.name,
                               image:
-                                  'https://sonovision.in/wp-content/uploads/2022/08/samsung-s225g-white.jpg',
+                              product.images[0],
                               color: 'Black',
-                              price: 150000.0,
-                              productId: productId,
+                              price: product.price,
+                              productId: product.id,
                             ));
                             CartBottomSheet.show();
                           }
@@ -470,7 +470,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         children: [
                           Text(
                             'Description',
-                            style: theme.textTheme.titleLarge!.copyWith(
+                            style: theme.textTheme.headlineMedium!.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -508,7 +508,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           children: [
                             Text(
                               'Specifications',
-                              style: theme.textTheme.titleLarge!.copyWith(
+                              style: theme.textTheme.headlineMedium!.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -558,7 +558,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       ),
 
                     // Highlights Section
-                    if (product.highlights != null)
+                    if (product.highlights.isNotEmpty)
                       Container(
                         padding: const EdgeInsets.all(16),
                         child: Column(
@@ -566,7 +566,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           children: [
                             Text(
                               'Highlights',
-                              style: theme.textTheme.titleLarge!.copyWith(
+                              style: theme.textTheme.headlineMedium!.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -601,14 +601,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         ),
                       ),
                     // const SizedBox(height: 6),
-                    const Padding(
-                      padding: EdgeInsets.all(20.0),
+                     Padding(
+                      padding: const EdgeInsets.all(20.0),
                       child: Text(
                         'Related Products',
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
+                        style: theme.textTheme.headlineMedium!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     HorizontalProductList(),

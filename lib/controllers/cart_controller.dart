@@ -25,7 +25,7 @@ class CartItem {
 
 
 class CartController extends GetxController {
-  final authController = AuthController.to;
+  final authController =Get.put(AuthController());
 
   final _storage = GetStorage();
   final _cartKey = 'cart_items';

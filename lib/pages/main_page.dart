@@ -63,7 +63,6 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
         Get.to(const LoginPage());
       }else{
         _tabController.animateTo(index);
-
       }
       return;
     }

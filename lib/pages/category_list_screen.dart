@@ -82,10 +82,11 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+import '../models/category.dart';
 import 'category_details_page.dart';
 
 class CategoryListScreen extends StatelessWidget {
-  final List<Map<String, dynamic>> categories;
+  final List<Category> categories;
 
   const CategoryListScreen({super.key, required this.categories});
 
@@ -128,8 +129,9 @@ class CategoryListScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => CategoryDetailsPage(
-                      categoryId: category['id'],
-                      categoryName: category['name'],
+                      categoryId: category.id,
+                      categoryName: category.name,
+                      imageUrl:  "http://sonovision.asquare.org.in/images/${category.icon}",
                     ),
                   ),
                 );
@@ -140,7 +142,7 @@ class CategoryListScreen extends StatelessWidget {
                   children: [
                     // Background Image
                     CachedNetworkImage(
-                      imageUrl: category['image'],
+                      imageUrl: "http://sonovision.asquare.org.in/images/${category.icon}",//http://sonovision.asquare.org.in/images/kitchen_appliances.jpeg
                       fit: BoxFit.cover,
                       width: double.infinity,
                       height: double.infinity,
@@ -169,7 +171,7 @@ class CategoryListScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            category['name'],
+                            category.name,
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -184,13 +186,13 @@ class CategoryListScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 4),
-                          Text(
-                            '${category['count']}+',
+                        /*  Text(
+                            '${category.sortOrder}+',
                             style: const TextStyle(
                               color: Colors.white70,
                               fontSize: 14,
                             ),
-                          ),
+                          ),*/
                         ],
                       ),
                     ),

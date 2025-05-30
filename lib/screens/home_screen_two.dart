@@ -155,12 +155,13 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
         return FlashSaleWidget(
           widgetData: widget,
         );
+
+      case 'group':
+        return _buildGroupWidget(context, widget);
       case 'banners':
         final bannerData = widget['data']?['data'] ?? [];
         final style = widget['style'] ?? {};
-        return BannerCarousel(banners: bannerData, style: style);
-      case 'group':
-        return _buildGroupWidget(context, widget);
+        return BannerCarouselNew(banners: bannerData, style: style);
       case 'dealOfDay':
         return _buildDealOfDay(widget);
       case 'brandStrip':
@@ -202,22 +203,13 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
               const SizedBox(height: 16),
               InkWell(
                 onTap: () {
-                  final staticProduct = {
-                    'id': deal['id'],
-                    '_id': deal['id'],
-                    // 'name': deal['name'],
-                    // 'description': deal['description'],
-                    // 'price': deal['price'],
-                    // 'discountPercentage': deal['discountPercentage'],
-                    // 'rating': deal['rating'],
-                    // 'stock': deal['stock'],
-                    // 'brand': deal['brand'],
-                    // 'category': deal['category'],
-                    // 'thumbnail': deal['thumbnail'],
-                    // 'images': deal['images'],
+                print("PRODUCT ID: ${deal['product']['id']}");
+                  var productJson = {
+                    '_id': deal['product']['id'],
+                    // other fields if needed
                   };
 
-                  Get.toNamed('/product-details', arguments: staticProduct);
+                  Get.toNamed('/product-details', arguments: productJson);
                 },
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -250,9 +242,9 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                             child: AspectRatio(
                               aspectRatio: 16 / 9,
                               child: CachedNetworkImage(
-                                imageUrl:
-                                    'https://sonovision.in/wp-content/uploads/2022/08/samsung-s225g-white.jpg',
-                                // imageUrl: deal['product']?['image'] ?? '',
+                                // imageUrl:
+                                //     'https://sonovision.in/wp-content/uploads/2022/08/samsung-s225g-white.jpg',
+                                imageUrl: deal['product']?['image'] ?? '',
 
                                 //
                                 // fit: BoxFit.cover,
@@ -403,6 +395,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                       '_id': product['id'],
                       // other fields if needed
                     };
+
                     Get.toNamed('/product-details', arguments: productJson);
 
                   },
