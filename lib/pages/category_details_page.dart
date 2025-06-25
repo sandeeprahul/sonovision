@@ -212,13 +212,12 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
           children: [
             Expanded(
               child: ClipRRect(
-                borderRadius:
-                    const BorderRadius.all( Radius.circular(12)),
+                borderRadius: const BorderRadius.all(Radius.circular(12)),
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
                     Container(
-                      color: Color(0xfff9f5f4),
+                      color: const Color(0xfff9f5f4),
                       child: Hero(
                         tag: 'product-${product.id}-${product.images[0]}',
                         child: CachedNetworkImage(
@@ -423,9 +422,13 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                   const SizedBox(height: 4),
 
                   SizedBox(
-                    // width: double.infinity,
+                /*    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+
+                        borderRadius: BorderRadius.circular(8)),*/// width: double.infinity,
                     child: InkWell(
-                       /*      style: ElevatedButton.styleFrom(
+                      /*      style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -451,7 +454,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                           controller.addItem(CartItem(
                             name: product.name,
                             image: product.images[0],
-                            color: product.colors[0],
+                            color: product.colors.isEmpty ? '' : product.colors[0],
                             price: product.price,
                             productId: product.id,
                           ));
@@ -461,12 +464,22 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
 
                         // Get.snackbar("Cart", "${product['name']} added to cart",snackPosition:SnackPosition.BOTTOM,overlayBlur: 2);
                       },
-                      child: const Text(
-                        "Add to Cart",
-                        style: TextStyle(
-                            fontSize: 13,
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "Add to Cart",
+                            style: TextStyle(
+                                fontSize: 13,
+                                color: Color(0xffaa6d6a),
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Icon(
+                            Icons.shopping_cart_outlined,
                             color: Color(0xffaa6d6a),
-                            fontWeight: FontWeight.bold),
+                            size: 16,
+                          )
+                        ],
                       ),
                     ),
                   ),

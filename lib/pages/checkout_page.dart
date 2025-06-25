@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../controllers/cart_controller.dart';
 import '../controllers/checkout_controller.dart';
 
 class CheckoutPage extends StatefulWidget {
@@ -17,6 +18,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
 
   final controller = Get.put(CheckoutController());
+  final cartController = Get.put(CartController());
 
   @override
   void initState() {
@@ -181,9 +183,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('${controller.selectedAddress.value!.name}'),
-                            Text('${controller.selectedAddress.value!.addressLine1}'),
-                            Text('${controller.selectedAddress.value!.addressLine2}'),
+                            Text(controller.selectedAddress.value!.name),
+                            Text(controller.selectedAddress.value!.addressLine1),
+                            Text(controller.selectedAddress.value!.addressLine2),
                             // Text('${controller.selectedAddress.value!.}'),
                           ],
                         ),
@@ -207,51 +209,55 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(height: 8),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          children: [
-                            const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Obx(
+                       () {
+                        return Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
                               children: [
-                                Text('Subtotal'),
-                                Text('₹150000'),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Discount'),
-                                Text('-₹15000'),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Delivery'),
-                                Text('₹0'),
-                              ],
-                            ),
-                            const Divider(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Total',
-                                  style: Theme.of(context).textTheme.titleMedium,
+                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Subtotal'),
+                                    Text(cartController.subtotal.toStringAsFixed(2)),
+                                  ],
                                 ),
-                                Text(
-                                  '₹135000',
-                                  style: Theme.of(context).textTheme.titleMedium,
+                                const SizedBox(height: 8),
+                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Discount'),
+                                    Text(cartController.discount.toStringAsFixed(2)),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Delivery'),
+                                    Text(cartController.deliveryCharge.toStringAsFixed(2)),
+                                  ],
+                                ),
+                                const Divider(),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Total',
+                                      style: Theme.of(context).textTheme.titleMedium,
+                                    ),
+                                    Text(
+                                      cartController.total.toStringAsFixed(2),
+                                      style: Theme.of(context).textTheme.titleMedium,
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                      ),
+                          ),
+                        );
+                      }
                     ),
                   ],
                 );
@@ -278,12 +284,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
 
-              final controller = Get.put(CheckoutController());
+              // final controller = Get.put(CheckoutController());
 
 
-              controller.placeOrder();
+             await controller.placeOrder();
+             Navigator.pop(context);
+             Navigator.pop(context);
 
 
             },

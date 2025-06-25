@@ -137,7 +137,7 @@ class _AddressFormPageState extends State<AddressFormPage> {
                   const SizedBox(height: 12),
                   _buildTextField(Icons.location_on, 'Door no,Street', (val) => _addressLine1 = val),
 
-                  _buildTextField(Icons.location_city, 'Landmark,Area', (val) => _addressLine2 = val),
+                  _buildTextField(Icons.location_city, 'Landmark,Area,District', (val) => _addressLine2 = val),
 
                   _buildTextField(Icons.map, 'City', (val) => _city = val),
 

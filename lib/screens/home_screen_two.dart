@@ -13,6 +13,7 @@ import '../utils/cart_bottom_sheet.dart';
 import '../utils/loadImageBasedOnExtension.dart';
 import '../widgets/_buildCategoryGroup.dart';
 import '../widgets/home_widgets/banner_widget.dart';
+// import '../widgets/home_widgets/brand_strip_widget.dart';
 import '../widgets/home_widgets/brand_strip_widget.dart';
 import '../widgets/home_widgets/flash_sale_widget.dart';
 import '../widgets/home_widgets/search_widget.dart';
@@ -95,7 +96,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
             expandedHeight: 170.0,
             backgroundColor: Colors.transparent,
             // backgroundColor: Colors.grey.withAlpha(2),
-            floating: true,
+            floating: false,
             pinned: false,
             flexibleSpace: FlexibleSpaceBar(
               // collapseMode: CollapseMode.pin,
@@ -164,8 +165,8 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
         return BannerCarouselNew(banners: bannerData, style: style);
       case 'dealOfDay':
         return _buildDealOfDay(widget);
-      case 'brandStrip':
-        return buildBrandStripWidget(widget);
+    /*  case 'brandStrip':
+        return buildBrandStripWidget(widget);*/
       case 'recentlyViewed':
         return _buildRecentlyViewed(widget);
       default:
@@ -379,7 +380,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
           ),
           const SizedBox(height: 16),
           SizedBox(
-            height: 120.0,
+            height: 180.0,
             // height: style['height']?.toDouble() ?? 120.0,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -428,7 +429,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                             imageUrl: product['image'],
                             fit: BoxFit.contain,
                           ),
-                          Container(
+                       /*   Container(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 begin: Alignment.topCenter,
@@ -439,7 +440,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                                 ],
                               ),
                             ),
-                          ),
+                          ),*/
                           Positioned(
                             bottom: 8,
                             left: 8,
@@ -447,7 +448,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                             child: Text(
                               product['name'],
                               style: const TextStyle(
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
                               ),

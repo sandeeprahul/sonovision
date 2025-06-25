@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-
   // Primary Colors
   static const Color primaryColor = Colors.black; // Blue
   static const Color secondaryColor = Colors.black; // Dark Blue
@@ -49,16 +48,16 @@ class AppTheme {
   );
 
   static Gradient get successGradient => const LinearGradient(
-    colors: [Color(0xFF00B4D8), Color(0xFF48CAE4)],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );
+        colors: [Color(0xFF00B4D8), Color(0xFF48CAE4)],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      );
 
   static Gradient get warningGradient => const LinearGradient(
-    colors: [Color(0xFFFFC107), Color(0xFFFFA000)],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );
+        colors: [Color(0xFFFFC107), Color(0xFFFFA000)],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      );
 
   // Text Styles
   static final TextStyle titleStyle = GoogleFonts.montserrat(
@@ -139,6 +138,7 @@ class AppTheme {
       ),
     );
   }
+
   static final textFieldDecoration = InputDecoration(
     hintStyle: const TextStyle().copyWith(
       fontSize: 14,
@@ -152,7 +152,6 @@ class AppTheme {
     fillColor: Colors.grey[100],
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
   );
-
 
   static Widget buildNewBadge() {
     return Container(
@@ -209,138 +208,145 @@ class AppTheme {
   // Light Theme
   static ThemeData get lightTheme {
     return ThemeData(
-      useMaterial3: true,
-      primaryColor: primaryColor,
-      colorScheme: const ColorScheme.light(
-        primary: primaryColor,
-        secondary: secondaryColor,
-        error: errorColor,
-        surface: surfaceColor,
-        background: backgroundLight,
-      ),
-      scaffoldBackgroundColor: backgroundLight,
-      appBarTheme: AppBarTheme(
-        backgroundColor: primaryColor,
-        elevation: 0,
-        centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
-        titleTextStyle: GoogleFonts.montserrat(
-          color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
+        useMaterial3: true,
+        primaryColor: primaryColor,
+        colorScheme: const ColorScheme.light(
+          primary: primaryColor,
+          secondary: secondaryColor,
+          error: errorColor,
+          surface: surfaceColor,
+          background: backgroundLight,
         ),
-      ),
-      textTheme: TextTheme(
-        displayLarge: GoogleFonts.montserrat(
-          color: textPrimary,
-          fontSize: 32,
-          fontWeight: FontWeight.bold,
-        ),
-        displayMedium: GoogleFonts.montserrat(
-          color: textPrimary,
-          fontSize: 28,
-          fontWeight: FontWeight.bold,
-        ),
-        displaySmall: GoogleFonts.montserrat(
-          color: textPrimary,
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-        ),
-        headlineLarge: GoogleFonts.montserrat(
-          color: textPrimary,
-          fontSize: 22,
-          fontWeight: FontWeight.w600,
-        ),
-        headlineMedium: GoogleFonts.montserrat(
-          color: textPrimary,
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-        ),
-        headlineSmall: GoogleFonts.montserrat(
-          color: textPrimary,
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
-        ),
-        titleLarge: GoogleFonts.montserrat(
-          color: textPrimary,
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-        ),
-        titleMedium: GoogleFonts.montserrat(
-          color: textPrimary,
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
-        ),
-        titleSmall: GoogleFonts.montserrat(
-          color: textPrimary,
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-        ),
-        bodyLarge: GoogleFonts.montserrat(
-          color: textPrimary,
-          fontSize: 16,
-        ),
-        bodyMedium: GoogleFonts.montserrat(
-          color: textSecondary,
-          fontSize: 14,
-        ),
-        bodySmall: GoogleFonts.montserrat(
-          color: textSecondary,
-          fontSize: 12,
-        ),
-        labelLarge: GoogleFonts.montserrat(
-          color: textPrimary,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-        ),
-        labelMedium: GoogleFonts.montserrat(
-          color: textPrimary,
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
-        ),
-        labelSmall: GoogleFonts.montserrat(
-          color: textPrimary,
-          fontSize: 10,
-          fontWeight: FontWeight.w500,
-        ),
-      ),      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
+        scaffoldBackgroundColor: backgroundLight,
+        appBarTheme: AppBarTheme(
           backgroundColor: primaryColor,
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+          elevation: 0,
+          centerTitle: true,
+          iconTheme: const IconThemeData(color: Colors.white),
+          titleTextStyle: GoogleFonts.montserrat(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
         ),
-      ),
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide.none,
+        textTheme: TextTheme(
+          displayLarge: GoogleFonts.montserrat(
+            color: textPrimary,
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+          ),
+          displayMedium: GoogleFonts.montserrat(
+            color: textPrimary,
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+          ),
+          displaySmall: GoogleFonts.montserrat(
+            color: textPrimary,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+          headlineLarge: GoogleFonts.montserrat(
+            color: textPrimary,
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+          ),
+          headlineMedium: GoogleFonts.montserrat(
+            color: textPrimary,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+          headlineSmall: GoogleFonts.montserrat(
+            color: textPrimary,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+          ),
+          titleLarge: GoogleFonts.montserrat(
+            color: textPrimary,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+          titleMedium: GoogleFonts.montserrat(
+            color: textPrimary,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+          titleSmall: GoogleFonts.montserrat(
+            color: textPrimary,
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+          ),
+          bodyLarge: GoogleFonts.montserrat(
+            color: textPrimary,
+            fontSize: 16,
+          ),
+          bodyMedium: GoogleFonts.montserrat(
+            color: textSecondary,
+            fontSize: 14,
+          ),
+          bodySmall: GoogleFonts.montserrat(
+            color: textSecondary,
+            fontSize: 12,
+          ),
+          labelLarge: GoogleFonts.montserrat(
+            color: textPrimary,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+          labelMedium: GoogleFonts.montserrat(
+            color: textPrimary,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+          labelSmall: GoogleFonts.montserrat(
+            color: textPrimary,
+            fontSize: 10,
+            fontWeight: FontWeight.w500,
+          ),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide.none,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: primaryColor,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: primaryColor),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: primaryColor),
+          ),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      ),
-      iconTheme: const IconThemeData(
-        color: iconPrimaryColor,
-        size: 24,
-      ),
-      cardTheme: CardTheme(
+        iconTheme: const IconThemeData(
+          color: iconPrimaryColor,
+          size: 24,
+        ),
+        cardTheme: CardThemeData(
+            color: surfaceColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ))
+        /*cardTheme: CardTheme(
         color: surfaceColor,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
-      ),
-    );
+      ),*/
+        );
   }
 }

@@ -221,7 +221,6 @@ class _LoginPageState extends State<LoginPage> {
                                           );
                                           if (mounted) {
                                             Get.offAllNamed('/main');
-
                                           }
                                         } catch (e) {
                                           if (mounted) {

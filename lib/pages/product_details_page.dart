@@ -70,7 +70,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
   
       return Scaffold(
-          backgroundColor: theme.scaffoldBackgroundColor,
+          backgroundColor: Colors.white,
+          // backgroundColor: theme.scaffoldBackgroundColor,
           extendBodyBehindAppBar: true,
           bottomNavigationBar: Container(
             decoration: BoxDecoration(
@@ -278,10 +279,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
-                                _isAppBarExpanded ? Colors.black : Colors.red,
+                                _isAppBarExpanded ? Colors.white : Colors.white,
                                 _isAppBarExpanded
-                                    ? Colors.black.withOpacity(0.05)
-                                    : Colors.red.withOpacity(0.05),
+                                    ? Colors.white.withOpacity(0.05)
+                                    : Colors.white.withOpacity(0.05),
                               ],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
@@ -314,7 +315,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                   tag: 'product-${product.id}-$image',
                                   child: CachedNetworkImage(
                                     imageUrl: image,
-                                    fit: BoxFit.cover,
+                                    fit: BoxFit.contain,
                                     width: MediaQuery.of(context).size.width,
                                     placeholder: (context, url) => const Center(
                                       child: CircularProgressIndicator(),
@@ -348,17 +349,20 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         ),*/
                       ],
                     ),
-                    Center(
-                      child: AnimatedSmoothIndicator(
-                        activeIndex: _currentImageIndex,
-                        count: product.images.length,
-                        effect: const ExpandingDotsEffect(
-                          dotHeight: 8,
-                          dotWidth: 8,
-                          spacing: 4,
-                          expansionFactor: 4,
-                          activeDotColor: Colors.red,
-                          dotColor: Colors.grey,
+                    Visibility(
+                      visible: false,
+                      child: Center(
+                        child: AnimatedSmoothIndicator(
+                          activeIndex: _currentImageIndex,
+                          count: product.images.length,
+                          effect: const ExpandingDotsEffect(
+                            dotHeight: 8,
+                            dotWidth: 8,
+                            spacing: 4,
+                            expansionFactor: 4,
+                            activeDotColor: Colors.red,
+                            dotColor: Colors.grey,
+                          ),
                         ),
                       ),
                     ),

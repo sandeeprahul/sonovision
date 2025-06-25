@@ -24,12 +24,13 @@ class FlashSaleWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 16),
+          // const SizedBox(height: 16),
           //
           _buildHeader(endTime),
           const SizedBox(height: 16),
           SizedBox(
-            height: 306,
+            // height: 306,
+            height: 330,
             // height: (style['height'] ?? 280.0).toDouble(),
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
@@ -91,7 +92,7 @@ class FlashSaleWidget extends StatelessWidget {
 
         },
         child: Container(
-          width: 180,
+          width: 200,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(borderRadius),
@@ -114,10 +115,10 @@ class FlashSaleWidget extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(borderRadius),
                         child: AspectRatio(
-                          aspectRatio: 1,
+                          aspectRatio: 1.0,
                           child: CachedNetworkImage(
                             imageUrl: product['image'],
-                            fit: BoxFit.cover,
+                            fit: BoxFit.contain,
                           ),
                         ),
                       ),
@@ -138,7 +139,7 @@ class FlashSaleWidget extends StatelessWidget {
                         ),
                       ),
 
-                      Positioned(
+                   /*   Positioned(
                         left: badge['position'] == 'top-left' ? 8 : null,
                         right: badge['position'] == 'top-right' ? 8 : null,
                         bottom: 8,
@@ -155,7 +156,7 @@ class FlashSaleWidget extends StatelessWidget {
                             ],
                           ),
                         ),
-                      ),
+                      ),*/
                     ],
                   ),
                   Padding(
@@ -172,18 +173,29 @@ class FlashSaleWidget extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 4),
-                        Text(
-                          '₹${product['flashPrice']}',
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.red),
+                        Row(
+                          children: [
+                            Text(
+                              '₹${product['flashPrice']}',
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.red),
+                            ),
+                            Text(
+                              '₹${product['price']}',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                                decoration: TextDecoration.lineThrough,
+                              ),
+                            ),
+                          ],
                         ),
-                        // _buildProgressBar(stockLeft, stockTotal, progressBar,borderRadius)
                         /*
                         const SizedBox(height: 6),
                         _buildProgressBar(stockLeft, stockTotal, progressBar),*/
                       ],
                     ),
                   ),
-                  Padding(
+               /*   Padding(
                     padding: const EdgeInsets.only(left: 12.0),
                     child: Text(
                       '₹${product['price']}',
@@ -193,7 +205,7 @@ class FlashSaleWidget extends StatelessWidget {
                         decoration: TextDecoration.lineThrough,
                       ),
                     ),
-                  ),
+                  ),*/
                   Container(
                     padding: const EdgeInsets.all(4),
                     width: double.infinity,

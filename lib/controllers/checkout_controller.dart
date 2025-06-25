@@ -138,24 +138,9 @@ class CheckoutController extends GetxController {
       "address": selectedAddressId.value,
     };
 
-    final bodyy = {
-      "products":[
-        {
-          "product":"680ef09a4fbe39d34f56dd7d",
-          "quantity":1
-        },
-        {
-          "product":"680ef8674fbe39d34f56dd8b",
-          "quantity":1
-        }
-      ],
-      "total":200,
-      "address":"680efa7a4fbe39d34f56dd97"
-    };
+
     var forprint = jsonEncode(body);
-    var forprint2 = jsonEncode(bodyy);
     print(forprint);
-    print(forprint2);
 
     try {
       isLoading.value = true;

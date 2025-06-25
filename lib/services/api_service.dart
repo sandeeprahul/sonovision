@@ -7,6 +7,7 @@ class ApiService {
   // Home Data
   Future<Map<String, dynamic>> getHomeData() async {
     final response = await http.get(Uri.parse('$baseUrl/api/render/home'));
+    print('$baseUrl/api/render/home');
     if (response.statusCode == 200) {
       return json.decode(response.body);
     }
