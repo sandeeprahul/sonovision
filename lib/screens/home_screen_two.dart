@@ -33,10 +33,10 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
     super.initState();
     _getCurrentLocation();
   }
+  final HomeController controller = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
-    final HomeController controller = Get.put(HomeController());
 
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
@@ -485,16 +485,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
     }
   }
 
-  Widget _buildSearchBar() {
-    return const AnimatedSearchBar(
-      style: {
-        "margin": 16,
-        "height": 56,
-        "borderRadius": 20,
-        "placeholder": "Search products, categories...",
-      },
-    );
-  }
+
 
   Widget _buildProductGroup(BuildContext context, Map<String, dynamic> group) {
     final products = group['data'] as List<dynamic>;
@@ -764,7 +755,24 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
           latitude = position.latitude;
           longitude = position.longitude;
         });
-        _getAddressFromLatLng(latitude, longitude);
+        // _getAddressFromLatLng(latitude, longitude);
+        controller.findNearestStore(latitude,longitude); // Example: Bangalore coordinates
+        if (controller.nearestStore.value.isNotEmpty) {
+
+          setState(() {
+            _addressLine1 = "Nearest store: ${controller.nearestStore.value['name']}";
+
+          });
+
+        } else {
+          setState(() {
+            _addressLine1 = "No nearby stores found";
+
+          });
+
+        }
+
+
       } catch (e) {
         Get.snackbar('Error', 'Could not get location: $e');
       }
@@ -874,14 +882,16 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                               onTap: () {
                                 _getCurrentLocation();
                               },
-                              child: TextButton.icon(
-                                onPressed: () {},
-                                icon: const Icon(
+                              child: TextButton(
+                                onPressed: () {
+
+                                },
+                              /*  icon: const Icon(
                                   Icons.keyboard_arrow_down_outlined,
                                   color: Colors.transparent,
-                                ),
-                                label: Text(
-                                  '$_addressLine1, $_addressLine2',
+                                ),*/
+                                child: Text(
+                                  '$_addressLine1 $_addressLine2',
                                   style:
                                       Theme.of(context).textTheme.titleMedium?.copyWith(
                                             fontWeight: FontWeight.w600,
@@ -891,7 +901,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                                             fontSize: 12,
                                           ),
                                 ),
-                                iconAlignment: IconAlignment.end,
+
                               ),
                             ),
 

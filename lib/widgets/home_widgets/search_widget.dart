@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../pages/search_page.dart';
+import '../../screens/search_page.dart';
+
 
 class AnimatedSearchBar extends StatefulWidget {
   final Map<String, dynamic> style;
@@ -62,7 +63,7 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar>
               padding: const EdgeInsets.only(top: 2.0, bottom: 2.0, left: 2.0, right: 2.0),
               child: InkWell(
                 onTap: (){
-                  Get.to(() => const SearchPage());
+                  Get.to(() =>  SearchPage());
 
                 },
                 child: Row(

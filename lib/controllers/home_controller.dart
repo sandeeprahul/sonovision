@@ -46,6 +46,7 @@ class HomeController extends GetxController {
       // Initialize nearest store if we have location data
       if (stores.isNotEmpty) {
         // You can call findNearestStore() here if you already have user location
+        // findNearestStore();
       }
     } catch (e) {
       error.value = 'Failed to load stores: ${e.toString()}';

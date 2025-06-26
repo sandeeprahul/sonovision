@@ -241,6 +241,7 @@ class _AddressFormPageState extends State<AddressFormPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Address submitted successfully')),
           );
+          Get.back();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
