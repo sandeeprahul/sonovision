@@ -224,28 +224,6 @@ class BannerCarouselNew extends StatelessWidget {
               pauseAutoPlayOnTouch: true,
             ),
           ),
-
-          // Page indicators (Material 3 style)
-    /*      if (banners.length > 1)
-            Padding(
-              padding: const EdgeInsets.only(top: 12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(banners.length, (index) {
-                  return Container(
-                    width: 8,
-                    height: 8,
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Theme.of(context).colorScheme.primary.withOpacity(
-                        index == 0 ? 1 : 0.4,
-                      ),
-                    ),
-                  );
-                }),
-              ),
-            ),*/
         ],
       ),
     );

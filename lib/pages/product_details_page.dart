@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
@@ -13,6 +15,7 @@ import '../screens/product_list_screen.dart';
 import '../utils/cart_bottom_sheet.dart';
 import '../widgets/horizontal_product_list.dart';
 import '../widgets/product_details_widgets/availability_options_widget.dart';
+import '../widgets/product_details_widgets/map_widget.dart';
 import '../widgets/product_details_widgets/store_availability_card.dart';
 
 class ProductDetailsPage extends StatefulWidget {
@@ -59,6 +62,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     }
   }
 
+ final LatLng ln=  LatLng(12.9716, 77.5946);
   final productDetailsController = Get.put(ProductDetailsController());
 //_id
   @override
@@ -498,6 +502,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       ),
                     ),
                     const SizedBox(height: 10),
+                    // SinglePointMap(
+                    //   point: ln, // Your coordinates here
+                    //   zoomLevel: 16, // Optional zoom level (default is 15)
+                    // ),
                     const StoreAvailabilityCard(
                       storeCount: 15,
                       // No onTap for read-only display
