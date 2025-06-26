@@ -48,6 +48,177 @@ class _MyAddressPageState extends State<MyAddressPage> {
                 return const Center(child: Text('No addresses found.'));
               }
 
+              return ListView.separated(
+                padding: const EdgeInsets.fromLTRB(16, 24, 16, 40),
+                separatorBuilder: (_, __) => const SizedBox(height: 12),
+                itemCount: controller.addresses.length,
+                itemBuilder: (context, index) {
+                  // Sort by most recent first
+                 /* final sortedAddresses = controller.addresses.toList()
+                    ..sort((a, b) => b.createdAt.compareTo(a.createdAt));*/
+                  final address = controller.addresses[index];
+                  final isSelected = controller.selectedAddress.value?.id == address.id;
+                  // final address = sortedAddresses[index];
+                  // final isSelected = controller.selectedAddress.value?.id == address.id;
+
+                  return Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(24),
+                      onTap: () => controller.selectedAddress.value = address,
+                      splashFactory: InkSparkle.splashFactory,
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeOutQuint,
+                        margin: const EdgeInsets.symmetric(vertical: 4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(24),
+                          border: Border.all(
+                            color: isSelected
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(context).colorScheme.outlineVariant,
+                            width: isSelected ? 1.5 : 0.8,
+                          ),
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Theme.of(context).colorScheme.surfaceContainerHigh,
+                              Theme.of(context).colorScheme.surfaceContainerHighest,
+                            ],
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 12,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Header with selection indicator
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 24,
+                                    height: 24,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: isSelected
+                                            ? Theme.of(context).colorScheme.primary
+                                            : Theme.of(context).colorScheme.outline,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    child: isSelected
+                                        ? Icon(
+                                      Icons.check_rounded,
+                                      size: 16,
+                                      color: Theme.of(context).colorScheme.primary,
+                                    )
+                                        : null,
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Text(
+                                    address.addressLine1.toUpperCase() ?? 'ADDRESS',
+                                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                                      // letterSpacing: 1.2,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+
+                              // Address details
+                              _buildDetailRow(
+                                context,
+                                icon: Icons.person_outline_rounded,
+                                text: address.name,
+                              ),
+                              _buildDetailRow(
+                                context,
+                                icon: Icons.home_outlined,
+                                text: address.addressLine1,
+                              ),
+                              if (address.addressLine2?.isNotEmpty ?? false)
+                                _buildDetailRow(
+                                  context,
+                                  icon: Icons.apartment_rounded,
+                                  text: address.addressLine2!,
+                                ),
+                              _buildDetailRow(
+                                context,
+                                icon: Icons.location_city_rounded,
+                                text: '${address.city}, ${address.postalCode}',
+                              ),
+                              const SizedBox(height: 16),
+
+                              // Action buttons
+                              Row(
+                                children: [
+                                  // Edit button
+                                  Expanded(
+                                    child: FilledButton.tonal(
+                                      onPressed: () => _showEditBottomSheet(context, address),
+                                      style: FilledButton.styleFrom(
+                                        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
+                                        foregroundColor: Theme.of(context).colorScheme.onSurfaceVariant,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(14),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(vertical: 14),
+                                      ),
+                                      child: const Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.edit_rounded, size: 18),
+                                          SizedBox(width: 8),
+                                          Text('Edit'),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+
+                                  // Delete button
+                                  Expanded(
+                                    child: FilledButton(
+                                      onPressed: () => _confirmDelete(context, address.id),
+                                      style: FilledButton.styleFrom(
+                                        backgroundColor: Theme.of(context).colorScheme.errorContainer,
+                                        foregroundColor: Theme.of(context).colorScheme.onErrorContainer,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(14),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(vertical: 14),
+                                      ),
+                                      child: const Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.delete_outline_rounded, size: 18),
+                                          SizedBox(width: 8),
+                                          Text('Delete'),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+
               return ListView.builder(
                 itemCount: controller.addresses.length,
                 itemBuilder: (context, index) {
@@ -143,6 +314,31 @@ class _MyAddressPageState extends State<MyAddressPage> {
                 child: ElevatedButton(onPressed: (){
                   Get.toNamed('/add-address');
                 }, child: const Text('ADD NEW ADDRESS'))),
+          ),
+        ],
+      ),
+    );
+  }
+  // Helper widget for detail rows
+  Widget _buildDetailRow(BuildContext context, {required IconData icon, required String text}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            icon,
+            size: 20,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              text,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
           ),
         ],
       ),

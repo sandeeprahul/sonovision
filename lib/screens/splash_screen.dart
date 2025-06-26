@@ -21,8 +21,8 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     )..repeat(reverse: true);
 
     // Navigation delay
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MainPage()));
+    Future.delayed(const Duration(seconds: 5), () {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MainPage()));
     });
   }
 
@@ -64,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
             )
                 .animate()
                 .fadeIn(duration: 1200.ms)
-                .scale(duration: 800.ms)
+                // .scale(duration: 800.ms)
                 .then(delay: 500.ms),
             // const SizedBox(height: 20),
             AnimatedBuilder(
@@ -95,7 +95,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
             )
                 .animate()
                 .fadeIn(duration: 1200.ms)
-                .scale(duration: 800.ms)
+                // .scale(duration: 800.ms)
                 .then(delay: 500.ms),
             const SizedBox(height: 20),
 

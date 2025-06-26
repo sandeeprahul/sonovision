@@ -162,6 +162,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
       case 'banners':
         final bannerData = widget['data']?['data'] ?? [];
         final style = widget['style'] ?? {};
+
         return BannerCarouselNew(banners: bannerData, style: style);
       case 'dealOfDay':
         return _buildDealOfDay(widget);
@@ -905,7 +906,9 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   gradient: LinearGradient(
+
                                     colors: [
+
                                       Colors.black.withOpacity(0.6),
                                       Colors.black.withOpacity(0.2),
                                     ],

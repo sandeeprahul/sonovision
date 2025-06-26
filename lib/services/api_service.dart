@@ -14,6 +14,19 @@ class ApiService {
     throw Exception('Failed to load home data');
   }
 
+  Future<List<Map<String, dynamic>>>  getStores() async {
+    final response = await http.get(Uri.parse('$baseUrl/api/Stores'));
+    print('$baseUrl/api/Stores');
+
+    if (response.statusCode == 200) {
+      final List<dynamic> decoded = json.decode(response.body);
+      return decoded.map((e) => Map<String, dynamic>.from(e)).toList();
+    } else {
+      throw Exception('Failed to load stores');
+    }
+    throw Exception('Failed to load home data');
+  }
+
   // Categories
   Future<List<Map<String, dynamic>>> getCategories() async {
     final response = await http.get(Uri.parse('$baseUrl/api/categories'));

@@ -49,14 +49,14 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
     }
   }
 
-  late final CategoryProductsController categoryProductsController;
+  late final CategoryProductsController categoryProductsController = Get.put(CategoryProductsController(widget.categoryId));
 
   Future<void> _loadProducts() async {
     print("_loadProducts ${widget.categoryId}");
     setState(() => _isLoading = true);
     // TODO: Replace with actual API call
-    categoryProductsController =
-        Get.put(CategoryProductsController(widget.categoryId));
+    categoryProductsController .fetchProductsByCategory(widget.categoryId);
+        // Get.put(CategoryProductsController(widget.categoryId));
 
     await Future.delayed(const Duration(seconds: 1));
     setState(() {
@@ -82,7 +82,16 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
         slivers: [
           _buildSliverAppBar(),
           _buildFiltersBar(),
+          if(categoryProductsController.products.isNotEmpty)
           _buildProductGrid(),
+
+          if(categoryProductsController.products.isEmpty)
+          const SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Center(child: Text('No products found')),
+            ),
+          ),
           if (_isLoading)
             const SliverToBoxAdapter(
               child: Padding(
@@ -471,13 +480,15 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                             "Add to Cart",
                             style: TextStyle(
                                 fontSize: 13,
-                                color: Color(0xffaa6d6a),
+                                color: Colors.black,
+                                // color: Color(0xffaa6d6a),
                                 fontWeight: FontWeight.bold),
                           ),
                           Icon(
                             Icons.shopping_cart_outlined,
-                            color: Color(0xffaa6d6a),
-                            size: 16,
+                            color: Colors.black,
+                            // color: Color(0xffaa6d6a),
+                            size: 14,
                           )
                         ],
                       ),

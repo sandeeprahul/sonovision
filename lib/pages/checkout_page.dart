@@ -291,7 +291,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
              await controller.placeOrder();
              Navigator.pop(context);
-             Navigator.pop(context);
+             // Navigator.pop(context);
 
 
             },

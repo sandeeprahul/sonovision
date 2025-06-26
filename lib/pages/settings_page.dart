@@ -10,10 +10,10 @@ class SettingsPage extends StatelessWidget {
       body: ListView(
         children: [
           const SizedBox(height: 12),
-          _buildSettingTile(Icons.person_outline, "Account", "Update personal info"),
+          // _buildSettingTile(Icons.person_outline, "Account", "Update personal info"),
           _buildSettingTile(Icons.lock_outline, "Privacy & Security", "Manage passwords & privacy"),
           _buildSettingTile(Icons.notifications_outlined, "Notifications", "Push, Email preferences"),
-          _buildSettingTile(Icons.language, "Language", "Select app language"),
+          // _buildSettingTile(Icons.language, "Language", "Select app language"),
           _buildSettingTile(Icons.info_outline, "About", "App version, legal info"),
         ],
       ),

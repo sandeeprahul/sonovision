@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:get/get.dart';
 import '../services/api_service.dart';
 
@@ -5,11 +7,14 @@ class HomeController extends GetxController {
   final Rx<Map<String, dynamic>> homeData = Rx<Map<String, dynamic>>({});
   final RxBool isLoading = true.obs;
   final RxString error = ''.obs;
-
+  final RxList<Map<String, dynamic>> stores = <Map<String, dynamic>>[].obs;
+  final Rx<Map<String, dynamic>> nearestStore = Rx<Map<String, dynamic>>({});
   @override
   void onInit() {
     super.onInit();
     loadHomeData();
+    loadStores();
+
   }
 
   final ApiService _apiService = ApiService();
@@ -29,5 +34,74 @@ class HomeController extends GetxController {
   }
   Future<void> refreshHomeData() async {
     await loadHomeData();
+  }
+  Future<void> loadStores() async {
+    try {
+      isLoading.value = true;
+      error.value = '';
+
+      final storesData = await _apiService.getStores();
+      stores.value = List<Map<String, dynamic>>.from(storesData);
+
+      // Initialize nearest store if we have location data
+      if (stores.isNotEmpty) {
+        // You can call findNearestStore() here if you already have user location
+      }
+    } catch (e) {
+      error.value = 'Failed to load stores: ${e.toString()}';
+      print('Failed to load stores: ${e.toString()}');
+      stores.value = []; // Reset stores on error
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  // Function to find nearest store
+  void findNearestStore(double userLat, double userLng) {
+    try {
+      // Filter out stores with invalid coordinates (0,0)
+      final validStores = stores.where((store) =>
+      store['latitude'] != 0 && store['longitude'] != 0).toList();
+
+      if (validStores.isEmpty) {
+        nearestStore.value = {};
+        return;
+      }
+
+      // Calculate distances and find nearest
+      Map<String, dynamic> nearest = validStores.reduce((a, b) {
+        final distanceA = _calculateDistance(
+            userLat, userLng, a['latitude'], a['longitude']);
+        final distanceB = _calculateDistance(
+            userLat, userLng, b['latitude'], b['longitude']);
+        return distanceA < distanceB ? a : b;
+      });
+
+      // Add distance to the nearest store info
+      nearest['distance'] = _calculateDistance(
+          userLat, userLng, nearest['latitude'], nearest['longitude']);
+
+      nearestStore.value = nearest;
+    } catch (e) {
+      error.value = 'Error finding nearest store: ${e.toString()}';
+    }
+  }
+
+  // Haversine formula to calculate distance between two coordinates
+  double _calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    const R = 6371; // Radius of the earth in km
+    final dLat = _deg2rad(lat2 - lat1);
+    final dLon = _deg2rad(lon2 - lon1);
+    final a =
+        sin(dLat/2) * sin(dLat/2) +
+            cos(_deg2rad(lat1)) * cos(_deg2rad(lat2)) *
+                sin(dLon/2) * sin(dLon/2);
+    final c = 2 * atan2(sqrt(a), sqrt(1-a));
+    final distance = R * c; // Distance in km
+    return distance;
+  }
+
+  double _deg2rad(double deg) {
+    return deg * (pi / 180);
   }
 }

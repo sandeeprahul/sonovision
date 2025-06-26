@@ -166,7 +166,7 @@ class CheckoutController extends GetxController {
         final orderId = responseData['_id']; // this is your actual order ID
 
         if(selectedPaymentMethod.value=="Cash on Delivery"){
-          Get.to(() => OrderSuccessPage(orderId: orderId));
+          Get.off(() => OrderSuccessPage(orderId: orderId));
         }else{
           // Online Payment via Razorpay
           var options = {

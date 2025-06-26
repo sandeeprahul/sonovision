@@ -26,10 +26,12 @@ class CategoryProductsController extends GetxController {
     isError.value = false;
     errorMessage.value = '';
     isEmpty.value = false;
+    products.value = [];
     try {
       final response = await http.get(
         Uri.parse('https://sonovision.asquare.org.in/api/products/category/$categoryId'),
       );
+      print('https://sonovision.asquare.org.in/api/products/category/$categoryId');
 
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
