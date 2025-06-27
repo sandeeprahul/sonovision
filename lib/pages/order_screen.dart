@@ -17,6 +17,7 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade300,
       appBar: AppBar(title: const Text("My Orders")),
       body: FutureBuilder<List<dynamic>>(
         future: OrderService.fetchOrders(),
@@ -32,10 +33,9 @@ class _OrderScreenState extends State<OrderScreen> {
           final sortedOrders = orders
               .where((o) => o['createdAt'] != null)
               .toList()
-            ..sort((a, b) =>
-                (b['createdAt'] as Comparable).compareTo(a['createdAt']));
+            ..sort((a, b) => (b['createdAt'] as Comparable).compareTo(a['createdAt']));
+
           return ListView.separated(
-            // reverse: true,
             padding: const EdgeInsets.fromLTRB(16, 24, 16, 40),
             separatorBuilder: (_, __) => const SizedBox(height: 16),
             itemCount: sortedOrders.length,
@@ -43,10 +43,11 @@ class _OrderScreenState extends State<OrderScreen> {
               final order = sortedOrders[index];
               final products = order['products'] as List;
               final statusColor = _getStatusColor(order['status']);
+              final isCompleted = order['status'] == 'Completed';
 
-              return PhysicalModel(//PhysicalModel for inside
+              return PhysicalModel(
                 color: Colors.transparent,
-                // elevation: 1,
+                elevation: 0,
                 borderRadius: BorderRadius.circular(28),
                 child: Container(
                   decoration: BoxDecoration(
@@ -55,10 +56,7 @@ class _OrderScreenState extends State<OrderScreen> {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Theme.of(context)
-                            .colorScheme
-                            .surfaceContainerHigh
-                            .withOpacity(0.6),
+                        Theme.of(context).colorScheme.surfaceContainerHigh.withOpacity(0.6),
                         Theme.of(context).colorScheme.surfaceContainerHighest,
                       ],
                     ),
@@ -75,73 +73,65 @@ class _OrderScreenState extends State<OrderScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Header with dynamic status indicator
+                            // Header with order ID and status
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 // Order ID with decorative accent
                                 Flexible(
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "ORDER #${order['_id']}",
-                                        // "ORDER #${order['_id'].toString().substring(0, 8)}",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelLarge
-                                            ?.copyWith(
-                                              letterSpacing: 1.2,
-                                              color: Colors.black,
-                                            ),
+                                        "ORDER #${order['_id'].toString()}",
+                                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                                          letterSpacing: 1.2,
+                                          color: Theme.of(context).colorScheme.onSurface,
+                                        ),
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        "${order['createdAt']?.toString().toFormattedDate ?? ''}",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall
-                                            ?.copyWith(
-                                          color: Colors.black,
-                                            ),
+                                        "Placed on ${order['createdAt']?.toString().toFormattedDate ?? ''}",
+                                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
-                                // Animated status pill
-                                // const SizedBox(width: 20),
 
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 14, vertical: 6),
-                                  decoration: BoxDecoration(
-                                    color: _getStatusColor( order['status']),
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(
-                                      color: statusColor.withOpacity(0.3),
-                                      width: 1.5,
+                                // Status chip with animation
+                                TweenAnimationBuilder(
+                                  duration: const Duration(milliseconds: 400),
+                                  tween: ColorTween(
+                                    begin: Colors.transparent,
+                                    end: statusColor.withOpacity(0.16),
+                                  ),
+                                  builder: (_, color, __) => Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                                    decoration: BoxDecoration(
+                                      color: color,
+                                      borderRadius: BorderRadius.circular(20),
+                                      border: Border.all(
+                                        color: statusColor.withOpacity(0.3),
+                                        width: 1.5,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      order['status'].toString().toUpperCase(),
+                                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                        color: statusColor,
+                                        fontWeight: FontWeight.w900,
+                                        letterSpacing: 0.8,
+                                      ),
                                     ),
                                   ),
-                                  child: Text(
-                                    order['status'].toString().toUpperCase(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelSmall
-                                        ?.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w900,
-                                      letterSpacing: 0.8,
-                                    ),
-                                  ),
-                                )
+                                ),
                               ],
                             ),
-
                             const SizedBox(height: 20),
 
-                            // Product carousel with peek effect
+                            // Product carousel
                             SizedBox(
                               height: 140,
                               child: Stack(
@@ -149,13 +139,11 @@ class _OrderScreenState extends State<OrderScreen> {
                                   ListView.separated(
                                     scrollDirection: Axis.horizontal,
                                     itemCount: products.length,
-                                    separatorBuilder: (_, __) =>
-                                        const SizedBox(width: 12),
+                                    separatorBuilder: (_, __) => const SizedBox(width: 12),
                                     itemBuilder: (ctx, idx) {
                                       final item = products[idx];
                                       final product = item['product'];
-                                      return _buildProductCard(
-                                          context, product, item['quantity']);
+                                      return _buildProductCard(context, product, item['quantity']);
                                     },
                                   ),
 
@@ -171,13 +159,8 @@ class _OrderScreenState extends State<OrderScreen> {
                                           begin: Alignment.centerLeft,
                                           end: Alignment.centerRight,
                                           colors: [
-                                            Theme.of(context)
-                                                .colorScheme
-                                                .surfaceContainerHigh
-                                                .withOpacity(0),
-                                            Theme.of(context)
-                                                .colorScheme
-                                                .surfaceContainerHigh,
+                                            Theme.of(context).colorScheme.surfaceContainerHigh.withOpacity(0),
+                                            Theme.of(context).colorScheme.surfaceContainerHigh,
                                           ],
                                         ),
                                       ),
@@ -186,13 +169,13 @@ class _OrderScreenState extends State<OrderScreen> {
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 24),
+                            const SizedBox(height: 14),
 
-                            // Delivery address with map pin
+                            // Delivery address
                             Container(
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: Theme.of(context).colorScheme.surfaceContainerLow,
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Row(
@@ -200,45 +183,32 @@ class _OrderScreenState extends State<OrderScreen> {
                                   Container(
                                     padding: const EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primaryContainer,
+                                      color: Theme.of(context).colorScheme.primaryContainer,
                                       shape: BoxShape.circle,
                                     ),
                                     child: Icon(
                                       Icons.pin_drop_rounded,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimaryContainer,
+                                      color: Theme.of(context).colorScheme.onPrimaryContainer,
                                       size: 20,
                                     ),
                                   ),
                                   const SizedBox(width: 12),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Delivery Address",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelMedium
-                                              ?.copyWith(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onSurfaceVariant,
-                                              ),
+                                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                          ),
                                         ),
                                         const SizedBox(height: 2),
                                         Text(
                                           "${order['address']['addressLine1']}, ${order['address']['city']}",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium
-                                              ?.copyWith(
-                                                fontWeight: FontWeight.w500,
-                                              ),
+                                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -246,25 +216,28 @@ class _OrderScreenState extends State<OrderScreen> {
                                 ],
                               ),
                             ),
-                            // const SizedBox(height: 4),
+                            const SizedBox(height: 14),
 
-                            // Order summary with dynamic total
-                            Column(
-                              children: [
-                                /* _buildSummaryRow(context, "Subtotal", "₹${order['subtotal']}"),
-                                const SizedBox(height: 8),
-                                _buildSummaryRow(context, "Shipping", "₹${order['shipping']}"),
-                                ,*/
-                                const Divider(height: 24, thickness: 0.8),
-                                _buildSummaryRow(
-                                  context,
-                                  "Total",
-                                  "₹${order['total']}",
-                                  isTotal: true,
-                                ),
-                              ],
+                            // Order total
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.surfaceContainer,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: _buildSummaryRow(
+                                context,
+                                "Total",
+                                "₹${order['total']}",
+                                isTotal: true,
+                              ),
                             ),
-                            // const SizedBox(height: 20),
+
+                            // Rating section for completed orders
+                            if (isCompleted) ...[
+                              const SizedBox(height: 10),
+                              _buildRatingSection(context, order),
+                            ],
                           ],
                         ),
                       ),
@@ -274,12 +247,52 @@ class _OrderScreenState extends State<OrderScreen> {
               );
             },
           );
-
         },
       ),
     );
   }
+// Add this new widget for rating
+  Widget _buildRatingSection(BuildContext context, Map<String, dynamic> order) {
+    final rating =  3; // Default to 0 if no rating exists
+    // final rating = order['rating'] ?? 0; // Default to 0 if no rating exists
 
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Divider(height: 24, thickness: 0.8),
+        Text(
+          'Rate Your Order',
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: StarRating(
+                rating: rating.toDouble(),
+                onRatingChanged: (newRating) {
+
+                  _submitRating(order['_id'], newRating);
+                },
+                starSize: 28,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+            if (rating > 0)
+              Text(
+                '${rating.toStringAsFixed(1)}/5',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+          ],
+        ),
+      ],
+    );
+  }
 // Status color helper (updated for Material 3)
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
@@ -425,4 +438,44 @@ class _OrderScreenState extends State<OrderScreen> {
       ],
     );
   }
+}
+// StarRating widget (custom implementation)
+class StarRating extends StatelessWidget {
+  final double rating;
+  final void Function(double) onRatingChanged;
+  final double starSize;
+  final Color color;
+
+  const StarRating({
+    super.key,
+    required this.rating,
+    required this.onRatingChanged,
+    this.starSize = 24,
+    this.color = Colors.amber,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(5, (index) {
+        return GestureDetector(
+          onTap: () => onRatingChanged(index + 1.0),
+          child: Icon(
+            index < rating.floor() ? Icons.star_rounded :
+            (index < rating.ceil() ? Icons.star_half_rounded : Icons.star_border_rounded),
+            size: starSize,
+            color: color,
+          ),
+        );
+      }),
+    );
+  }
+}
+
+// Helper function to submit rating
+void _submitRating(String orderId, double rating) {
+  // Implement your rating submission logic here
+  // Example: call API to update order rating
+  print('Rating $rating submitted for order $orderId');
 }

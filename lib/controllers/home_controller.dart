@@ -1,6 +1,9 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../services/api_service.dart';
 import '../utils/version_alert.dart';
 
@@ -67,7 +70,76 @@ class HomeController extends GetxController {
     }
   }
 
-  // Function to find nearest store
+  final RxDouble latitude = 0.0.obs;
+  final RxDouble longitude = 0.0.obs;
+  final RxString addressLine1 = "".obs;
+
+  /// Call this method to get location and update nearest store
+  Future<void> getCurrentLocation() async {
+    try {
+      isLoading.value = true;
+      error.value = '';
+      var status = await Permission.location.request();
+
+      if (status.isGranted) {
+        LocationSettings locationSettings = const LocationSettings(
+          accuracy: LocationAccuracy.bestForNavigation,
+          distanceFilter: 0,
+        );
+
+        Position position = await Geolocator.getCurrentPosition(
+          locationSettings: locationSettings,
+        );
+
+        latitude.value = position.latitude;
+        longitude.value = position.longitude;
+
+        // Call to find nearest store (you need to define this)
+        findNearestStore(latitude.value, longitude.value);
+
+        if (nearestStore.value.isNotEmpty) {
+          addressLine1.value = "Nearest store: ${nearestStore.value['name']}";
+        } else {
+          addressLine1.value = "No nearby stores found";
+        }
+      } else if (status.isDenied) {
+        _showPermissionDialog(
+          title: "Permission Denied",
+          message:
+              "Location permission is required to get your current position.",
+        );
+      } else if (status.isPermanentlyDenied) {
+        _showPermissionDialog(
+          title: "Permission Permanently Denied",
+          message: "Please enable location permission from app settings.",
+        );
+      }
+    } catch (e) {
+      error.value = 'Could not get location:  ${e.toString()}';
+      Get.snackbar('Error', 'Could not get location: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void _showPermissionDialog({required String title, required String message}) {
+    Get.defaultDialog(
+      title: title,
+      middleText: message,
+      confirm: ElevatedButton(
+        onPressed: () {
+          openAppSettings();
+          Get.back();
+        },
+        child: const Text("Open Settings"),
+      ),
+      cancel: TextButton(
+        onPressed: () => Get.back(),
+        child: const Text("Cancel"),
+      ),
+    );
+  } // Function to find nearest store
+
   void findNearestStore(double userLat, double userLng) {
     try {
       // Filter out stores with invalid coordinates (0,0)

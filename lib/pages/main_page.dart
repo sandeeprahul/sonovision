@@ -2,6 +2,7 @@ import 'package:electronic_store/pages/login_page.dart';
 import 'package:electronic_store/screens/home_screen_two.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../controllers/home_controller.dart';
 import '../screens/search_page.dart';
 import '../services/auth_service.dart';
 import '../utils/version_alert.dart';
@@ -23,12 +24,9 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
   final List<Widget> _pages = [
     const HomeScreenTwo(),
      CartPage(),
-
-
-     // SearchPage(),
-    // const WishlistPage(),
     const ProfilePage(),
-  ];
+  ];//   // SearchPage(),
+  // const WishlistPage(),
   DateTime? _lastBackPressTime;
 
   @override
@@ -55,6 +53,7 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
     return true;
   }
 
+  final HomeController controller = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
@@ -82,24 +81,22 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
   }
   void _onItemSelected(int index) async {
 
+    // Early check: index should be within range
+    if (index < 0 || index >= _tabController.length) {
+      debugPrint("Invalid tab index: $index");
+      return;
+    }
+
 
     setState(() => _selectedIndex = index);
 
-    if(_selectedIndex==3){
+    if (index == 2) {
       final authController = Get.put(AuthController());
       final token = await authController.loadUserAndToken();
-      String? email = authController.user['email'];
-      String tokenValue = authController.token.value;
-      bool loggedIn = authController.isLoggedIn;
-      print(email);
-      print(tokenValue);
-      print(loggedIn);
-      if (tokenValue.isEmpty) {
+      if (authController.token.value.isEmpty) {
         Get.to(const LoginPage());
-      }else{
-        _tabController.animateTo(index);
+        return;
       }
-      return;
     }
     _tabController.animateTo(index);
   }
@@ -112,6 +109,7 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
         setState(() => _selectedIndex = _tabController.index);
       }
     });
+    controller.getCurrentLocation();
   }
 
 }

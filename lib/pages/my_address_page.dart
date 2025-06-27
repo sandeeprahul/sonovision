@@ -64,7 +64,7 @@ class _MyAddressPageState extends State<MyAddressPage> {
                   return Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      borderRadius: BorderRadius.circular(24),
+                      borderRadius: BorderRadius.circular(16),
                       onTap: () => controller.selectedAddress.value = address,
                       splashFactory: InkSparkle.splashFactory,
                       child: AnimatedContainer(
@@ -72,7 +72,7 @@ class _MyAddressPageState extends State<MyAddressPage> {
                         curve: Curves.easeOutQuint,
                         margin: const EdgeInsets.symmetric(vertical: 4),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(24),
+                          borderRadius: BorderRadius.circular(16),
                           border: Border.all(
                             color: isSelected
                                 ? Theme.of(context).colorScheme.primary
@@ -101,17 +101,15 @@ class _MyAddressPageState extends State<MyAddressPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // Header with selection indicator
-                              Row(
+                            /*  Row(
                                 children: [
                                   Container(
-                                    width: 24,
-                                    height: 24,
+                                    width: 10,
+                                    height: 10,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       border: Border.all(
-                                        color: isSelected
-                                            ? Theme.of(context).colorScheme.primary
-                                            : Theme.of(context).colorScheme.outline,
+                                        color: Colors.transparent,
                                         width: 2,
                                       ),
                                     ),
@@ -119,7 +117,7 @@ class _MyAddressPageState extends State<MyAddressPage> {
                                         ? Icon(
                                       Icons.check_rounded,
                                       size: 16,
-                                      color: Theme.of(context).colorScheme.primary,
+                                      color: Colors.transparent,
                                     )
                                         : null,
                                   ),
@@ -133,7 +131,7 @@ class _MyAddressPageState extends State<MyAddressPage> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: 16),*/
 
                               // Address details
                               _buildDetailRow(
@@ -149,12 +147,12 @@ class _MyAddressPageState extends State<MyAddressPage> {
                               if (address.addressLine2?.isNotEmpty ?? false)
                                 _buildDetailRow(
                                   context,
-                                  icon: Icons.apartment_rounded,
-                                  text: address.addressLine2!,
+                                  icon: Icons.apartment_outlined,
+                                  text: address.addressLine2,
                                 ),
                               _buildDetailRow(
                                 context,
-                                icon: Icons.location_city_rounded,
+                                icon: Icons.location_city_outlined,
                                 text: '${address.city}, ${address.postalCode}',
                               ),
                               const SizedBox(height: 16),
@@ -163,47 +161,25 @@ class _MyAddressPageState extends State<MyAddressPage> {
                               Row(
                                 children: [
                                   // Edit button
-                                  Expanded(
-                                    child: FilledButton.tonal(
-                                      onPressed: () => _showEditBottomSheet(context, address),
-                                      style: FilledButton.styleFrom(
-                                        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-                                        foregroundColor: Theme.of(context).colorScheme.onSurfaceVariant,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(14),
-                                        ),
-                                        padding: const EdgeInsets.symmetric(vertical: 14),
-                                      ),
-                                      child: const Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Icon(Icons.edit_rounded, size: 18),
-                                          SizedBox(width: 8),
-                                          Text('Edit'),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
 
                                   // Delete button
                                   Expanded(
                                     child: FilledButton(
-                                      onPressed: () => _confirmDelete(context, address.id),
+                                      onPressed: () => _showEditBottomSheet(context, address),
                                       style: FilledButton.styleFrom(
-                                        backgroundColor: Theme.of(context).colorScheme.errorContainer,
+                                        backgroundColor: Colors.black,
                                         foregroundColor: Theme.of(context).colorScheme.onErrorContainer,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(14),
+                                          borderRadius: BorderRadius.circular(10),
                                         ),
                                         padding: const EdgeInsets.symmetric(vertical: 14),
                                       ),
                                       child: const Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
-                                          Icon(Icons.delete_outline_rounded, size: 18),
+                                          Icon(Icons.edit_outlined, size: 18),
                                           SizedBox(width: 8),
-                                          Text('Delete'),
+                                          Text('Edit'),
                                         ],
                                       ),
                                     ),

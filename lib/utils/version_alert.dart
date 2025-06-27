@@ -120,7 +120,7 @@ void showUpdateDialog() {
             ),
           ],
         ),
-        actions: [
+        actions: const [
           // Update button
 
         ],

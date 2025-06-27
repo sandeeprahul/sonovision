@@ -31,7 +31,6 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _getCurrentLocation();
   }
   final HomeController controller = Get.put(HomeController());
 
@@ -80,7 +79,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
   }
 
   Widget _buildHomeContent(BuildContext context, HomeController controller) {
-    final widgets = controller.homeData.value['widgets'] as List<dynamic>;
+    final widgets = (controller.homeData.value['widgets'] ?? []) as List<dynamic>;
     final saleEndTime =
         DateTime.parse(controller.homeData.value['saleEndTime']);
 
@@ -736,84 +735,6 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
     }
   }
 
-  Future<void> _getCurrentLocation() async {
-    // Request location permission
-    var status = await Permission.location.request();
-
-    if (status.isGranted) {
-      try {
-        // Use platform-specific location settings
-        LocationSettings locationSettings = const LocationSettings(
-          accuracy: LocationAccuracy.bestForNavigation,
-          distanceFilter: 0,
-        );
-        Position position = await Geolocator.getCurrentPosition(
-          locationSettings: locationSettings,
-        );
-
-        //16.508416, 80.637469
-        setState(() {
-          // latitude = 16.508416;
-          // longitude = 80.637469;
-          latitude = position.latitude;
-          longitude = position.longitude;
-        });
-        // _getAddressFromLatLng(latitude, longitude);
-        controller.findNearestStore(latitude,longitude);
-        if (controller.nearestStore.value.isNotEmpty) {
-
-          setState(() {
-            _addressLine1 = "Nearest store: ${controller.nearestStore.value['name']}";
-
-          });
-
-        } else {
-          setState(() {
-            _addressLine1 = "No nearby stores found";
-
-          });
-
-        }
-
-
-      } catch (e) {
-        Get.snackbar('Error', 'Could not get location: $e');
-      }
-    } else if (status.isDenied) {
-      Get.defaultDialog(
-        title: "Permission Denied",
-        middleText:
-            "Location permission is required to get your current position.",
-        confirm: ElevatedButton(
-          onPressed: () {
-            openAppSettings(); // Open settings to enable manually
-            Get.back();
-          },
-          child: const Text("Open Settings"),
-        ),
-        cancel: TextButton(
-          onPressed: () => Get.back(),
-          child: const Text("Cancel"),
-        ),
-      );
-    } else if (status.isPermanentlyDenied) {
-      Get.defaultDialog(
-        title: "Permission Permanently Denied",
-        middleText: "Please enable location permission from app settings.",
-        confirm: ElevatedButton(
-          onPressed: () {
-            openAppSettings();
-            Get.back();
-          },
-          child: const Text("Open Settings"),
-        ),
-        cancel: TextButton(
-          onPressed: () => Get.back(),
-          child: const Text("Cancel"),
-        ),
-      );
-    }
-  }
 
   Widget profileWidget(BuildContext context) {
     return Padding(
@@ -874,7 +795,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                             // Icon(Icons.location_on,color:Colors.white.withOpacity(0.9) ,),
                             IconButton(
                               onPressed: () {
-                                _getCurrentLocation();
+                                controller.getCurrentLocation();
                               },
                               icon: const Icon(Icons.location_on),
                               color: Colors.white.withOpacity(0.9),
@@ -884,30 +805,34 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                             Expanded(
                               child: InkWell(
                                 onTap: () {
-                                  _getCurrentLocation();
+                                  controller.getCurrentLocation();
                                 },
-                                child: TextButton(
-                                  onPressed: () {
+                                child: Obx(
+                                   () {
+                                     if (controller.isLoading.value) {
+                                       return const Text(
+                                         'Fetching...',
+                                         style: TextStyle(
+                                           fontSize: 12,
+                                           fontWeight: FontWeight.w600,
+                                           color: Colors.white,
+                                         ),
+                                       );
+                                     }
+                                    return Text(
+                                      textAlign: TextAlign.start,
+                                      '${controller.addressLine1.value}',
 
-                                  },
-                                /*  icon: const Icon(
-                                    Icons.keyboard_arrow_down_outlined,
-                                    color: Colors.transparent,
-                                  ),*/
-                                  child: Text(
-                                    textAlign: TextAlign.start,
-                                    '$_addressLine1 $_addressLine2',
-
-                                    style:
-                                        Theme.of(context).textTheme.titleMedium?.copyWith(
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.white,
-                                              // decoration: TextDecoration.underline,
-                                              // decorationColor: Colors.white,
-                                              fontSize: 12,
-                                            ),
-                                  ),
-
+                                      style:
+                                          Theme.of(context).textTheme.titleMedium?.copyWith(
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white,
+                                                // decoration: TextDecoration.underline,
+                                                // decorationColor: Colors.white,
+                                                fontSize: 12,
+                                              ),
+                                    );
+                                  }
                                 ),
                               ),
                             ),
