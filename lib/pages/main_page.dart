@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../screens/search_page.dart';
 import '../services/auth_service.dart';
+import '../utils/version_alert.dart';
 import '../widgets/animated_bottom_bar.dart';
 import 'cart_page.dart';
 import 'wishlist_page.dart';
