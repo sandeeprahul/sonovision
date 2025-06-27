@@ -231,13 +231,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             onPressed: () => Navigator.pop(context),
           ),
           actions: [
-            IconButton(
-              icon: Icon(
-                Icons.favorite_border,
-                color: _isAppBarExpanded ? Colors.white : Colors.black,
-              ),
-              onPressed: () {},
-            ),
+
             IconButton(
               icon: Icon(
                 Icons.share,

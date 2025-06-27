@@ -2,9 +2,9 @@ import 'package:electronic_store/pages/login_page.dart';
 import 'package:electronic_store/screens/home_screen_two.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../screens/search_page.dart';
 import '../services/auth_service.dart';
 import '../widgets/animated_bottom_bar.dart';
-import 'search_page.dart';
 import 'cart_page.dart';
 import 'wishlist_page.dart';
 import '../screens/profile_page.dart';
@@ -23,7 +23,9 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
     const HomeScreenTwo(),
      CartPage(),
 
-    const WishlistPage(),
+
+     // SearchPage(),
+    // const WishlistPage(),
     const ProfilePage(),
   ];
   DateTime? _lastBackPressTime;

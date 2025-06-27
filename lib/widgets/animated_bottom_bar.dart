@@ -33,7 +33,7 @@ class AnimatedBottomBar extends StatelessWidget {
           _buildNavItem(0, Icons.home_rounded, 'Home'),
           _buildNavItem(1, Icons.shopping_cart_rounded, 'Cart'),
           // _buildNavItem(2, Icons.search_rounded, 'Search'),
-          _buildNavItem(2, Icons.favorite_rounded, 'Wishlist'),
+          // _buildNavItem(2, Icons.favorite_rounded, 'Wishlist'),
           _buildNavItem(3, Icons.person_rounded, 'Profile'),
         ],
       ),

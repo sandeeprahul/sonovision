@@ -21,13 +21,14 @@ class SearchhController extends GetxController {
     suggestions.value = [
       'Galaxy S24',
       'Washing Machine',
-      'Test Product',
+      'Apple',
       'Samsung',
-      'AI Enabled'
+      'Soundbar',
     ];
   }
 
   Future<void> search(String q) async {
+    print('Search query: $q');
     query.value = q.trim();
     selectedIndex.value = -1;
 
@@ -58,6 +59,7 @@ class SearchhController extends GetxController {
       }
     } catch (e) {
       Get.snackbar('Error', 'Search failed: ${e.toString()}');
+      print( 'Search failed: ${e.toString()}');
     } finally {
       isSearching.value = false;
     }

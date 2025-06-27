@@ -19,9 +19,18 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: _buildSearchBar(context),
+        // automaticallyImplyLeading: false,
+        title:  const Text('Search'),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            color:Colors.white,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           Container(
@@ -88,6 +97,7 @@ class _SearchPageState extends State<SearchPage> {
             ),
             onPressed: () => Get.back(),
           ),
+          const Text('Search')
           // Search field
         ],
       ),
@@ -415,7 +425,7 @@ class _SearchPageState extends State<SearchPage> {
               ],
             ),
             // Favorite button
-            Positioned(
+        /*    Positioned(
               top: 8,
               right: 8,
               child: IconButton(
@@ -423,9 +433,11 @@ class _SearchPageState extends State<SearchPage> {
                   Icons.favorite_border_rounded,
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
-                onPressed: () {},
+                onPressed: () {
+
+                },
               ),
-            ),
+            ),*/
           ],
         ),
       ),

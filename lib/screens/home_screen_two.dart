@@ -751,12 +751,15 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
           locationSettings: locationSettings,
         );
 
+        //16.508416, 80.637469
         setState(() {
+          // latitude = 16.508416;
+          // longitude = 80.637469;
           latitude = position.latitude;
           longitude = position.longitude;
         });
         // _getAddressFromLatLng(latitude, longitude);
-        controller.findNearestStore(latitude,longitude); // Example: Bangalore coordinates
+        controller.findNearestStore(latitude,longitude);
         if (controller.nearestStore.value.isNotEmpty) {
 
           setState(() {
@@ -878,34 +881,38 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                               iconSize: 20,
                             ),
                             // const SizedBox(width: 8),
-                            InkWell(
-                              onTap: () {
-                                _getCurrentLocation();
-                              },
-                              child: TextButton(
-                                onPressed: () {
-
+                            Expanded(
+                              child: InkWell(
+                                onTap: () {
+                                  _getCurrentLocation();
                                 },
-                              /*  icon: const Icon(
-                                  Icons.keyboard_arrow_down_outlined,
-                                  color: Colors.transparent,
-                                ),*/
-                                child: Text(
-                                  '$_addressLine1 $_addressLine2',
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium?.copyWith(
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white,
-                                            // decoration: TextDecoration.underline,
-                                            // decorationColor: Colors.white,
-                                            fontSize: 12,
-                                          ),
-                                ),
+                                child: TextButton(
+                                  onPressed: () {
 
+                                  },
+                                /*  icon: const Icon(
+                                    Icons.keyboard_arrow_down_outlined,
+                                    color: Colors.transparent,
+                                  ),*/
+                                  child: Text(
+                                    textAlign: TextAlign.start,
+                                    '$_addressLine1 $_addressLine2',
+
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium?.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white,
+                                              // decoration: TextDecoration.underline,
+                                              // decorationColor: Colors.white,
+                                              fontSize: 12,
+                                            ),
+                                  ),
+
+                                ),
                               ),
                             ),
 
-                            const Spacer(),
+                            // const Spacer(),
                             InkWell(
                               onTap: (){
                                 Get.to(() => NotificationsPage());

@@ -111,7 +111,7 @@ class CartPage extends StatelessWidget {
                       children: [
                         Icon(Icons.local_offer, color: Colors.green),
                         SizedBox(width: 8),
-                        Expanded(child: Text('You saved ₹1000 on this order!')),
+                        Expanded(child: Text('Independence Day Sale is running')),
                         // Expanded(child: Text('You saved ₹${controller.discount.value.toStringAsFixed(0)} on this order!')),
                       ],
                     ),
@@ -120,11 +120,10 @@ class CartPage extends StatelessWidget {
                   margin: EdgeInsets.all(8),
                   child: ListTile(
                     leading: Icon(Icons.delivery_dining, color: Colors.blue),
-                    title: Text('Delivery with 4 hours',style: TextStyle(fontWeight: FontWeight.bold),),
-                    subtitle: Text('Free express delivery available!'),
+                    title: Text('Delivery with 24 hours',style: TextStyle(fontWeight: FontWeight.bold),),
+                    subtitle: Text('Express delivery available!'),
                   ),
-                )
-            ,
+                ),
                 // Summary
                 Card(
                   margin: const EdgeInsets.all(8),

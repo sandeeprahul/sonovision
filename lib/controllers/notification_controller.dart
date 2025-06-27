@@ -11,6 +11,8 @@ class NotificationController extends GetxController {
   }
 
   void fetchNotifications() {
+    ///order,promo,system,message
+
     isLoading.value = true;
     // Temporary data
     notifications.value = [
@@ -20,6 +22,7 @@ class NotificationController extends GetxController {
         'message': 'Check out our latest electronics collection!',
         'time': DateTime.now().subtract(const Duration(hours: 2)),
         'isRead': false,
+        'type': 'promo',//order,promo,system,message
       },
       {
         'id': 2,
@@ -27,6 +30,7 @@ class NotificationController extends GetxController {
         'message': '20% off on all smartphones this weekend!',
         'time': DateTime.now().subtract(const Duration(days: 1)),
         'isRead': true,
+        'type': 'promo',
       },
       {
         'id': 3,
@@ -34,6 +38,7 @@ class NotificationController extends GetxController {
         'message': 'Your order #12345 has been shipped',
         'time': DateTime.now().subtract(const Duration(days: 2)),
         'isRead': true,
+        'type': "order",//message
       },
     ];
     isLoading.value = false;

@@ -105,8 +105,10 @@ class _LoginPageState extends State<LoginPage> {
                           // Email Field
                           TextFormField(
                             controller: _emailController,
+                            style: const TextStyle(fontSize: 14),
                             decoration: InputDecoration(
                               labelText: 'Email',
+
                               prefixIcon: const Icon(Iconsax.sms),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -129,6 +131,8 @@ class _LoginPageState extends State<LoginPage> {
                           // Password Field
                           TextFormField(
                             controller: _passwordController,
+                            style: const TextStyle(fontSize: 14),
+
                             decoration: InputDecoration(
                               labelText: 'Password',
                               prefixIcon: const Icon(Iconsax.lock),
