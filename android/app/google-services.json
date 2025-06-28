@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "257690234863",
+    "project_id": "sonovision-2ebb6",
+    "storage_bucket": "sonovision-2ebb6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:257690234863:android:c09cada30dcf202bfd901a",
+        "android_client_info": {
+          "package_name": "com.aitrix.sonovision"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhs7kEYm5bCVsoFF5NZu99x0Y59P6pdqo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:257690234863:android:0c1ca4874fc554dcfd901a",
+        "android_client_info": {
+          "package_name": "com.example.electronic_store"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhs7kEYm5bCVsoFF5NZu99x0Y59P6pdqo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

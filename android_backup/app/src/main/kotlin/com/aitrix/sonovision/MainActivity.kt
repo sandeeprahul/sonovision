@@ -1,4 +1,4 @@
-package com.example.electronic_store
+package com.aitrix.sonovision
 
 import io.flutter.embedding.android.FlutterActivity
 

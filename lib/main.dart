@@ -8,10 +8,14 @@ import 'package:electronic_store/pages/register_page.dart';
 import 'package:electronic_store/pages/settings_page.dart';
 import 'package:electronic_store/screens/home_screen_two.dart';
 import 'package:electronic_store/screens/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
 import 'controllers/cart_controller.dart';
+import 'controllers/notification_controller.dart';
+import 'firebase_options.dart';
 import 'pages/main_page.dart';
 import 'package:get/get.dart';
 import 'package:electronic_store/theme/app_theme.dart';
@@ -25,14 +29,21 @@ import 'pages/order_success_page.dart';
 import 'pages/order_history_page.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
   await GetStorage.init(); // initialize once
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform, // from firebase_options.dart
+  );
+  FirebaseMessaging.instance.setAutoInitEnabled(true);
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
     ),
   );
+  Get.put(NotificationController());
+
   Get.put(CartController(), permanent: true); // Global instance
 
   runApp(const MyApp());
@@ -44,7 +55,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Electronic Store',
+      title: 'SonoVision Electronics',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       /*   theme: ThemeData(
