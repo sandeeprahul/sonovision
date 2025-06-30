@@ -314,11 +314,9 @@ class CheckoutController extends GetxController {
         final orderId = responseData['_id']; // this is your actual order ID
         //
         if (paymentStatus == "SUCCESS") {
-          Get.off(() => OrderSuccessPage(orderId: orderId));
+          Get.off(() => OrderSuccessPage(orderId: currentOrderId));
         } else {
           Get.off(() => const OrderScreen());
-
-
         }
       } else {
         // Get.snackbar("Error", "Failed to place order: ${response.body}");
