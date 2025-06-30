@@ -1,4 +1,6 @@
+import 'package:electronic_store/controllers/notification_controller.dart';
 import 'package:electronic_store/pages/main_page.dart';
+import 'package:electronic_store/pages/phone_verification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
@@ -223,9 +225,11 @@ class _LoginPageState extends State<LoginPage> {
                                             _emailController.text,
                                             _passwordController.text,
                                           );
-                                          // await _authController.loadUserAndToken();
+
+                                          NotificationController.to.registerTokenToServerToUserId();
                                           if (mounted) {
-                                            Get.offAllNamed('/main');
+                                            Get.off(const PhoneVerificationScreen());
+                                            // Get.offAllNamed('/main');
                                           }
                                         } catch (e) {
                                           if (mounted) {

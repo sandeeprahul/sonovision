@@ -1,3 +1,4 @@
+import 'package:electronic_store/services/auth_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 
@@ -126,30 +127,35 @@ class NotificationController extends GetxController {
       print('❌ Server error: $e');
     }
   }
-  Future<void> _registerTokenToServerToUserId(String token) async {
+  Future<void> registerTokenToServerToUserId() async {
     try {
-      //https://sonovision.asquare.org.in/api/fcm-tokens
+      final token =
+      await AuthController.to.loadUserAndToken(); // uses your getToken method
+      String tokenValue = AuthController.to.token.value;
       final response = await http.put(
         Uri.parse('${ApiService.baseUrl}/api/fcm-tokens'),
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Authorization': 'Bearer $tokenValue',
+          'Content-Type': 'application/json'},
         body: jsonEncode({
-          'fcm_token': token,
-          'device_os': 'android',
-          'os_version': '12',
-          'app_version': '1.0.0',
-          'last_opened_time': DateTime.now().toIso8601String(),
-          'user_id': '',
+          'fcm_token': fcmToken.value,
+          'user_id': AuthController.to.user.value['_id'],//registeredTokenId
         }),
       );
 
+      print({
+        'fcm_token': fcmToken.value,
+        'user_id': AuthController.to.user.value['_id'],
+      });
       print('${ApiService.baseUrl}/api/fcm-tokens');
       print('${response.body}');
+
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        registeredTokenId.value = data['_id']; // Replace 'id' with your field
-        print('✅ Token registered, ID: ${registeredTokenId.value}');
+        // registeredTokenId.value = data['_id']; // Replace 'id' with your field
+        print('✅ registerTokenToServerToUserId, ID: $data');
       } else {
-        print('❌ API error: ${response.statusCode}');
+        print('❌ registerTokenToServerToUserId: API error: ${response.statusCode}');
       }
     } catch (e) {
       print('❌ Server error: $e');

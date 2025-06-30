@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../screens/splash_screen.dart';
+
 class AuthController extends GetxController {
   static AuthController get to => Get.put(AuthController());
 
@@ -111,6 +113,7 @@ class AuthController extends GetxController {
     await prefs.remove(userKey);
     token.value = '';
     user.value = {};
+    Get.offAll(const SplashScreen());
   }
 
   bool get isLoggedIn => token.isNotEmpty;

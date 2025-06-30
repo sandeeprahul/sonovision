@@ -3,9 +3,14 @@ import 'package:get/get.dart';
 
 import '../services/auth_service.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +70,10 @@ class ProfilePage extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
 
-              onPressed: () {},
+              onPressed: () {
+              // AuthController.to.logout();
+              _showLogoutConfirmation();
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
                 padding: const EdgeInsets.symmetric(vertical: 16),
@@ -73,13 +81,44 @@ class ProfilePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Sign Out'),
+                  Text('Sign Out'),
                 ],
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showLogoutConfirmation() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirm Logout?'),
+        content: const Text('Are you sure you want to logout?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+
+              // final controller = Get.put(CheckoutController());
+              AuthController.to.logout();
+
+              // Navigator.pop(context);
+              // Navigator.pop(context);
+
+
+            },
+            child: const Text('Logout'),
           ),
         ],
       ),

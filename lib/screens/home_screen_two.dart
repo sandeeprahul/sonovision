@@ -80,8 +80,8 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
 
   Widget _buildHomeContent(BuildContext context, HomeController controller) {
     final widgets = (controller.homeData.value['widgets'] ?? []) as List<dynamic>;
-    final saleEndTime =
-        DateTime.parse(controller.homeData.value['saleEndTime']);
+    /*final saleEndTime =
+        DateTime.parse(controller.homeData.value['saleEndTime']);*/
 
     return RefreshIndicator(
       onRefresh: () {
