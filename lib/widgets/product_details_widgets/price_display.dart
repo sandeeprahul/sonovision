@@ -21,7 +21,8 @@ class PriceDisplay extends StatelessWidget {
           '₹${discountedPrice.toStringAsFixed(2)}',
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
-            color: Theme.of(context).primaryColor,
+            fontSize: 20,
+            color: Colors.black,
           ),
         ),
         const SizedBox(width: 8),

@@ -49,7 +49,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
 
       // extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -71,14 +71,14 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
           }),
         ),
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios_new,
             color:Colors.white,
           ),
           onPressed: () => Navigator.pop(context),
         ),
 
-        systemOverlayStyle: SystemUiOverlayStyle(
+        systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
           statusBarIconBrightness:
         Brightness.light,
@@ -107,6 +107,9 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                   images: product.images,
                   productId: product.id,
                 ),
+                Divider(
+                  thickness: 1,
+                  color: Colors.transparent,),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
@@ -119,6 +122,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                         totalReviews: productDetailsController.totalReviews.value,
                       ),
                       const SizedBox(height: 12),
+
                       PriceDisplay(
                         originalPrice: product.price,
                         discountedPrice: discountedPrice,
@@ -127,12 +131,25 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                     ],
                   ),
                 ),
+                Divider(
+                  thickness: 1,
+                  color: Colors.grey.shade300,),
                 ProductDescription(description: product.description),
+                Divider(
+                  thickness: 1,
+                  color: Colors.grey.shade300,),
                 const StoreAvailabilityCard(storeCount: 15),
 
                 SpecificationsList(specifications: product.specifications ?? {}),
+
                 HighlightsList(highlights: product.highlights),
+                Divider(
+                  thickness: 1,
+                  color: Colors.grey.shade300,),
                 ReviewSection(productId: product.id),
+                Divider(
+                  thickness: 1,
+                  color: Colors.grey.shade300,),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Text(

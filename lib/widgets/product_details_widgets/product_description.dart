@@ -10,6 +10,7 @@ class ProductDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
+
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
