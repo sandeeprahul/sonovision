@@ -32,8 +32,10 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
   @override
   void initState() {
     super.initState();
-    _loadProducts();
-    _scrollController.addListener(_onScroll);
+    categoryProductsController = Get.put(CategoryProductsController(widget.categoryId));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadProducts();
+    });    _scrollController.addListener(_onScroll);
   }
 
   @override
@@ -49,13 +51,13 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
     }
   }
 
-  late final CategoryProductsController categoryProductsController = Get.put(CategoryProductsController(widget.categoryId));
+  late final CategoryProductsController categoryProductsController;
 
   Future<void> _loadProducts() async {
     print("_loadProducts ${widget.categoryId}");
     setState(() => _isLoading = true);
     // TODO: Replace with actual API call
-    categoryProductsController .fetchProductsByCategory(widget.categoryId);
+    categoryProductsController.fetchProductsByCategory(widget.categoryId);
         // Get.put(CategoryProductsController(widget.categoryId));
 
     await Future.delayed(const Duration(seconds: 1));

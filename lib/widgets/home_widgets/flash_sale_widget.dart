@@ -237,11 +237,11 @@ class FlashSaleWidget extends StatelessWidget {
                           );
                         } else {
                           controller.addItem(CartItem(
-                            name: 'Galaxy S24',
-                            image:
-                            'https://sonovision.in/wp-content/uploads/2022/08/samsung-s225g-white.jpg',
+                            name: product['name'],//name
+                            image: product['image'],
                             color: 'Black',
-                            price: 150000.0,
+                            price: (product['price'] as num).toDouble(),
+                            quantity: 1,
                             productId: productId,
                           ));
                           CartBottomSheet.show();

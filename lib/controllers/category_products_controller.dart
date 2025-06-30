@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../services/api_service.dart';
+
 
 class CategoryProductsController extends GetxController {
   final String categoryId;
@@ -29,7 +31,7 @@ class CategoryProductsController extends GetxController {
     products.value = [];
     try {
       final response = await http.get(
-        Uri.parse('https://sonovision.asquare.org.in/api/products/category/$categoryId'),
+        Uri.parse('${ApiService.baseUrl}/api/products/category/$categoryId'),
       );
       print('https://sonovision.asquare.org.in/api/products/category/$categoryId');
 

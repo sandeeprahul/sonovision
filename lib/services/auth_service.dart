@@ -35,12 +35,14 @@ class AuthController extends GetxController {
       final data = json.decode(response.body);
       print(data);
       final tkn = data['token'];
-      // final userData = data['user'];
+      final userResponseData = data['user'];
 
       await _saveToken(tkn);
       final userData = {
         'email': email,
         'login_time': DateTime.now().toIso8601String(),
+        '_id': userResponseData['_id'],
+        'name': userResponseData['name'],
       };
       await _saveUser(userData);
 

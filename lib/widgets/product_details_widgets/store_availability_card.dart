@@ -1,3 +1,4 @@
+import 'package:electronic_store/widgets/product_details_widgets/store_availability_card_new.dart';
 import 'package:flutter/material.dart';
 
   class StoreAvailabilityCard extends StatelessWidget {
@@ -45,47 +46,53 @@ import 'package:flutter/material.dart';
               child: customMapPreview ?? _buildDefaultMapPreview(),
             ),
 
+            const StoreAvailabilityCardNew(storeCount: 2, isAvailable: true),
+
             // Store Info Section
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Available at $storeCount+ stores near you',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black
+       /*     Visibility(
+              visible: false,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Available at $storeCount+ stores near you',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black
+                          ),
                         ),
-                      ),
-                      if (onSeeLocations != null)
-                        const Row(
-                          children: [
-                            Text(
-                              'See locations',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
+                        if (onSeeLocations != null)
+                          const Row(
+                            children: [
+                              Text(
+                                'See locations',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                            ),
-                            Icon(
-                              Icons.chevron_right,
-                              color: Colors.black,
-                              size: 20,
-                            ),
-                          ],
-                        ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  _buildDistanceIndicator(),
-                ],
+                              Icon(
+                                Icons.chevron_right,
+                                color: Colors.black,
+                                size: 20,
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    // _buildDistanceIndicator(),
+
+                  ],
+                ),
               ),
-            ),
+            ),*/
           ],
         ),
       ),

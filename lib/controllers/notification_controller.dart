@@ -7,8 +7,12 @@ import 'dart:convert';
 import '../services/api_service.dart';
 
 class NotificationController extends GetxController {
-  final RxList notifications = [].obs;
+  static NotificationController get to => Get.find();
+
   final RxBool isLoading = false.obs;
+
+  final RxList<MyNotification> notifications = <MyNotification>[].obs;
+  final RxString errorMessage = ''.obs;
 
   final RxString fcmToken = ''.obs;
   final RxString registeredTokenId = ''.obs;
@@ -19,50 +23,53 @@ class NotificationController extends GetxController {
     fetchNotifications();
     _initFCMToken();
   }
+  Future<void> fetchNotifications() async {
+    try {
+      isLoading.value = true;
+      errorMessage.value = '';
 
-  void fetchNotifications() {
-    ///order,promo,system,message
+      final response = await http.get(
+        Uri.parse('${ApiService.baseUrl}/api/notifications'),
+        headers: {'Content-Type': 'application/json'},
+      );
 
-    isLoading.value = true;
-    // Temporary data
-    notifications.value = [
-      {
-        'id': 1,
-        'title': 'New Arrival',
-        'message': 'Check out our latest electronics collection!',
-        'time': DateTime.now().subtract(const Duration(hours: 2)),
-        'isRead': false,
-        'type': 'promo', //order,promo,system,message
-      },
-      {
-        'id': 2,
-        'title': 'Special Offer',
-        'message': '20% off on all smartphones this weekend!',
-        'time': DateTime.now().subtract(const Duration(days: 1)),
-        'isRead': true,
-        'type': 'promo',
-      },
-      {
-        'id': 3,
-        'title': 'Order Update',
-        'message': 'Your order #12345 has been shipped',
-        'time': DateTime.now().subtract(const Duration(days: 2)),
-        'isRead': true,
-        'type': "order", //message
-      },
-    ];
-    isLoading.value = false;
-  }
-
-  void markAsRead(int id) {
-    final index =
-        notifications.indexWhere((notification) => notification['id'] == id);
-    if (index != -1) {
-      final notification = notifications[index];
-      notification['isRead'] = true;
-      notifications[index] = notification;
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        notifications.assignAll(
+          data.map((json) => MyNotification.fromJson(json)).toList(),
+        );
+        // Sort by date (newest first)
+        notifications.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      } else {
+        throw Exception('Failed to load notifications');
+      }
+    } catch (e) {
+      errorMessage.value = 'Error fetching notifications: ${e.toString()}';
+    } finally {
+      isLoading.value = false;
     }
   }
+
+  Future<void> refreshNotifications() async {
+    await fetchNotifications();
+  }
+
+  void markAsRead(String notificationId) {
+    // Here you would typically call an API to mark as read
+    // For now, we'll just update locally
+    final index = notifications.indexWhere((n) => n.id == notificationId);
+    if (index != -1) {
+      // In a real app, you might have a 'read' property to update
+      notifications.refresh();
+    }
+  }
+
+  void clearAll() {
+    // Here you would typically call an API to clear all
+    notifications.clear();
+  }
+
+
 
   Future<void> _initFCMToken() async {
     try {
@@ -118,5 +125,66 @@ class NotificationController extends GetxController {
     } catch (e) {
       print('❌ Server error: $e');
     }
+  }
+  Future<void> _registerTokenToServerToUserId(String token) async {
+    try {
+      //https://sonovision.asquare.org.in/api/fcm-tokens
+      final response = await http.put(
+        Uri.parse('${ApiService.baseUrl}/api/fcm-tokens'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'fcm_token': token,
+          'device_os': 'android',
+          'os_version': '12',
+          'app_version': '1.0.0',
+          'last_opened_time': DateTime.now().toIso8601String(),
+          'user_id': '',
+        }),
+      );
+
+      print('${ApiService.baseUrl}/api/fcm-tokens');
+      print('${response.body}');
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        registeredTokenId.value = data['_id']; // Replace 'id' with your field
+        print('✅ Token registered, ID: ${registeredTokenId.value}');
+      } else {
+        print('❌ API error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('❌ Server error: $e');
+    }
+  }
+
+
+
+}
+
+class MyNotification {
+  final String id;
+  final String title;
+  final String message;
+  final Map<String, dynamic> payload;
+  final DateTime createdAt;
+  final String? userId;
+
+  MyNotification({
+    required this.id,
+    required this.title,
+    required this.message,
+    required this.payload,
+    required this.createdAt,
+    this.userId,
+  });
+
+  factory MyNotification.fromJson(Map<String, dynamic> json) {
+    return MyNotification(
+      id: json['_id'],
+      title: json['title'],
+      message: json['message'],
+      payload: json['payload'] is Map ? json['payload'] : {},
+      createdAt: DateTime.parse(json['createdAt']),
+      userId: json['user_id'],
+    );
   }
 }

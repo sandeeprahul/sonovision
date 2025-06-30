@@ -4,6 +4,7 @@ import 'package:electronic_store/pages/add_address_form_page.dart';
 import 'package:electronic_store/pages/help_support_page.dart';
 import 'package:electronic_store/pages/login_page.dart';
 import 'package:electronic_store/pages/order_screen.dart';
+import 'package:electronic_store/pages/product_details_page_new.dart';
 import 'package:electronic_store/pages/register_page.dart';
 import 'package:electronic_store/pages/settings_page.dart';
 import 'package:electronic_store/screens/home_screen_two.dart';
@@ -45,8 +46,13 @@ void main() async {
   Get.put(NotificationController());
 
   Get.put(CartController(), permanent: true); // Global instance
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   runApp(const MyApp());
+}
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('Handling background message: ${message.messageId}');
 }
 
 class MyApp extends StatelessWidget {
@@ -70,7 +76,7 @@ class MyApp extends StatelessWidget {
       home: const SplashScreen(),
       getPages: [
         GetPage(
-            name: '/product-details', page: () => const ProductDetailsPage()),
+            name: '/product-details', page: () => const ProductDetailsScreenNew()),////ProductDetailsPage
       ],
       routes: {
         '/cart': (context) => CartPage(),

@@ -16,6 +16,7 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(title: const Text('Shopping Cart')),
       body: Obx(() {
         if (controller.cartItems.isEmpty) {

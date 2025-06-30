@@ -334,15 +334,35 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
               right: 34,
               child: CircleAvatar(
                   child: IconButton(
+
                       onPressed: () {
-                        CartHelper.addToCart(
-                          productId: '680ef09a4fbe39d34f56dd7d',
-                          name: 'Galaxy S24',
-                          image:
-                              'https://sonovision.in/wp-content/uploads/2022/08/samsung-s225g-white.jpg',
-                          color: 'Black',
-                          price: 150000.0,
-                        );
+                        final controller = Get.put(CartController());
+                        // final product = productDetailsController.product.value!;
+                        // {deal['product']['id']}
+                        final exists = controller.cartItems
+                            .any((item) => item.productId == deal['product']['id']);
+
+                        if (exists) {
+                          Get.snackbar(
+                            'Info',
+                            'Item already in cart',
+                            overlayBlur: 2,
+                            overlayColor: Colors.black26,
+                            backgroundColor: Colors.white,
+                            colorText: Colors.black,
+                            snackPosition: SnackPosition.BOTTOM,
+                            duration: const Duration(milliseconds: 1500),
+                          );
+                        } else {
+                          controller.addItem(CartItem(
+                            name: deal['product']['name'],
+                            image: deal['product']['image'],
+                            color: 'Black',
+                            price: deal['product']['price'],
+                            productId: deal['product']['id'],
+                          ));
+                          CartBottomSheet.show();
+                        }
                       },
                       icon: const Icon(
                         Icons.add_shopping_cart_outlined,
@@ -840,7 +860,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                             // const Spacer(),
                             InkWell(
                               onTap: (){
-                                Get.to(() => NotificationsPage());
+                                Get.to(() => NotificationPage());
 
                               },
                               child: Container(

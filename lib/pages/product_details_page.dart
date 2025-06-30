@@ -1,3 +1,4 @@
+import 'package:electronic_store/models/review_model.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -17,6 +18,7 @@ import '../widgets/horizontal_product_list.dart';
 import '../widgets/product_details_widgets/availability_options_widget.dart';
 import '../widgets/product_details_widgets/map_widget.dart';
 import '../widgets/product_details_widgets/store_availability_card.dart';
+import '../widgets/review_widget.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   const ProductDetailsPage({Key? key}) : super(key: key);
@@ -38,6 +40,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    });
     _scrollController.addListener(_onScroll);
     product = Get.arguments as Map<String, dynamic>;
   }
@@ -66,6 +71,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   @override
   Widget build(BuildContext context) {
     productDetailsController.fetchProduct(product['_id']);
+    productDetailsController.fetchReviews(product['_id']);
 
     final theme = Theme.of(context);
 
@@ -371,7 +377,23 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                       color: Colors.blue[700], size: 18),
                                   const SizedBox(width: 4),
                                   Text(
-                                    '4.2',
+                                    '${productDetailsController.averageRating.value}',
+                                    // '4.2',
+                                    // '${widget.product['rating']}'??'4.2',
+                                    style: TextStyle(
+                                        color: Colors.blue[700],
+                                        fontWeight: FontWeight.bold),
+                                  ),  Text(
+                                    ' | ',
+                                    // '4.2',
+                                    // '${widget.product['rating']}'??'4.2',
+                                    style: TextStyle(
+                                        color: Colors.grey.shade300,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    '${productDetailsController.totalReviews.value}',
+                                    // '4.2',
                                     // '${widget.product['rating']}'??'4.2',
                                     style: TextStyle(
                                         color: Colors.blue[700],
@@ -563,7 +585,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         ],
                       ),
                     ),
-                  // const SizedBox(height: 6),
+                  const SizedBox(height: 6),
+
+                  ReviewWidget(productId: product.id),
+
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text(

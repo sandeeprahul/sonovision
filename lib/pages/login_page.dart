@@ -223,6 +223,7 @@ class _LoginPageState extends State<LoginPage> {
                                             _emailController.text,
                                             _passwordController.text,
                                           );
+                                          await _authController.loadUserAndToken();
                                           if (mounted) {
                                             Get.offAllNamed('/main');
                                           }
