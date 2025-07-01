@@ -1,6 +1,7 @@
 import 'package:electronic_store/pages/login_page.dart';
 import 'package:electronic_store/screens/home_screen_two.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../controllers/home_controller.dart';
 import '../screens/search_page.dart';
@@ -64,9 +65,14 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
 
         final shouldPop = await _handleExit();
         if (shouldPop && mounted) {
-          Navigator.of(context).pop();
+         /* Navigator.of(context).pop();
+          Get.back();*/
+          SystemNavigator.pop(); // For Android
+
         }
-      },      child: Scaffold(
+      },
+
+      child: Scaffold(
         body: TabBarView(
           controller: _tabController,
           physics: const NeverScrollableScrollPhysics(),

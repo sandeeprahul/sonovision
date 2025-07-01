@@ -59,7 +59,9 @@ class _LoginPageState extends State<LoginPage> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: IconButton(
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () {
+                      Get.off(()=>const MainPage());
+                    },
                     icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
                   ),                ),
                 const SizedBox(height: 20),

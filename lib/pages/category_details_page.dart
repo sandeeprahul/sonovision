@@ -234,129 +234,18 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                         child: CachedNetworkImage(
                           imageUrl: product.images[0],
                           // fit: BoxFit.cover,
-                          placeholder: (context, url) => Container(
-                            color: Colors.grey[200],
-                            child: Stack(
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: CachedNetworkImage(
-                                        imageUrl: product.images[0],
-                                        // height: 150,
-                                        width: double.infinity,
-                                        // fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                    /*           Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            product.name,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black
-                                            ),
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          const SizedBox(height: 4),
-                                          Text(
-                                            product.brand,
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.grey[600],
-                                            ),
-                                          ),
-                                          const SizedBox(height: 8),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                '₹${product.price}',
-                                                style: const TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                    color: Colors.black
-
-                                                ),
-                                              ),
-                                              const SizedBox(width: 8),
-                                              if (product.discountPercentage > 0)
-                                                Container(
-                                                  padding: const EdgeInsets.symmetric(
-                                                    horizontal: 6,
-                                                    vertical: 2,
-                                                  ),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.red[50],
-                                                    borderRadius: BorderRadius.circular(4),
-                                                  ),
-                                                  child: Text(
-                                                    '${product.discountPercentage}% OFF',
-                                                    style: TextStyle(
-                                                      color: Colors.red[700],
-                                                      fontSize: 12,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),*/
-                                  ],
-                                ),
-                                /* Positioned(
-                                  top: 8,
-                                  right: 8,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).primaryColor,
-                                      shape: BoxShape.circle,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.1),
-                                          blurRadius: 8,
-                                          offset: const Offset(0, 4),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Material(
-                                      color: Colors.transparent,
-                                      child: InkWell(
-                                        onTap: () {
-                                          // TODO: Implement add to cart functionality
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(
-                                              content: Text('${product.name} added to cart'),
-                                              duration: const Duration(seconds: 2),
-                                            ),
-                                          );
-                                        },
-                                        customBorder: const CircleBorder(),
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Icon(
-                                            Icons.add_shopping_cart,
-                                            color: Colors.white,
-                                            size: 20,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),*/
-                              ],
+                          placeholder: (_, __) => Container(
+                            color: Theme.of(context).colorScheme.surfaceVariant,
+                          ),
+                          errorWidget: (_, __, ___) => Container(
+                            color: Theme.of(context).colorScheme.surfaceVariant,
+                            child: Center(
+                              child: Icon(
+                                Icons.shopping_bag_rounded,
+                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              ),
                             ),
                           ),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
                         ),
                       ),
                     ),

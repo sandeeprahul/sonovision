@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'main_page.dart';
+
 class OrderSuccessPage extends StatelessWidget {
   final String orderId;
 
@@ -50,7 +52,8 @@ class OrderSuccessPage extends StatelessWidget {
               TextButton(
                 onPressed: () {
 
-                  Get.offNamedUntil('/main', (route) => false);
+                  // Get.offNamedUntil('/main', (route) => false);
+                  Get.off(()=>const MainPage());
 
                 },
                 child: const Text('Continue Shopping'),

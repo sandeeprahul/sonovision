@@ -65,6 +65,26 @@ class BannerCarouselNew extends StatelessWidget {
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
+              /*        BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(borderRadius),
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              // stops: const [0.0, 0.5,1.0],
+                              colors: [
+                                _parseColor(overlayGradient['start']) ??
+                                    Colors.transparent,
+                                _parseColor(overlayGradient['end']) ??
+                                    Theme.of(context).colorScheme.scrim.withOpacity(0.7),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+*/
                       // Image with shimmer loading effect
                       Padding(
 
@@ -92,23 +112,7 @@ class BannerCarouselNew extends StatelessWidget {
                         ),
                       ),
 
-                 /*     // Gradient Overlay with Material 3 colors
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(borderRadius),
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            // stops: const [0.0, 0.5,1.0],
-                            colors: [
-                              _parseColor(overlayGradient['start']) ??
-                                  Colors.transparent,
-                              _parseColor(overlayGradient['end']) ??
-                                  Theme.of(context).colorScheme.scrim.withOpacity(0.7),
-                            ],
-                          ),
-                        ),
-                      ),*/
+                      // Gradient Overlay with Material 3 colors
 
                       // ClipRRect:BackdropFilterfilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                       // Content
@@ -116,63 +120,67 @@ class BannerCarouselNew extends StatelessWidget {
                         bottom: 0,
                         left: 0,right: 0,
                         child: SizedBox(
-                          height: 100,
+                          height: 60,
                           // width: MediaQuery.of(context).size.width/1.2,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(borderRadius),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(borderRadius),
 
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                                color: Colors.black
+                            /*  gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                // stops: const [0.0, 0.5,1.0],
+                              *//*  colors: [
+                                  Colors.redAccent.withOpacity(0.1),
+                                  Colors.redAccent.withOpacity(0.5),
+                                ],*//*
+                                colors: [
+                                  _parseColor(overlayGradient['start']) ??
+                                      Colors.transparent,
+                                  _parseColor(overlayGradient['end']) ??
+                                      Theme.of(context).colorScheme.scrim.withOpacity(0.7),
+                                ],
+                              ),*/
+                            ),
+                            // padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              // mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                // Title with Material 3 typography
+                                Text(
+                                  // title ?? '',
+                                  '${title.substring(0, 35)}...',
+                                  maxLines: 1,
 
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    // stops: const [0.0, 0.5,1.0],
-                                  /*  colors: [
-                                      Colors.redAccent.withOpacity(0.1),
-                                      Colors.redAccent.withOpacity(0.5),
-                                    ],*/
-                                    colors: [
-                                      _parseColor(overlayGradient['start']) ??
-                                          Colors.transparent,
-                                      _parseColor(overlayGradient['end']) ??
-                                          Theme.of(context).colorScheme.scrim.withOpacity(0.7),
-                                    ],
+                                  overflow: TextOverflow.ellipsis,
+
+                                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                    fontSize: 14,
+
+                                    fontWeight: _parseFontWeight(titleStyle['fontWeight']) ?? FontWeight.bold,
+                                    color: _parseColor(titleStyle['color']) ??
+                                        Theme.of(context).colorScheme.onSurface,
                                   ),
                                 ),
-                                padding: const EdgeInsets.all(20.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // Title with Material 3 typography
-                                    Text(
-                                      title ?? '',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                        fontWeight: _parseFontWeight(titleStyle['fontWeight']) ?? FontWeight.bold,
-                                        color: _parseColor(titleStyle['color']) ??
-                                            Theme.of(context).colorScheme.onSurface,
-                                      ),
-                                    ),
+                                const SizedBox(height: 2),
 
-                                    const SizedBox(height: 8),
+                                // Subtitle with Material 3 typography
+                                Text(
+                                  subtitle ?? '',
+                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    fontSize: 12,
 
-                                    // Subtitle with Material 3 typography
-                                    Text(
-                                      subtitle ?? '',
-                                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                        color: _parseColor(subtitleStyle['color']) ??
-                                            Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
-                                      ),
-                                    ),
-                                  ],
+                                    color: _parseColor(subtitleStyle['color']) ??
+
+                                        Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
+                                  ),
                                 ),
-                              ),
+                                const SizedBox(height: 2),
+
+                              ],
                             ),
                           ),
                         ),
@@ -210,7 +218,7 @@ class BannerCarouselNew extends StatelessWidget {
             },
             options: CarouselOptions(
               autoPlay: true,
-              height: 360,
+              height: 280,
               // height: height,
               aspectRatio: aspectRatio,
               enableInfiniteScroll: true,
