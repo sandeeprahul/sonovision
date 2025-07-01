@@ -61,8 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: IconButton(
                     onPressed: () => Navigator.pop(context),
                     icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-                  ).animate().fadeIn(duration: 250.ms).slideX(),
-                ),
+                  ),                ),
                 const SizedBox(height: 20),
 
                 // Welcome Text
@@ -73,16 +72,14 @@ class _LoginPageState extends State<LoginPage> {
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
-                ).animate().fadeIn(duration: 250.ms).slideX(),
-
+                ),
                 Text(
                   'Sign in to continue',
                   style: GoogleFonts.poppins(
                     fontSize: 16,
                     color: Colors.white.withOpacity(0.8),
                   ),
-                ).animate().fadeIn(duration: 250.ms).slideX(),
-
+                ),
                 const SizedBox(height: 40),
 
                 // Login Form
@@ -126,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                               }
                               return null;
                             },
-                          ).animate().fadeIn(duration: 800.ms).slideX(),
+                          ),
 
                           const SizedBox(height: 20),
 
@@ -164,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
                               }
                               return null;
                             },
-                          ).animate().fadeIn(duration: 900.ms).slideX(),
+                          ),
 
                           const SizedBox(height: 20),
 
@@ -194,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
 
                               // Forgot Password
                             ],
-                          ).animate().fadeIn(duration: 1000.ms).slideX(),
+                          ),
                           TextButton(
                             onPressed: () {
                               // TODO: Implement forgot password
@@ -206,7 +203,7 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Theme.of(context).colorScheme.primary,
                               ),
                             ),
-                          ).animate().fadeIn(duration: 1100.ms).slideX(),
+                          ),
 
                           const SizedBox(height: 30),
 
@@ -273,7 +270,7 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                     ),
                             ),
-                          ).animate().fadeIn(duration: 500.ms).slideX(),
+                          ),//.animate().fadeIn(duration: 500.ms).slideX()
 
                           const SizedBox(height: 30),
 
@@ -307,7 +304,7 @@ class _LoginPageState extends State<LoginPage> {
                                   },
                                 ),
                               ],
-                            ).animate().fadeIn(duration: 550.ms).slideX(),
+                            ),
                           ),
 
                           const SizedBox(height: 30),
@@ -341,12 +338,12 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                             ],
-                          ).animate().fadeIn(duration: 600.ms).slideX(),
+                          ),
                         ],
                       ),
                     ),
                   ),
-                ).animate().fadeIn(duration: 250.ms).scale(),
+                ),
 
                 const SizedBox(height: 100,)
               ],

@@ -57,8 +57,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   IconButton(
                     onPressed: () => Navigator.pop(context),
                     icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-                  ).animate().fadeIn(duration: 100.ms).slideX(),
-
+                  ),
                   const SizedBox(height: 40),
 
                   // Welcome Text
@@ -69,16 +68,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
-                  ).animate().fadeIn(duration: 100.ms).slideX(),
-
+                  ),
                   Text(
                     'Sign up to get started',
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       color: Colors.white.withOpacity(0.8),
                     ),
-                  ).animate().fadeIn(duration: 100.ms).slideX(),
-
+                  ),
                   const SizedBox(height: 40),
 
                   // Registration Form
@@ -116,8 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 }
                                 return null;
                               },
-                            ).animate().fadeIn(duration: 100.ms).slideX(),
-
+                            ),
                             const SizedBox(height: 16),
 
                             // Email Field
@@ -140,8 +136,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 }
                                 return null;
                               },
-                            ).animate().fadeIn(duration: 100.ms).slideX(),
-
+                            ),
                             const SizedBox(height: 16),
 
                             // Password Field
@@ -176,8 +171,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 }
                                 return null;
                               },
-                            ).animate().fadeIn(duration: 100.ms).slideX(),
-
+                            ),
                             const SizedBox(height: 16),
 
                             // Confirm Password Field
@@ -213,8 +207,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 }
                                 return null;
                               },
-                            ).animate().fadeIn(duration: 100.ms).slideX(),
-
+                            ),
                             const SizedBox(height: 24),
 
                             // Register Button
@@ -286,8 +279,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         ),
                                       ),
                               ),
-                            ).animate().fadeIn(duration: 100.ms).slideX(),
-
+                            ),
                             const SizedBox(height: 24),
 
                             // Login Link
@@ -312,13 +304,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                   ),
                                 ),
                               ],
-                            ).animate().fadeIn(duration: 100.ms).slideX(),
+                            ),
                           ],
                         ),
                       ),
                     ),
-                  ).animate().fadeIn(duration: 100.ms).scale(),
-
+                  ),
                   const SizedBox(height: 200,)
                 ],
               ),

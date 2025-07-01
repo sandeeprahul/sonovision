@@ -118,7 +118,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                       ),
                                     ),
                                     child: Text(
-                                      order['status'].toString().toUpperCase(),
+                                        order['status']=="Pending"?"PROCESSING":order['status'].toString().toUpperCase(),
                                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
                                         color: statusColor,
                                         fontWeight: FontWeight.w900,

@@ -1,3 +1,4 @@
+import 'package:electronic_store/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -68,6 +69,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) setState(() => _isLoading = false);
       // Navigate to home or show success
+      AuthController.to.phone.value = _enteredPhoneNumber;
       Get.offAllNamed('/main');
 
     });
@@ -92,7 +94,8 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
             if (_showOtpField) {
               setState(() => _showOtpField = false);
             } else {
-              Navigator.pop(context);
+              Get.toNamed('/login');
+              // Navigator.pop(context);
             }
           },
         ),

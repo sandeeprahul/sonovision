@@ -49,11 +49,9 @@ class OrderSuccessPage extends StatelessWidget {
               const SizedBox(height: 16),
               TextButton(
                 onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    '/main',
-                    (route) => false,
-                  );
+
+                  Get.offNamedUntil('/main', (route) => false);
+
                 },
                 child: const Text('Continue Shopping'),
               ),

@@ -99,6 +99,10 @@ class CheckoutController extends GetxController {
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     // You can also verify the payment with your backend here
+    print("_handlePaymentSuccess");
+    print(response);
+    print(response.toString());
+    print(response.orderId);
     orderPaymentStatusUpdate(currentOrderId,"SUCCESS",response.orderId,"ONLINE",);
   }
 
@@ -218,13 +222,14 @@ class CheckoutController extends GetxController {
             if(pg.name=="razorpay"){
               ///pg.key=="KEY"
               var options = {
-                'key': 'rzp_test_GmmmCvqA3JxAlP', // replace with your test key
+                'key': 'rzp_test_YkLFs7bxxbMl9I', // replace with your test key
                 'amount': cartController.total * 100, // in paise
                 'name': 'Sonovision Electronics Pvt. Ltd.',
                 'description': 'Order Payment',
                 'prefill': {
-                  'contact': '9876543210',
-                  'email': 'test@example.com',
+
+                  'contact': AuthController.to.phone.value,
+                  'email': AuthController.to.user.value['email'],
                 },
                 'external': {
                   'wallets': ['paytm']
@@ -311,7 +316,7 @@ class CheckoutController extends GetxController {
 
         cartController.clearCart();
         final responseData = jsonDecode(response.body);
-        final orderId = responseData['_id']; // this is your actual order ID
+        // final orderId = responseData['_id']; // this is your actual order ID
         //
         if (paymentStatus == "SUCCESS") {
           Get.off(() => OrderSuccessPage(orderId: currentOrderId));

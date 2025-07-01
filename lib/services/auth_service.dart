@@ -18,6 +18,8 @@ class AuthController extends GetxController {
   RxString token = ''.obs;
   RxMap<String, dynamic> user = <String, dynamic>{}.obs;
 
+  RxString phone = ''.obs;
+
   static const String baseUrl =
       'https://sonovision.asquare.org.in';
 

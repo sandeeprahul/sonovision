@@ -132,20 +132,26 @@ class NotificationController extends GetxController {
       final token =
       await AuthController.to.loadUserAndToken(); // uses your getToken method
       String tokenValue = AuthController.to.token.value;
-      final response = await http.put(
+      final response = await http.post(
         Uri.parse('${ApiService.baseUrl}/api/fcm-tokens'),
         headers: {
           'Authorization': 'Bearer $tokenValue',
           'Content-Type': 'application/json'},
         body: jsonEncode({
           'fcm_token': fcmToken.value,
+          'device_os': 'android',
+          'os_version': '12',
+          'app_version': '1.0.0',
           'user_id': AuthController.to.user.value['_id'],//registeredTokenId
         }),
       );
 
       print({
         'fcm_token': fcmToken.value,
-        'user_id': AuthController.to.user.value['_id'],
+        'device_os': 'android',
+        'os_version': '12',
+        'app_version': '1.0.0',
+        'user_id': AuthController.to.user.value['_id'],//registeredTokenId
       });
       print('${ApiService.baseUrl}/api/fcm-tokens');
       print('${response.body}');
