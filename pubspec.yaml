@@ -98,6 +98,7 @@ flutter:
     - assets/apple_icon.png
     - assets/facebook_icon.png
     - assets/gmail_icon.png
+    - assets/sonovision_bg_homepage.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

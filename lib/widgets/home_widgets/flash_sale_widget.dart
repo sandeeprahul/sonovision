@@ -77,6 +77,7 @@ class FlashSaleWidget extends StatelessWidget {
        final remainingText = '${stockLeft.toInt()} left';
 
     return Material(
+      color: Colors.transparent,
       child: InkWell(
         onTap: (){
 
@@ -95,6 +96,7 @@ class FlashSaleWidget extends StatelessWidget {
           width: 200,
           decoration: BoxDecoration(
             color: Colors.white,
+
             borderRadius: BorderRadius.circular(borderRadius),
             boxShadow: [
               BoxShadow(

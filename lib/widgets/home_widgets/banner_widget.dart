@@ -65,26 +65,7 @@ class BannerCarouselNew extends StatelessWidget {
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-              /*        BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(borderRadius),
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              // stops: const [0.0, 0.5,1.0],
-                              colors: [
-                                _parseColor(overlayGradient['start']) ??
-                                    Colors.transparent,
-                                _parseColor(overlayGradient['end']) ??
-                                    Theme.of(context).colorScheme.scrim.withOpacity(0.7),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-*/
+
                       // Image with shimmer loading effect
                       Padding(
 
@@ -112,10 +93,7 @@ class BannerCarouselNew extends StatelessWidget {
                         ),
                       ),
 
-                      // Gradient Overlay with Material 3 colors
 
-                      // ClipRRect:BackdropFilterfilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                      // Content
                       Positioned(
                         bottom: 0,
                         left: 0,right: 0,
@@ -123,25 +101,12 @@ class BannerCarouselNew extends StatelessWidget {
                           height: 60,
                           // width: MediaQuery.of(context).size.width/1.2,
                           child: Container(
+                            // margin: EdgeInsets.only(bottom: ,left: 2,right: 2),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(borderRadius),
 
                                 color: Colors.black
-                            /*  gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                // stops: const [0.0, 0.5,1.0],
-                              *//*  colors: [
-                                  Colors.redAccent.withOpacity(0.1),
-                                  Colors.redAccent.withOpacity(0.5),
-                                ],*//*
-                                colors: [
-                                  _parseColor(overlayGradient['start']) ??
-                                      Colors.transparent,
-                                  _parseColor(overlayGradient['end']) ??
-                                      Theme.of(context).colorScheme.scrim.withOpacity(0.7),
-                                ],
-                              ),*/
+
                             ),
                             // padding: const EdgeInsets.all(20.0),
                             child: Column(
@@ -152,7 +117,7 @@ class BannerCarouselNew extends StatelessWidget {
                                 // Title with Material 3 typography
                                 Text(
                                   // title ?? '',
-                                  '${title.substring(0, 35)}...',
+                                  title.length > 35 ? '${title.substring(0, 35)}...' : title,
                                   maxLines: 1,
 
                                   overflow: TextOverflow.ellipsis,

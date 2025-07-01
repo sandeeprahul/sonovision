@@ -38,9 +38,12 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      // extendBodyBehindAppBar: true, // this is key
+
       backgroundColor: Colors.grey.shade100,
       body: Stack(
         children: [
+          Image.asset('assets/sonovision_bg_homepage.png',height: double.infinity,fit: BoxFit.cover,),
           SafeArea(
             child: Obx(() {
               if (controller.isLoading.value) {
@@ -103,19 +106,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                 children: [
                   profileWidget(context),
 
-/*
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      textAlign: TextAlign.start,
-                      'Your Hub for\nSmart Electronics', // Replace with dynamic username if needed
-                      style: GoogleFonts.lato(
-                        fontWeight: FontWeight.w900,
-                        color: Colors.black,
-                        fontSize: 24
-                      ),
-                    ),
-                  ),*/
+
                 ],
               ),
             ),
@@ -213,7 +204,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                   Get.toNamed('/product-details', arguments: productJson);
                 },
                 child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(
@@ -790,13 +781,13 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
           child: Stack(
 
             children: [
-              const Positioned(
+               Positioned(
                 right: 20,
                 bottom: 20,
                 child: Icon(
                   Icons.graphic_eq,
                   size: 150,
-                  color: Colors.white24,
+                  color: Colors.white24.withAlpha(8),
                 ),
               ),
               Column(
@@ -841,7 +832,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                                      }
                                     return Text(
                                       textAlign: TextAlign.start,
-                                      '${controller.addressLine1.value}',
+                                      controller.addressLine1.value,
 
                                       style:
                                           Theme.of(context).textTheme.titleMedium?.copyWith(

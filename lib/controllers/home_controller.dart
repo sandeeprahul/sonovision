@@ -91,7 +91,10 @@ class HomeController extends GetxController {
           locationSettings: locationSettings,
         );
 
-        latitude.value = position.latitude;
+        //16.501927, 80.642784
+        // latitude.value = 16.501927;
+        // longitude.value = 80.642784;
+ latitude.value = position.latitude;
         longitude.value = position.longitude;
 
         // Call to find nearest store (you need to define this)

@@ -44,7 +44,7 @@ void main() async {
     ),
   );
   Get.put(NotificationController());
-
+  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
   Get.put(CartController(), permanent: true); // Global instance
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 

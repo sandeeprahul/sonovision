@@ -1,3 +1,4 @@
+import 'package:electronic_store/utils/background_container.dart';
 import 'package:electronic_store/widgets/horizontal_product_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -85,86 +86,88 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
         ),
       ),
 
-      body: Obx(() {
-        if (productDetailsController.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        final product = productDetailsController.product.value;
-        if (product == null) {
-          return const Center(child: Text('Product not found'));
-        }
-
-        final discountedPrice = product.price - (product.price * product.discountPercentage / 100);
-
-        return SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ProductImageCarousel(
-                  images: product.images,
-                  productId: product.id,
-                ),
-                Divider(
-                  thickness: 1,
-                  color: Colors.transparent,),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ProductHeader(
-                        name: product.name,
-                        brand: product.brand,
-                        averageRating: productDetailsController.averageRating.value,
-                        totalReviews: productDetailsController.totalReviews.value,
-                      ),
-                      const SizedBox(height: 12),
-
-                      PriceDisplay(
-                        originalPrice: product.price,
-                        discountedPrice: discountedPrice,
-                        discountPercentage: (product.discountPercentage).toDouble(),
-                      ),
-                    ],
+      body: BackgroundContainer(
+        child: Obx(() {
+          if (productDetailsController.isLoading.value) {
+            return const Center(child: CircularProgressIndicator());
+          }
+        
+          final product = productDetailsController.product.value;
+          if (product == null) {
+            return const Center(child: Text('Product not found'));
+          }
+        
+          final discountedPrice = product.price - (product.price * product.discountPercentage / 100);
+        
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ProductImageCarousel(
+                    images: product.images,
+                    productId: product.id,
                   ),
-                ),
-                Divider(
-                  thickness: 1,
-                  color: Colors.grey.shade300,),
-                ProductDescription(description: product.description),
-                Divider(
-                  thickness: 1,
-                  color: Colors.grey.shade300,),
-                const StoreAvailabilityCard(storeCount: 15),
-
-                SpecificationsList(specifications: product.specifications ?? {}),
-
-                HighlightsList(highlights: product.highlights),
-                Divider(
-                  thickness: 1,
-                  color: Colors.grey.shade300,),
-                ReviewSection(productId: product.id),
-                Divider(
-                  thickness: 1,
-                  color: Colors.grey.shade300,),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Text(
-                    'Related Products',
-                    style: theme.textTheme.headlineMedium!.copyWith(
-                      fontWeight: FontWeight.bold,
+                  Divider(
+                    thickness: 1,
+                    color: Colors.transparent,),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ProductHeader(
+                          name: product.name,
+                          brand: product.brand,
+                          averageRating: productDetailsController.averageRating.value,
+                          totalReviews: productDetailsController.totalReviews.value,
+                        ),
+                        const SizedBox(height: 12),
+        
+                        PriceDisplay(
+                          originalPrice: product.price,
+                          discountedPrice: discountedPrice,
+                          discountPercentage: (product.discountPercentage).toDouble(),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                 HorizontalProductList(),
-              ],
+                  Divider(
+                    thickness: 1,
+                    color: Colors.grey.shade300,),
+                  ProductDescription(description: product.description),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.grey.shade300,),
+                  const StoreAvailabilityCard(storeCount: 15),
+        
+                  SpecificationsList(specifications: product.specifications ?? {}),
+        
+                  HighlightsList(highlights: product.highlights),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.grey.shade300,),
+                  ReviewSection(productId: product.id),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.grey.shade300,),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text(
+                      'Related Products',
+                      style: theme.textTheme.headlineMedium!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                   HorizontalProductList(),
+                ],
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
       bottomNavigationBar: _buildBottomBar(context),
     );
   }
