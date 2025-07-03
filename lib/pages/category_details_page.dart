@@ -74,6 +74,21 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
       setState(() => _isLoading = false);
     }
   }
+  Widget buildFilterChips() {
+
+    return Obx(() {
+      return Wrap(
+        spacing: 8,
+        children: _filters.map((filter) {
+          return ChoiceChip(
+            label: Text(filter),
+            selected: categoryProductsController.selectedFilter.value == filter,
+            onSelected: (_) => categoryProductsController.applyFilter(filter),
+          );
+        }).toList(),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,9 +98,17 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
         controller: _scrollController,
         slivers: [
           _buildSliverAppBar(),
-          _buildFiltersBar(),
-          if(categoryProductsController.products.isNotEmpty)
+          // _buildFiltersBar(),
+               if(categoryProductsController.products.isNotEmpty)
           _buildProductGrid(),
+
+          if(categoryProductsController.isLoading.value)
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Center(child: Text('Please wait..')),
+              ),
+            ),
 
           if(categoryProductsController.products.isEmpty)
           const SliverToBoxAdapter(

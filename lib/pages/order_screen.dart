@@ -1,6 +1,7 @@
 // screens/order_screen.dart
 
 import 'package:electronic_store/extensions.dart';
+import 'package:electronic_store/utils/background_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../services/order_service.dart';
@@ -19,235 +20,244 @@ class _OrderScreenState extends State<OrderScreen> {
     return Scaffold(
       backgroundColor: Colors.grey.shade300,
       appBar: AppBar(title: const Text("My Orders")),
-      body: FutureBuilder<List<dynamic>>(
-        future: OrderService.fetchOrders(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
-          }
+      body: BackgroundContainer(
+        child: FutureBuilder<List<dynamic>>(
+          future: OrderService.fetchOrders(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.hasError) {
+              return Center(child: Text("Error: ${snapshot.error}"));
+            }
 
-          final orders = snapshot.data!;
-          final sortedOrders = orders
-              .where((o) => o['createdAt'] != null)
-              .toList()
-            ..sort((a, b) => (b['createdAt'] as Comparable).compareTo(a['createdAt']));
+            final orders = snapshot.data!;
+            if(orders.isEmpty){
+              return Center(
+                child: (
+                  Text('No orders found',style: TextStyle(fontSize: 18,color: Colors.black),)
+            ),
+              );
+            }
+            final sortedOrders = orders
+                .where((o) => o['createdAt'] != null)
+                .toList()
+              ..sort((a, b) => (b['createdAt'] as Comparable).compareTo(a['createdAt']));
 
-          return ListView.separated(
-            padding: const EdgeInsets.fromLTRB(16, 24, 16, 40),
-            separatorBuilder: (_, __) => const SizedBox(height: 16),
-            itemCount: sortedOrders.length,
-            itemBuilder: (context, index) {
-              final order = sortedOrders[index];
-              final products = order['products'] as List;
-              final statusColor = _getStatusColor(order['status']);
-              final isCompleted = order['status'] == 'Completed';
+            return ListView.separated(
+              padding: const EdgeInsets.fromLTRB(16, 24, 16, 40),
+              separatorBuilder: (_, __) => const SizedBox(height: 16),
+              itemCount: sortedOrders.length,
+              itemBuilder: (context, index) {
+                final order = sortedOrders[index];
+                final products = order['products'] as List;
+                final statusColor = _getStatusColor(order['status']);
+                final isCompleted = order['status'] == 'Completed';
 
-              return PhysicalModel(
-                color: Colors.transparent,
-                elevation: 0,
-                borderRadius: BorderRadius.circular(28),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(28),
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        Theme.of(context).colorScheme.surfaceContainerHigh.withOpacity(0.6),
-                        Theme.of(context).colorScheme.surfaceContainerHighest,
-                      ],
-                    ),
-                  ),
-                  child: Material(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(28),
-                    child: InkWell(
+                return PhysicalModel(
+                  color: Colors.transparent,
+                  elevation: 0,
+                  borderRadius: BorderRadius.circular(28),
+                  child: Container(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(28),
-                      // onTap: () => _handleOrderTap(context, order),
-                      splashFactory: InkSparkle.splashFactory,
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Header with order ID and status
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Order ID with decorative accent
-                                Flexible(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "ORDER #${order['_id'].toString()}",
-                                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                                          letterSpacing: 1.2,
-                                          color: Theme.of(context).colorScheme.onSurface,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        "Placed on ${order['createdAt']?.toString().toFormattedDate ?? ''}",
-                                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-                                // Status chip with animation
-                                TweenAnimationBuilder(
-                                  duration: const Duration(milliseconds: 400),
-                                  tween: ColorTween(
-                                    begin: Colors.transparent,
-                                    end: statusColor.withOpacity(0.16),
-                                  ),
-                                  builder: (_, color, __) => Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-                                    decoration: BoxDecoration(
-                                      color: color,
-                                      borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(
-                                        color: statusColor.withOpacity(0.3),
-                                        width: 1.5,
-                                      ),
-                                    ),
-                                    child: Text(
-                                        order['status']=="Pending"?"PROCESSING":order['status'].toString().toUpperCase(),
-                                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                        color: statusColor,
-                                        fontWeight: FontWeight.w900,
-                                        letterSpacing: 0.8,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 20),
-
-                            // Product carousel
-                            SizedBox(
-                              height: 140,
-                              child: Stack(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Theme.of(context).colorScheme.surfaceContainerHigh.withOpacity(0.6),
+                          Theme.of(context).colorScheme.surfaceContainerHighest,
+                        ],
+                      ),
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(28),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(28),
+                        // onTap: () => _handleOrderTap(context, order),
+                        splashFactory: InkSparkle.splashFactory,
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Header with order ID and status
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  ListView.separated(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: products.length,
-                                    separatorBuilder: (_, __) => const SizedBox(width: 12),
-                                    itemBuilder: (ctx, idx) {
-                                      final item = products[idx];
-                                      final product = item['product'];
-                                      return _buildProductCard(context, product, item['quantity']);
-                                    },
-                                  ),
-
-                                  // Gradient edge fade
-                                  Positioned(
-                                    right: 0,
-                                    top: 0,
-                                    bottom: 0,
-                                    child: Container(
-                                      width: 40,
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          begin: Alignment.centerLeft,
-                                          end: Alignment.centerRight,
-                                          colors: [
-                                            Theme.of(context).colorScheme.surfaceContainerHigh.withOpacity(0),
-                                            Theme.of(context).colorScheme.surfaceContainerHigh,
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 14),
-
-                            // Delivery address
-                            Container(
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.surfaceContainerLow,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).colorScheme.primaryContainer,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Icon(
-                                      Icons.pin_drop_rounded,
-                                      color: Theme.of(context).colorScheme.onPrimaryContainer,
-                                      size: 20,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Expanded(
+                                  // Order ID with decorative accent
+                                  Flexible(
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Delivery Address",
-                                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                          "ORDER #${order['_id'].toString()}",
+                                          style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                                            letterSpacing: 1.2,
+                                            color: Theme.of(context).colorScheme.onSurface,
                                           ),
                                         ),
-                                        const SizedBox(height: 2),
+                                        const SizedBox(height: 4),
                                         Text(
-                                          "${order['address']['addressLine1']}, ${order['address']['city']}",
-                                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                            fontWeight: FontWeight.w500,
+                                          "Placed on ${order['createdAt']?.toString().toFormattedDate ?? ''}",
+                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
+
+                                  // Status chip with animation
+                                  TweenAnimationBuilder(
+                                    duration: const Duration(milliseconds: 400),
+                                    tween: ColorTween(
+                                      begin: Colors.transparent,
+                                      end: statusColor.withOpacity(0.16),
+                                    ),
+                                    builder: (_, color, __) => Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                                      decoration: BoxDecoration(
+                                        color: color,
+                                        borderRadius: BorderRadius.circular(20),
+                                        border: Border.all(
+                                          color: statusColor.withOpacity(0.3),
+                                          width: 1.5,
+                                        ),
+                                      ),
+                                      child: Text(
+                                          order['status']=="Pending"?"PROCESSING":order['status'].toString().toUpperCase(),
+                                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                          color: statusColor,
+                                          fontWeight: FontWeight.w900,
+                                          letterSpacing: 0.8,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
-                            ),
-                            const SizedBox(height: 14),
+                              const SizedBox(height: 20),
 
-                            // Order total
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.surfaceContainer,
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: _buildSummaryRow(
-                                context,
-                                "Total",
-                                "₹${order['total']}",
-                                isTotal: true,
-                              ),
-                            ),
+                              // Product carousel
+                              SizedBox(
+                                height: 140,
+                                child: Stack(
+                                  children: [
+                                    ListView.separated(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: products.length,
+                                      separatorBuilder: (_, __) => const SizedBox(width: 12),
+                                      itemBuilder: (ctx, idx) {
+                                        final item = products[idx];
+                                        final product = item['product'];
+                                        return _buildProductCard(context, product, item['quantity']);
+                                      },
+                                    ),
 
-                            // Rating section for completed orders
-                            if (isCompleted) ...[
-                              const SizedBox(height: 10),
-                              _buildRatingSection(context, order),
+                                    // Gradient edge fade
+                                    Positioned(
+                                      right: 0,
+                                      top: 0,
+                                      bottom: 0,
+                                      child: Container(
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            begin: Alignment.centerLeft,
+                                            end: Alignment.centerRight,
+                                            colors: [
+                                              Theme.of(context).colorScheme.surfaceContainerHigh.withOpacity(0),
+                                              Theme.of(context).colorScheme.surfaceContainerHigh,
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 14),
+
+                              // Delivery address
+                              Container(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.surfaceContainerLow,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).colorScheme.primaryContainer,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Icon(
+                                        Icons.pin_drop_rounded,
+                                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                                        size: 20,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Delivery Address",
+                                            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 2),
+                                          Text(
+                                            "${order['address']['addressLine1']}, ${order['address']['city']}",
+                                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 14),
+
+                              // Order total
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.surfaceContainer,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: _buildSummaryRow(
+                                  context,
+                                  "Total",
+                                  "₹${order['total']}",
+                                  isTotal: true,
+                                ),
+                              ),
+
+                              // Rating section for completed orders
+                              if (isCompleted) ...[
+                                const SizedBox(height: 10),
+                                _buildRatingSection(context, order),
+                              ],
                             ],
-                          ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              );
-            },
-          );
-        },
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }

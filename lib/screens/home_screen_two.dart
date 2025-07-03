@@ -39,7 +39,13 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
 
     return Scaffold(
       // extendBodyBehindAppBar: true, // this is key
+   /*   appBar: AppBar(title: Text('Home'),
+        leading:         IconButton(onPressed: (){}, icon: Icon(Icons.menu)),
 
+
+        actions: [
+        IconButton(onPressed: (){}, icon: Icon(Icons.notifications))
+      ],),*/
       backgroundColor: Colors.grey.shade100,
       body: Stack(
         children: [
@@ -94,8 +100,9 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           // Add SliverAppBar
+
           SliverAppBar(
-            expandedHeight: 170.0,
+            expandedHeight: 60.0,
             backgroundColor: Colors.transparent,
             // backgroundColor: Colors.grey.withAlpha(2),
             floating: false,
@@ -104,7 +111,35 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
               // collapseMode: CollapseMode.pin,
               background: Stack(
                 children: [
-                  profileWidget(context),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(
+                          12.0),
+                    ),
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 16),
+                        const Icon(Icons.search_rounded, color: Colors.black),
+                        // Icon(Icons.search_rounded, color: Theme.of(context).iconTheme.color),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            child: Text(
+                              //style['placeholder'] ??
+                               'Search Product Categories Sale',
+                              style: TextStyle(
+                                color: Theme.of(context).textTheme.bodyLarge?.color,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                  // profileWidget(context),
 
 
                 ],
@@ -753,12 +788,15 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(24),
         child: Container(
-          height: 160,
+          height: 50,
+
           decoration: BoxDecoration(
+            color:                 Colors.transparent,
+
             gradient: LinearGradient(
               colors: [
-                Colors.black,
-                Colors.black.withOpacity(0.05),
+                Colors.white,
+                Colors.white.withOpacity(0.05),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,

@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:electronic_store/services/auth_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:http/http.dart' as http;
@@ -10,6 +13,7 @@ import '../services/api_service.dart';
 class NotificationController extends GetxController {
   static NotificationController get to => Get.find();
 
+
   final RxBool isLoading = false.obs;
 
   final RxList<MyNotification> notifications = <MyNotification>[].obs;
@@ -18,12 +22,48 @@ class NotificationController extends GetxController {
   final RxString fcmToken = ''.obs;
   final RxString registeredTokenId = ''.obs;
 
+
   @override
   void onInit() {
     super.onInit();
     fetchNotifications();
     _initFCMToken();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print("📲 Foreground Notification:");
+      print("category:${message.category}");
+      print(":data${message.data}");
+      print("from:${message.from}");
+      print("messageId:${message.messageId}");
+      print("senderId:${message.senderId}");
+      print("sentTime:${message.sentTime}");
+      print("messageType:${message.messageType}");
+      print("Title: ${message.notification?.title}");
+      print("Body: ${message.notification?.body}");
+
+      // Optional: Show a dialog, snackbar, or update UI directly
+     /* Get.snackbar(
+        message.notification?.title ?? 'Notification',
+        message.notification?.body ?? '',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.blue,
+        colorText: Colors.white,
+      );*/
+      var data = message.data; // Already a proper map
+
+      Get.defaultDialog(
+        title: data['title'] ?? 'Alert!',
+        middleText:  data['body'] ?? '',
+      );
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('📲 App opened from background notification: ${message.data}');
+      // Navigate to a specific screen
+    });
+
   }
+
+
   Future<void> fetchNotifications() async {
     try {
       isLoading.value = true;

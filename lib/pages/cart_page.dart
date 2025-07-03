@@ -38,7 +38,7 @@ class CartPage extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  Text('Shopping Cart'),
+                  // Text('Shopping Cart'),
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -126,7 +126,7 @@ class CartPage extends StatelessWidget {
                     margin: EdgeInsets.all(8),
                     child: ListTile(
                       leading: Icon(Icons.delivery_dining, color: Colors.blue),
-                      title: Text('Delivery with 24 hours',style: TextStyle(fontWeight: FontWeight.bold),),
+                      title: Text('Delivery with 7 days',style: TextStyle(fontWeight: FontWeight.bold),),
                       subtitle: Text('Express delivery available!'),
                     ),
                   ),
