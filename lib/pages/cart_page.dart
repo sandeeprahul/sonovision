@@ -132,6 +132,7 @@ class CartPage extends StatelessWidget {
                   ),
                   // Summary
                   Card(
+
                     margin: const EdgeInsets.all(8),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -175,7 +176,13 @@ class CartPage extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 8),
                                 ElevatedButton(
-                                  onPressed: () => controller.applyCoupon(couponController.text),
+                                  onPressed: () {
+                                    Get.defaultDialog(
+                                      title: 'Alert!',
+                                      content: const Text('Coupon Code not available')
+                                    );
+                                  },
+                                  // onPressed: () => controller.applyCoupon(couponController.text),
                                   child: const Text('Apply'),
                                 ),
                               ],
@@ -204,7 +211,7 @@ class CartPage extends StatelessWidget {
                 // checkUser
 
               },
-              style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16)),
+              style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 16)),
               child: const Text('PROCEED TO CHECKOUT'),
             ),
           ),

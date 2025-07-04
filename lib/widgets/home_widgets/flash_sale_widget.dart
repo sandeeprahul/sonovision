@@ -97,7 +97,8 @@ class FlashSaleWidget extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
 
-            borderRadius: BorderRadius.circular(borderRadius),
+            borderRadius: BorderRadius.circular(12),
+            // borderRadius: BorderRadius.circular(borderRadius),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.08),
@@ -214,8 +215,8 @@ class FlashSaleWidget extends StatelessWidget {
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        padding: const EdgeInsets.symmetric(vertical: 2),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
                       onPressed: () {
 

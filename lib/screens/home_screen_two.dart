@@ -151,7 +151,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
     switch (widget['widgetType']) {
      /* case 'search':
         return _buildSearchBar();*/
-      case 'flashSale':
+      case 'flashSale':///best selling
         return FlashSaleWidget(
           widgetData: widget,
         );
@@ -217,8 +217,10 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(
+                  12.0,
+                    ),/*    borderRadius: BorderRadius.circular(
                       style['cardStyle']['borderRadius']?.toDouble() ?? 16.0,
-                    ),
+                    ),*/
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.1),

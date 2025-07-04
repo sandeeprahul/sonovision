@@ -27,16 +27,17 @@ class ProductHeader extends StatelessWidget {
               Text(
                 name,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
                 ),
               ),
               const SizedBox(height: 4),
               Text(
                 brand,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Colors.grey[700],
-                  fontWeight: FontWeight.w500,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+
                 ),
               ),
             ],

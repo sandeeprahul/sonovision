@@ -2,7 +2,6 @@ import 'package:electronic_store/utils/background_container.dart';
 import 'package:electronic_store/widgets/horizontal_product_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 
 import '../controllers/cart_controller.dart';
@@ -50,41 +49,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      // backgroundColor: Colors.white,
 
-      // extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        elevation:  4 ,
-        backgroundColor:
-       theme.primaryColor ,
-        title: AnimatedOpacity(
-          opacity:   1.0 ,
-          duration: const Duration(milliseconds: 200),
-          child: Obx(() {
-            if (productDetailsController.isLoading.value) {
-              return const SizedBox.shrink();
-            }
-
-            return Text(
-              productDetailsController.product.value!.brand,
-              style: const TextStyle(color: Colors.white),
-            );
-          }),
-        ),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color:Colors.white,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness:
-        Brightness.light,
-        ),
-      ),
 
       body: BackgroundContainer(
         child: Obx(() {
@@ -101,10 +66,46 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
         
           return SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
+                  SizedBox(height: 12,),
+                  SizedBox(
+                    height: 56,
+                    child: Stack(
+                      // fit: StackFit.loose,
+                      // mainAxisAlignment: ,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.arrow_back_ios_new,
+                              color:Colors.white,
+                              size: 20,
+                            ),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Obx(() {
+                            if (productDetailsController.isLoading.value) {
+                              return const SizedBox.shrink();
+                            }
+
+                            return Text(
+                              productDetailsController.product.value!.brand,
+                              style: const TextStyle(color: Colors.white,fontSize: 20),
+                            );
+                          }),
+                        ),
+
+                      ],
+                    ),
+                  ),
                   ProductImageCarousel(
                     images: product.images,
                     productId: product.id,
@@ -207,9 +208,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                   ),
                 ),
               )
-                  .animate()
-                  .fadeIn(duration: 300.ms)
-                  .slideX(begin: -0.3, duration: 300.ms),
+                  ,
 
               // Cart count badge
               Positioned(

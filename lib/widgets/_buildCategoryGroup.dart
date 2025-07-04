@@ -33,7 +33,7 @@ Widget buildCategoryGroupWidget(Map<String, dynamic> group) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 30),
+              const SizedBox(height: 26),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
@@ -146,7 +146,8 @@ Widget buildCategoryGroupWidget(Map<String, dynamic> group) {
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
+                            // color: Colors.black,
+                            color: Colors.black.withOpacity(0.064),
                             blurRadius: 10,
                             offset: const Offset(0, 5),
                           ),
@@ -184,7 +185,7 @@ Widget buildCategoryGroupWidget(Map<String, dynamic> group) {
                   );
                 },
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: 10),
 
             ],
           );

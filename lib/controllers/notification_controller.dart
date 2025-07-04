@@ -50,10 +50,10 @@ class NotificationController extends GetxController {
       );*/
       var data = message.data; // Already a proper map
 
-      Get.defaultDialog(
+    /*  Get.defaultDialog(
         title: data['title'] ?? 'Alert!',
         middleText:  data['body'] ?? '',
-      );
+      );*/
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {

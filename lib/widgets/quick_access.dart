@@ -73,9 +73,11 @@ class QuickAccess extends StatelessWidget {
                           borderRadius: BorderRadius.circular(30),
                           boxShadow: [
                             BoxShadow(
-                              color: category['color'].withOpacity(0.1),
+                              color: Colors.black,
+                              // color: category['color'].withOpacity(0.1),
                               blurRadius: 10,
-                              offset: const Offset(0, 4),
+                              spreadRadius: 10,
+                              offset: const Offset(4, 4),
                             ),
                           ],
                         ),
@@ -87,7 +89,8 @@ class QuickAccess extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        category['label'],
+                        'asdfasdfasd',
+                        // category['label'],
                         style: AppTheme.subtitleStyle.copyWith(
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
