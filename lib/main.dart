@@ -9,6 +9,7 @@ import 'package:electronic_store/pages/register_page.dart';
 import 'package:electronic_store/pages/settings_page.dart';
 import 'package:electronic_store/screens/home_screen_two.dart';
 import 'package:electronic_store/screens/splash_screen.dart';
+import 'package:electronic_store/services/notification_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform, // from firebase_options.dart
   );
+  await setupFlutterNotifications();
+
   FirebaseMessaging.instance.setAutoInitEnabled(true);
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -48,19 +51,43 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   Get.put(NotificationController());
 
-  runApp(const MyApp());
+  runApp( MyApp());
 }
+// Top-level background handler (for when app is minimized/closed)
+@pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  print('Handling background message: ${message.messageId}');
+  // Handle data payload for background/terminated states
+  final data = message.data;
+  print('Background Notification: $data');
+
+  // Navigate or process data when tapped
+  if (message.notification != null) {
+    // Example: Store notification for later use
+    // await NotificationStorage.saveNotification(data);
+  }
 }
 
+Future<void> setupFlutterNotifications() async {
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,  // Show heads-up notification
+    badge: true,  // Show badge on app icon
+    sound: true,  // Play sound
+  );
+}
+//
+
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  // const MyApp({Key? key}) : super(key: key);
+
+  final NotificationService notificationService = NotificationService();
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      onInit: ()async{
+        await notificationService.initialize();
+
+      },
       title: 'SonoVision Electronics',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,

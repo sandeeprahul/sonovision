@@ -60,7 +60,7 @@ class BannerCarouselNew extends StatelessWidget {
                 },
                 child: Material(
                   // elevation: elevation,
-                  borderRadius: BorderRadius.circular(borderRadius),
+                  borderRadius: BorderRadius.circular(12),
                   // color: Theme.of(context).colorScheme.surface,
                   child: Stack(
                     fit: StackFit.expand,
@@ -103,9 +103,9 @@ class BannerCarouselNew extends StatelessWidget {
                           child: Container(
                             // margin: EdgeInsets.only(bottom: ,left: 2,right: 2),
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(borderRadius),
+                                borderRadius: BorderRadius.circular( 12.0),
 
-                                color: Colors.black
+                                // color: Colors.black
 
                             ),
                             // padding: const EdgeInsets.all(20.0),
@@ -126,8 +126,10 @@ class BannerCarouselNew extends StatelessWidget {
                                     fontSize: 14,
 
                                     fontWeight: _parseFontWeight(titleStyle['fontWeight']) ?? FontWeight.bold,
-                                    color: _parseColor(titleStyle['color']) ??
-                                        Theme.of(context).colorScheme.onSurface,
+                                    /*color: _parseColor(titleStyle['color']) ??
+                                        Theme.of(context).colorScheme.onSurface,*/
+                                      color: Colors.black
+
                                   ),
                                 ),
                                 const SizedBox(height: 2),
@@ -137,10 +139,10 @@ class BannerCarouselNew extends StatelessWidget {
                                   subtitle ?? '',
                                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     fontSize: 12,
+                                 color: Colors.black
+                                 /*   color: _parseColor(subtitleStyle['color']) ??
 
-                                    color: _parseColor(subtitleStyle['color']) ??
-
-                                        Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
+                                        Theme.of(context).colorScheme.onSurface.withOpacity(0.8),*/
                                   ),
                                 ),
                                 const SizedBox(height: 2),

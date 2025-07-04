@@ -102,7 +102,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
           // Add SliverAppBar
 
           SliverAppBar(
-            expandedHeight: 60.0,
+            expandedHeight: 86.0,
             backgroundColor: Colors.transparent,
             // backgroundColor: Colors.grey.withAlpha(2),
             floating: false,
@@ -110,36 +110,10 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
             flexibleSpace: FlexibleSpaceBar(
               // collapseMode: CollapseMode.pin,
               background: Stack(
+
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(
-                          12.0),
-                    ),
-                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 16),
-                        const Icon(Icons.search_rounded, color: Colors.black),
-                        // Icon(Icons.search_rounded, color: Theme.of(context).iconTheme.color),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            child: Text(
-                              //style['placeholder'] ??
-                               'Search Product Categories Sale',
-                              style: TextStyle(
-                                color: Theme.of(context).textTheme.bodyLarge?.color,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                  // profileWidget(context),
+
+                  profileWidget(context),
 
 
                 ],
@@ -783,226 +757,124 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
 
 
   Widget profileWidget(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(4),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: Container(
-          height: 50,
-
-          decoration: BoxDecoration(
-            color:                 Colors.transparent,
-
-            gradient: LinearGradient(
-              colors: [
-                Colors.white,
-                Colors.white.withOpacity(0.05),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.2),
-              width: 1,
-            ),
-            borderRadius: BorderRadius.circular(24),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 30,
-                offset: const Offset(0, 10),
-              ),
-            ],
-          ),
-          padding: const EdgeInsets.all(12),
-
-          child: Stack(
+    return Column(
+      children: [
+        const SizedBox(height: 8,),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12,),
+          child: Row(
 
             children: [
-               Positioned(
-                right: 20,
-                bottom: 20,
-                child: Icon(
-                  Icons.graphic_eq,
-                  size: 150,
-                  color: Colors.white24.withAlpha(8),
-                ),
-              ),
-              Column(
-                // mainAxisSize: MainAxisSize.min,
-                children: [
+              InkWell(
+                onTap: () {
+                  controller.getCurrentLocation();
+                },
+                child: Obx(
+                        () {
+                      if (controller.isLoading.value) {
+                        return const Text(
+                          'Fetching...',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        );
+                      }
+                      return Text(
+                        textAlign: TextAlign.start,
+                        controller.addressLine1.value,
 
-                  Stack(
-                    children: [
-                      // Glassy floating bubble behind
-
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            // Icon(Icons.location_on,color:Colors.white.withOpacity(0.9) ,),
-                            IconButton(
-                              onPressed: () {
-                                controller.getCurrentLocation();
-                              },
-                              icon: const Icon(Icons.location_on),
-                              color: Colors.white.withOpacity(0.9),
-                              iconSize: 20,
-                            ),
-                            // const SizedBox(width: 8),
-                            Expanded(
-                              child: InkWell(
-                                onTap: () {
-                                  controller.getCurrentLocation();
-                                },
-                                child: Obx(
-                                   () {
-                                     if (controller.isLoading.value) {
-                                       return const Text(
-                                         'Fetching...',
-                                         style: TextStyle(
-                                           fontSize: 12,
-                                           fontWeight: FontWeight.w600,
-                                           color: Colors.white,
-                                         ),
-                                       );
-                                     }
-                                    return Text(
-                                      textAlign: TextAlign.start,
-                                      controller.addressLine1.value,
-
-                                      style:
-                                          Theme.of(context).textTheme.titleMedium?.copyWith(
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.white,
-                                                // decoration: TextDecoration.underline,
-                                                // decorationColor: Colors.white,
-                                                fontSize: 12,
-                                              ),
-                                    );
-                                  }
-                                ),
-                              ),
-                            ),
-
-                            // const Spacer(),
-                            InkWell(
-                              onTap: (){
-                                Get.to(() => NotificationPage());
-
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(3),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  gradient: LinearGradient(
-
-                                    colors: [
-
-                                      Colors.black.withOpacity(0.6),
-                                      Colors.black.withOpacity(0.2),
-                                    ],
-                                  ),
-                                ),
-                                child: const CircleAvatar(
-                                  radius: 20,
-                                  backgroundColor: Colors.transparent,
-                                  child: ClipOval(
-                                      child: Icon(Icons
-                                          .notifications) /*Image.network(
-                                      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=2576&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                                      width: 42,
-                                      height: 42,
-                                      fit: BoxFit.cover,
-                                    ),*/
-                                      ),
-                                ),
-                              ),
-                            ),
-                          ],
+                        style:
+                        Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                          // decoration: TextDecoration.underline,
+                          // decorationColor: Colors.white,
+                          fontSize: 14,
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20,),
-                  const AnimatedSearchBar(
-                    style: {
-                      "margin": 16,
-                      "height": 56,
-                      "borderRadius": 20,
-                      "placeholder": "Search products, categories...",
-                    },
-                  )
-                ],
+                      );
+                    }
+                ),
               ),
             ],
           ),
         ),
-      ),
+        const SizedBox(height: 12,),
+
+        Row(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(
+                    12.0),
+              ),
+              margin: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                children: [
+                  const SizedBox(width: 6),
+                  const Icon(Icons.search_outlined, color: Colors.black,size: 20,),
+
+                  // Icon(Icons.search_rounded, color: Theme.of(context).iconTheme.color),
+                  const SizedBox(width: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Text(
+                      //style['placeholder'] ??
+                      'Search "Product","Categories"..',
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(width: 4),
+
+                ],
+              ),
+            ),
+            Visibility(
+              visible: false,
+              child: IconButton(
+                onPressed: () {
+                  controller.getCurrentLocation();
+                },
+                icon: const Icon(Icons.location_on),
+                color: Colors.white.withOpacity(0.9),
+                iconSize: 20,
+              ),
+            ),
+            CircleAvatar(
+              backgroundColor: Colors.white,
+              radius: 18,
+              child: IconButton(
+                onPressed: (){
+                  Get.to(() => NotificationPage());
+
+                },
+                icon: const Icon(Icons
+                    .notifications_none_outlined,size: 20,color: Colors.black,),
+              ),
+            ),
+            const SizedBox(width: 6),
+            CircleAvatar(
+              backgroundColor: Colors.white,
+              radius: 18,
+              child: IconButton(
+                onPressed: () {
+                  controller.getCurrentLocation();
+                },
+                icon: const Icon(Icons.person_outlined),
+                color: Colors.black,
+                iconSize: 20,
+              ),
+            )
+          ],
+        ),
+
+      ],
     );
   }
 
-  Widget profileWidgetd() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        gradient: const LinearGradient(
-          colors: [AppTheme.primaryColor, AppTheme.secondaryColor],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
-      height: 156,
-      child: Stack(
-        children: [
-          /*         Positioned(
-            right: -12,bottom: -12,
-              child
-              :  CircleAvatar(radius: 56,backgroundColor: Colors.blue.shade900,)),*/
-          const Positioned(
-            right: -36,
-            bottom: -36,
-            child: RotatedBox(
-                quarterTurns: 90,
-                child: Icon(
-                  Icons.bubble_chart,
-                  size: 200,
-                )),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.menu,
-                      color: Colors.white,
-                    )),
-                Text(
-                  'Hi,Sahithi',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold, color: Colors.white),
-                ),
-                const Spacer(),
-                CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: ClipOval(
-                      child: Image.network(
-                          width: 60,
-                          // Must be equal to or smaller than CircleAvatar diameter
-                          height: 60,
-                          'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=2576&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')),
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
