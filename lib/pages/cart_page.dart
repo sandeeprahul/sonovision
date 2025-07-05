@@ -35,21 +35,24 @@ class CartPage extends StatelessWidget {
 
           return SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Column(
                 children: [
                   // Text('Shopping Cart'),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: controller.cartItems.length,
-                    itemBuilder: (context, index) {
-                      final item = controller.cartItems[index];
-                      return Card(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                        elevation: 3,
-                        margin: const EdgeInsets.all(8),
-                        child: Padding(
+                  const SizedBox(height: 38,),
+                  Card(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: controller.cartItems.length,
+                      itemBuilder: (context, index) {
+                        final item = controller.cartItems[index];
+                        return Container(
+                          // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          // elevation: 3,
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
                           padding: const EdgeInsets.all(12.0),
                           child: Row(
                             children: [
@@ -98,10 +101,15 @@ class CartPage extends StatelessWidget {
                               ),
                             ],
                           ),
-                        ),
-                      )
-                      ;
-                    },
+                        )
+                        ;
+                      }, separatorBuilder: (BuildContext context, int index) { return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Divider(
+                        color: Colors.grey.shade300,
+                                            ),
+                      ); },
+                    ),
                   ),
 
 
@@ -111,7 +119,7 @@ class CartPage extends StatelessWidget {
                       margin: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: Colors.green.shade50,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Row(
                         children: [
@@ -139,6 +147,7 @@ class CartPage extends StatelessWidget {
                       child: Obx(() => Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+
                           const Text('Order Summary', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black)),
                           const SizedBox(height: 16),
                           rowItem('Subtotal', '₹${controller.subtotal.toStringAsFixed(0)},',Colors.black),

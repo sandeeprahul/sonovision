@@ -1,3 +1,4 @@
+import 'package:electronic_store/screens/search_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -13,6 +14,7 @@ import '../utils/cart_bottom_sheet.dart';
 import '../utils/loadImageBasedOnExtension.dart';
 import '../widgets/_buildCategoryGroup.dart';
 import '../widgets/home_widgets/banner_widget.dart';
+
 // import '../widgets/home_widgets/brand_strip_widget.dart';
 import '../widgets/home_widgets/brand_strip_widget.dart';
 import '../widgets/home_widgets/flash_sale_widget.dart';
@@ -32,14 +34,14 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
     // TODO: implement initState
     super.initState();
   }
+
   final HomeController controller = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       // extendBodyBehindAppBar: true, // this is key
-   /*   appBar: AppBar(title: Text('Home'),
+      /*   appBar: AppBar(title: Text('Home'),
         leading:         IconButton(onPressed: (){}, icon: Icon(Icons.menu)),
 
 
@@ -49,7 +51,12 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
       backgroundColor: Colors.grey.shade100,
       body: Stack(
         children: [
-          Image.asset('assets/sonovision_bg_homepage.png',height: double.infinity,fit: BoxFit.cover,),
+          Image.asset(
+            'assets/sonovision_bg_homepage.png',
+            height: double.infinity,
+            // height: double.infinity,
+            fit: BoxFit.cover,
+          ),
           SafeArea(
             child: Obx(() {
               if (controller.isLoading.value) {
@@ -88,7 +95,8 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
   }
 
   Widget _buildHomeContent(BuildContext context, HomeController controller) {
-    final widgets = (controller.homeData.value['widgets'] ?? []) as List<dynamic>;
+    final widgets =
+        (controller.homeData.value['widgets'] ?? []) as List<dynamic>;
     /*final saleEndTime =
         DateTime.parse(controller.homeData.value['saleEndTime']);*/
 
@@ -110,12 +118,8 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
             flexibleSpace: FlexibleSpaceBar(
               // collapseMode: CollapseMode.pin,
               background: Stack(
-
                 children: [
-
                   profileWidget(context),
-
-
                 ],
               ),
             ),
@@ -149,9 +153,11 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
   Widget _buildDynamicWidget(
       BuildContext context, Map<String, dynamic> widget) {
     switch (widget['widgetType']) {
-     /* case 'search':
+      /* case 'search':
         return _buildSearchBar();*/
-      case 'flashSale':///best selling
+      case 'flashSale':
+
+        ///best selling
         return FlashSaleWidget(
           widgetData: widget,
         );
@@ -165,7 +171,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
         return BannerCarouselNew(banners: bannerData, style: style);
       case 'dealOfDay':
         return _buildDealOfDay(widget);
-    /*  case 'brandStrip':
+      /*  case 'brandStrip':
         return buildBrandStripWidget(widget);*/
       case 'recentlyViewed':
         return _buildRecentlyViewed(widget);
@@ -204,7 +210,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
               const SizedBox(height: 16),
               InkWell(
                 onTap: () {
-                print("PRODUCT ID: ${deal['product']['id']}");
+                  print("PRODUCT ID: ${deal['product']['id']}");
                   var productJson = {
                     '_id': deal['product']['id'],
                     // other fields if needed
@@ -217,8 +223,9 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(
-                  12.0,
-                    ),/*    borderRadius: BorderRadius.circular(
+                      12.0,
+                    ),
+                    /*    borderRadius: BorderRadius.circular(
                       style['cardStyle']['borderRadius']?.toDouble() ?? 16.0,
                     ),*/
                     boxShadow: [
@@ -336,13 +343,12 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
               right: 34,
               child: CircleAvatar(
                   child: IconButton(
-
                       onPressed: () {
                         final controller = Get.put(CartController());
                         // final product = productDetailsController.product.value!;
                         // {deal['product']['id']}
-                        final exists = controller.cartItems
-                            .any((item) => item.productId == deal['product']['id']);
+                        final exists = controller.cartItems.any(
+                            (item) => item.productId == deal['product']['id']);
 
                         if (exists) {
                           Get.snackbar(
@@ -413,14 +419,13 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
               itemBuilder: (context, index) {
                 final product = products[index];
                 return InkWell(
-                  onTap: (){
+                  onTap: () {
                     final productJson = {
                       '_id': product['id'],
                       // other fields if needed
                     };
 
                     Get.toNamed('/product-details', arguments: productJson);
-
                   },
                   child: Container(
                     width: 120,
@@ -451,7 +456,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                             imageUrl: product['image'],
                             fit: BoxFit.contain,
                           ),
-                       /*   Container(
+                          /*   Container(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 begin: Alignment.topCenter,
@@ -505,8 +510,6 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
         return const SizedBox.shrink();
     }
   }
-
-
 
   Widget _buildProductGroup(BuildContext context, Map<String, dynamic> group) {
     final products = group['data'] as List<dynamic>;
@@ -757,83 +760,91 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
     }
   }
 
-
   Widget profileWidget(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 8,),
+        const SizedBox(
+          height: 8,
+        ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12,),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 12,
+          ),
           child: Row(
-
             children: [
               InkWell(
                 onTap: () {
                   controller.getCurrentLocation();
                 },
-                child: Obx(
-                        () {
-                      if (controller.isLoading.value) {
-                        return const Text(
-                          'Fetching...',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
-                        );
-                      }
-                      return Text(
-                        textAlign: TextAlign.start,
-                        controller.addressLine1.value,
-
-                        style:
-                        Theme.of(context).textTheme.titleMedium?.copyWith(
+                child: Obx(() {
+                  if (controller.isLoading.value) {
+                    return const Text(
+                      'Fetching...',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    );
+                  }
+                  return Text(
+                    textAlign: TextAlign.start,
+                    controller.addressLine1.value,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
                           // decoration: TextDecoration.underline,
                           // decorationColor: Colors.white,
                           fontSize: 14,
                         ),
-                      );
-                    }
-                ),
+                  );
+                }),
               ),
             ],
           ),
         ),
-        const SizedBox(height: 12,),
-
+        const SizedBox(
+          height: 12,
+        ),
         Row(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(
-                    12.0),
-              ),
-              margin: const EdgeInsets.symmetric(horizontal: 8),
-              child: Row(
-                children: [
-                  const SizedBox(width: 6),
-                  const Icon(Icons.search_outlined, color: Colors.black,size: 20,),
-
-                  // Icon(Icons.search_rounded, color: Theme.of(context).iconTheme.color),
-                  const SizedBox(width: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Text(
-                      //style['placeholder'] ??
-                      'Search "Product","Categories"..',
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.bodyLarge?.color,
-                      ),
-                    ),
+            Expanded(
+              child: InkWell(
+                onTap: (){
+                  Get.to(SearchPage());
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24.0),
                   ),
+                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 8),
+                      const Icon(
+                        Icons.search_outlined,
+                        color: Colors.black,
+                        size: 20,
+                      ),
 
-                  const SizedBox(width: 4),
+                      // Icon(Icons.search_rounded, color: Theme.of(context).iconTheme.color),
+                      const SizedBox(width: 6),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Text(
+                          //style['placeholder'] ??
+                          'Search "Product","Categories"..',
+                          style: TextStyle(
+                            color: Theme.of(context).textTheme.bodyLarge?.color,
+                          ),
+                        ),
+                      ),
 
-                ],
+                      const SizedBox(width: 8),
+                    ],
+                  ),
+                ),
               ),
             ),
             Visibility(
@@ -851,12 +862,14 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
               backgroundColor: Colors.white,
               radius: 18,
               child: IconButton(
-                onPressed: (){
+                onPressed: () {
                   Get.to(() => NotificationPage());
-
                 },
-                icon: const Icon(Icons
-                    .notifications_none_outlined,size: 20,color: Colors.black,),
+                icon: const Icon(
+                  Icons.notifications_none_outlined,
+                  size: 20,
+                  color: Colors.black,
+                ),
               ),
             ),
             const SizedBox(width: 6),
@@ -874,9 +887,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
             )
           ],
         ),
-
       ],
     );
   }
-
 }

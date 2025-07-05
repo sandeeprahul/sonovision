@@ -128,6 +128,25 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+
+  Widget _buildProfileItem(IconData icon, String title, String routeName) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16,vertical: 2),
+      decoration: BoxDecoration(
+          // color: Colors.white,
+          color: Colors.white.withAlpha(90),
+
+          borderRadius: BorderRadius.circular(16)
+      ),
+      child: ListTile(
+        leading: Icon(icon, color: Colors.black),
+        title: Text(title),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () => Get.toNamed(routeName),
+      ),
+    );
+  }
+
   void _showLogoutConfirmation() {
     showDialog(
       context: context,
@@ -159,22 +178,5 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildProfileItem(IconData icon, String title, String routeName) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16,vertical: 2),
-      decoration: BoxDecoration(
-          // color: Colors.white,
-          color: Colors.white.withAlpha(90),
-
-          borderRadius: BorderRadius.circular(16)
-      ),
-      child: ListTile(
-        leading: Icon(icon, color: Colors.black),
-        title: Text(title),
-        trailing: const Icon(Icons.chevron_right),
-        onTap: () => Get.toNamed(routeName),
-      ),
-    );
-  }
 }
 //                  Navigator.pushNamed(context, '/order-history');

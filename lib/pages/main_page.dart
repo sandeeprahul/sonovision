@@ -1,4 +1,6 @@
 import 'package:electronic_store/pages/login_page.dart';
+import 'package:electronic_store/premium_cart_screen.dart';
+import 'package:electronic_store/premium_profile_page.dart';
 import 'package:electronic_store/screens/home_screen_two.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,8 +26,10 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
   late final TabController _tabController;
   final List<Widget> _pages = [
     const HomeScreenTwo(),
-     CartPage(),
-    const ProfilePage(),
+     PremiumCartScreen(),
+     // CartPage(),
+     PremiumProfilePage(),
+    // const ProfilePage(),
   ];//   // SearchPage(),
   // const WishlistPage(),
   DateTime? _lastBackPressTime;

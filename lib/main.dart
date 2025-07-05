@@ -7,6 +7,7 @@ import 'package:electronic_store/pages/order_screen.dart';
 import 'package:electronic_store/pages/product_details_page_new.dart';
 import 'package:electronic_store/pages/register_page.dart';
 import 'package:electronic_store/pages/settings_page.dart';
+import 'package:electronic_store/premium_cart_screen.dart';
 import 'package:electronic_store/screens/home_screen_two.dart';
 import 'package:electronic_store/screens/splash_screen.dart';
 import 'package:electronic_store/services/notification_service.dart';
@@ -106,7 +107,8 @@ class MyApp extends StatelessWidget {
             name: '/product-details', page: () => const ProductDetailsScreenNew()),////ProductDetailsPage
       ],
       routes: {
-        '/cart': (context) => CartPage(),
+        '/cart': (context) => PremiumCartScreen(),
+        // '/cart': (context) => CartPage(),
         '/main': (context) => const MainPage(),
         '/checkout': (context) => const CheckoutPage(),
         '/add-address': (context) => AddressFormPage(),

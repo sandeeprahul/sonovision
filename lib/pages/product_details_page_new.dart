@@ -71,7 +71,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
-                  SizedBox(height: 12,),
+                  const SizedBox(height: 12,),
                   SizedBox(
                     height: 56,
                     child: Stack(
@@ -110,7 +110,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                     images: product.images,
                     productId: product.id,
                   ),
-                  Divider(
+                  const Divider(
                     thickness: 1,
                     color: Colors.transparent,),
                   Padding(

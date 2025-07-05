@@ -15,12 +15,12 @@ class BackgroundContainer extends StatelessWidget {
           width: double.infinity,
           // width:MediaQuery.of(context),
           fit: BoxFit.cover,),
-        BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+      /*  BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
           child: Container(
             color: Colors.black.withOpacity(0.2), // Must be non-opaque for blur to show
           ),
-        ),
+        ),*/
         Positioned.fill(
           child: child,
         ),

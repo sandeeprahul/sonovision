@@ -2,8 +2,10 @@
 
 import 'package:electronic_store/extensions.dart';
 import 'package:electronic_store/utils/background_container.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import '../services/order_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -19,7 +21,10 @@ class _OrderScreenState extends State<OrderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade300,
-      appBar: AppBar(title: const Text("My Orders")),
+      appBar: AppBar(title: const Text("My Orders"),backgroundColor: Colors.blue.shade800,
+      leading: IconButton(onPressed: (){
+        Get.back();
+      }, icon: const Icon(CupertinoIcons.back)),),
       body: BackgroundContainer(
         child: FutureBuilder<List<dynamic>>(
           future: OrderService.fetchOrders(),
@@ -33,9 +38,9 @@ class _OrderScreenState extends State<OrderScreen> {
 
             final orders = snapshot.data!;
             if(orders.isEmpty){
-              return Center(
+              return const Center(
                 child: (
-                  Text('No orders found',style: TextStyle(fontSize: 18,color: Colors.black),)
+                  Text('No orders found',style: TextStyle(fontSize: 18,color: Colors.white),)
             ),
               );
             }

@@ -9,6 +9,7 @@ class SearchhController extends GetxController {
   final RxBool isSearching = false.obs;
   final RxInt selectedIndex = (-1).obs;
   final FocusNode searchFocusNode = FocusNode();
+  final TextEditingController textController = TextEditingController();
 
   @override
   void onInit() {
@@ -73,6 +74,10 @@ class SearchhController extends GetxController {
 
   void selectSuggestion(String suggestion) {
     query.value = suggestion;
+    textController.text = suggestion;
+    textController.selection = TextSelection.fromPosition(
+      TextPosition(offset: suggestion.length),
+    );
     search(suggestion);
     searchFocusNode.requestFocus();
   }

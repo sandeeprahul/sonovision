@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:electronic_store/utils/background_container.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,7 +19,8 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+/*      appBar: AppBar(
+        backgroundColor: Colors.blue.shade800,
         // automaticallyImplyLeading: false,
         title:  const Text('Search'),
         centerTitle: true,
@@ -29,80 +31,89 @@ class _SearchPageState extends State<SearchPage> {
           ),
           onPressed: () => Navigator.pop(context),
         ),
-      ),
-      backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          Container(
-            height: 48,
-            margin: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainerHigh,
-              borderRadius: BorderRadius.circular(24),
+      ),*/
+      // backgroundColor: Colors.white,
+      body: BackgroundContainer(
+        child: Column(
+          children: [
+
+            const SizedBox(height: 36),
+            SizedBox(
+              height: 56,
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child:     IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back_ios_new,
+                        color:Colors.white,
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                      child: Text('Search',style: TextStyle(color: Colors.white,fontSize: 22),)),
+                ],
+              ),
             ),
-            child: TextField(
-              focusNode: controller.searchFocusNode,
-              controller: TextEditingController(text: controller.query.value),
-              onChanged: controller.search,
-              onSubmitted: (value) => controller.search(value),
-              decoration: InputDecoration(
-                hintText: 'Search products...',
-                border: InputBorder.none,
-                prefixIcon: Icon(
-                  Icons.search_rounded,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
-                suffixIcon: controller.query.isNotEmpty
-                    ? IconButton(
-                  icon: Icon(
-                    Icons.close_rounded,
+            Container(
+              height: 48,
+              margin: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                borderRadius: BorderRadius.circular(24),
+              ),
+              child: TextField(
+                focusNode: controller.searchFocusNode,
+                controller: controller.textController,
+
+                // controller: TextEditingController(text: controller.query.value),
+                onChanged: (value) {
+                  controller.query.value = value;
+                  controller.search(value);
+                },
+                onSubmitted: (value) => controller.search(value),
+                decoration: InputDecoration(
+                  hintText: 'Search products...',
+                  border: InputBorder.none,
+                  prefixIcon: Icon(
+                    Icons.search_rounded,
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
-                  onPressed: controller.clearSearch,
-                )
-                    : null,
-                contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                  suffixIcon: controller.query.isNotEmpty
+                      ? IconButton(
+                    icon: Icon(
+                      Icons.close_rounded,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                    onPressed: controller.clearSearch,
+                  )
+                      : null,
+                  contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
-              style: Theme.of(context).textTheme.bodyLarge,
             ),
-          ),
 
-          Expanded(
-            child: Obx(() {
-              if (controller.query.isEmpty) {
-                return _buildInitialState(context);
-              } else if (controller.isSearching.value) {
-                return _buildLoadingState();
-              } else {
-                return _buildResults(context);
-              }
-            }),
-          ),
-        ],
+            Expanded(
+              child: Obx(() {
+                if (controller.query.isEmpty) {
+                  return _buildInitialState(context);
+                } else if (controller.isSearching.value) {
+                  return _buildLoadingState();
+                } else {
+                  return _buildResults(context);
+                }
+              }),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildSearchBar(BuildContext context) {
-    return Material(
-      elevation: 0,
-      color: Colors.transparent,
-      child: Row(
-        children: [
-          // Back button
-          IconButton(
-            icon: const Icon(
-              Icons.arrow_back_rounded,
-              color: Colors.white,
-            ),
-            onPressed: () => Get.back(),
-          ),
-          const Text('Search')
-          // Search field
-        ],
-      ),
-    );
-  }
 
   Widget _buildInitialState(BuildContext context) {
     return CustomScrollView(
