@@ -31,6 +31,7 @@ class NotificationController extends GetxController {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print("📲 Foreground Notification:");
       print("category:${message.category}");
+      print("message:${message.toString()}");
       print(":data${message.data}");
       print("from:${message.from}");
       print("messageId:${message.messageId}");
@@ -39,6 +40,9 @@ class NotificationController extends GetxController {
       print("messageType:${message.messageType}");
       print("Title: ${message.notification?.title}");
       print("Body: ${message.notification?.body}");
+
+      // data{id: 686c0ce4415372630fefb7be, type: order_update, status: Completed}
+      // data{id: 686c0bc1415372630fefb75c, type: order_update, status: Processing}
 
       // Optional: Show a dialog, snackbar, or update UI directly
      /* Get.snackbar(

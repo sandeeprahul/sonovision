@@ -9,6 +9,9 @@ class AppTheme {
   static const Color primaryColor = Colors.black; // Blue
   static const Color secondaryColor = Colors.black; // Dark Blue
   static const Color accentColor = Color(0xFFFF4081);
+  static const Color metallicGold = Color(0xFFD4AF37);
+  static const Color vegasGold = Color(0xFFC5B358);
+  static const Color oldGold = Color(0xFFCFB53B);
 
   /*// Pink  static const Color primaryColor = Color(0xFF1E88E5); // Blue
   static const Color secondaryColor = Color(0xFF0D47A1); // Dark Blue

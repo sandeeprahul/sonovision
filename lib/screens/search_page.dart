@@ -52,7 +52,7 @@ class _SearchPageState extends State<SearchPage> {
                       onPressed: () => Navigator.pop(context),
                     ),
                   ),
-                  Align(
+                  const Align(
                     alignment: Alignment.center,
                       child: Text('Search',style: TextStyle(color: Colors.white,fontSize: 22),)),
                 ],

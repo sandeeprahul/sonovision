@@ -286,7 +286,7 @@ class CheckoutController extends GetxController {
     final body = {
       "orderId": currentOrderId,
       "paymentStatus": paymentStatus,
-      "paymentId": paymentOrderId,
+      "paymentId": paymentOrderId??'',
       "paymentType": paymentType,
     };
 

@@ -1,3 +1,4 @@
+import 'package:electronic_store/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
@@ -252,7 +253,7 @@ class FlashSaleWidget extends StatelessWidget {
 
                         // Get.snackbar("Cart", "${product['name']} added to cart",snackPosition:SnackPosition.BOTTOM,overlayBlur: 2);
                       },
-                      label: const Text("Add", style: TextStyle(fontSize: 12)),
+                      label: const Text("Add", style: TextStyle(fontSize: 12,color: Colors.white)),
                       icon:  const Icon(
                         Icons.add_shopping_cart_outlined,
                         size: 12,

@@ -9,6 +9,8 @@ import 'package:get/get.dart';
 import '../services/order_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+import '../utils/background_container_gradient.dart';
+
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
 
@@ -25,7 +27,8 @@ class _OrderScreenState extends State<OrderScreen> {
       leading: IconButton(onPressed: (){
         Get.back();
       }, icon: const Icon(CupertinoIcons.back)),),
-      body: BackgroundContainer(
+      body: BackgroundContainerGradient(
+
         child: FutureBuilder<List<dynamic>>(
           future: OrderService.fetchOrders(),
           builder: (context, snapshot) {
@@ -58,10 +61,11 @@ class _OrderScreenState extends State<OrderScreen> {
                 final products = order['products'] as List;
                 final statusColor = _getStatusColor(order['status']);
                 final isCompleted = order['status'] == 'Completed';
+                final parsedDate = DateTime.parse(order['createdAt']);
 
                 return PhysicalModel(
-                  color: Colors.transparent,
-                  elevation: 0,
+                  color: Colors.white,
+                  elevation: 2,
                   borderRadius: BorderRadius.circular(28),
                   child: Container(
                     decoration: BoxDecoration(
@@ -233,17 +237,19 @@ class _OrderScreenState extends State<OrderScreen> {
                               const SizedBox(height: 14),
 
                               // Order total
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.surfaceContainer,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: _buildSummaryRow(
-                                  context,
-                                  "Total",
-                                  "₹${order['total']}",
-                                  isTotal: true,
+                              Card(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).colorScheme.surfaceContainer,
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: _buildSummaryRow(
+                                    context,
+                                    "Total",
+                                    "₹${order['total']}",
+                                    isTotal: true,
+                                  ),
                                 ),
                               ),
 

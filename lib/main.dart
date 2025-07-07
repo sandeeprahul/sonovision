@@ -9,6 +9,9 @@ import 'package:electronic_store/pages/register_page.dart';
 import 'package:electronic_store/pages/settings_page.dart';
 import 'package:electronic_store/premium_cart_screen.dart';
 import 'package:electronic_store/screens/home_screen_two.dart';
+import 'package:electronic_store/screens/premium_contact_us.dart';
+import 'package:electronic_store/screens/premium_edit_profile_screen.dart';
+import 'package:electronic_store/screens/premium_notification_settings_screen.dart';
 import 'package:electronic_store/screens/splash_screen.dart';
 import 'package:electronic_store/services/notification_service.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -117,6 +120,9 @@ class MyApp extends StatelessWidget {
               orderId: '0',
             ),
         '/order-history': (context) => const OrderScreen(),
+        '/edit-profile': (context) =>  PremiumEditProfileScreen(),
+        '/notification-settings': (context) =>  PremiumNotificationSettings(),
+        '/contact-us': (context) =>  PremiumContactUs(),
 
         ///OrderHistoryPage
         '/login': (context) => const LoginPage(),

@@ -1,4 +1,6 @@
 
+import 'package:electronic_store/pages/main_page.dart';
+import 'package:electronic_store/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -89,19 +91,20 @@ class PremiumCartScreen extends StatelessWidget {
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-          Icon(Icons.shopping_bag_outlined, size: 120, color: Colors.grey[300]),
+          const Icon(Icons.shopping_bag_outlined, size: 120, color: Colors.black),
       const SizedBox(height: 16),
-      const Text('Your Cart is Empty', style: TextStyle(
+       const Text('Your Cart is Empty', style: TextStyle(
         fontSize: 22,
         fontWeight: FontWeight.w600,
-        color: Colors.black87,
+        color: Colors.black,
+        // color: Colors.white,
       )),
       const SizedBox(height: 8),
-      const Text('Explore our collections and add some items',
-          style: TextStyle(color: Colors.grey)),
+      const Text('Explore  electronics and add some items',
+          style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
       const SizedBox(height: 24),
       ElevatedButton(
-        onPressed: () => Get.offAllNamed('/home'),
+        onPressed: () => Get.off(const MainPage()),
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
           shape: RoundedRectangleBorder(

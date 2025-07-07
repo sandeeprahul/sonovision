@@ -27,8 +27,8 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
 
   @override
   void dispose() {
-    _phoneController.dispose();
-    _otpController.dispose();
+    // _phoneController.dispose();
+    // _otpController.dispose();
     super.dispose();
   }
 

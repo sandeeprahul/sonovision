@@ -1,4 +1,5 @@
 import 'package:electronic_store/services/auth_service.dart';
+import 'package:electronic_store/utils/background_container_gradient.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -318,42 +319,27 @@ class _ActionButton extends StatelessWidget {
   }
 }*/
 
-
-
 class PremiumProfilePage extends StatefulWidget {
   @override
   _PremiumProfilePageState createState() => _PremiumProfilePageState();
 }
 
-class _PremiumProfilePageState extends State<PremiumProfilePage>  {
-
-
-
+class _PremiumProfilePageState extends State<PremiumProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blue.shade800, Colors.white],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+      body: BackgroundContainerGradient(
         child: CustomScrollView(
           slivers: [
-
-
-
-
-
             SliverToBoxAdapter(
               child: Obx(() {
                 final user = AuthController.to.user;
                 return Column(
                   children: [
-                    SizedBox(height: 52,),
+                    const SizedBox(
+                      height: 52,
+                    ),
                     Container(
                       width: 120,
                       height: 120,
@@ -379,42 +365,40 @@ class _PremiumProfilePageState extends State<PremiumProfilePage>  {
                           backgroundColor: Colors.grey[200],
                           child: user['photoUrl'] != null
                               ? ClipOval(
-                            child: Image.network(
-                              user['photoUrl'],
-                              fit: BoxFit.cover,
-                              width: 112,
-                              height: 112,
-                            ),
-                          )
+                                  child: Image.network(
+                                    user['photoUrl'],
+                                    fit: BoxFit.cover,
+                                    width: 112,
+                                    height: 112,
+                                  ),
+                                )
                               : Icon(
-                            Icons.person,
-                            size: 48,
-                            color: Colors.grey[600],
-                          ),
+                                  Icons.person,
+                                  size: 48,
+                                  color: Colors.grey[600],
+                                ),
                         );
                       }),
                     ),
                     Text(
                       user['name'] ?? 'Guest User',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black87,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Text(
                       user['email'] ?? 'email@example.com',
                       style: const TextStyle(
                         fontSize: 14,
                         color: Colors.white,
+                        fontWeight: FontWeight.bold
                       ),
                     ),
-                    SizedBox(height: 8),
-
-
-
-                    SizedBox(height: 24),
+                    const SizedBox(height: 8),
+                    const SizedBox(height: 24),
                   ],
                 );
               }),
@@ -428,11 +412,6 @@ class _PremiumProfilePageState extends State<PremiumProfilePage>  {
                       icon: Icons.person_outline,
                       title: 'Edit Profile',
                       route: '/edit-profile',
-                    ),
-                    _buildProfileItem(
-                      icon: Icons.lock_outline,
-                      title: 'Change Password',
-                      route: '/change-password',
                     ),
                     _buildProfileItem(
                       icon: Icons.notifications_outlined,
@@ -450,25 +429,15 @@ class _PremiumProfilePageState extends State<PremiumProfilePage>  {
                       route: '/order-history',
                     ),
                     _buildProfileItem(
-                      icon: Icons.favorite_outline,
-                      title: 'Wishlist',
-                      route: '/wishlist',
-                    ),
-                    _buildProfileItem(
-                      icon: Icons.receipt_outlined,
-                      title: 'Order Returns',
-                      route: '/returns',
+                      icon: Icons.door_front_door_outlined,
+                      title: 'My Address',
+                      route: '/my-address',
                     ),
                   ],
                 ),
                 _buildProfileCard(
                   title: 'Support',
                   children: [
-                    _buildProfileItem(
-                      icon: Icons.help_outline,
-                      title: 'Help Center',
-                      route: '/help-center',
-                    ),
                     _buildProfileItem(
                       icon: Icons.chat_outlined,
                       title: 'Contact Us',
@@ -481,20 +450,20 @@ class _PremiumProfilePageState extends State<PremiumProfilePage>  {
                     ),
                   ],
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: ElevatedButton(
                     onPressed: _showLogoutConfirmation,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red[400],
-                      padding: EdgeInsets.symmetric(vertical: 16),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                       elevation: 0,
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.logout, size: 20, color: Colors.white),
@@ -511,7 +480,7 @@ class _PremiumProfilePageState extends State<PremiumProfilePage>  {
                     ),
                   ),
                 ),
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
               ]),
             ),
           ],
@@ -520,9 +489,10 @@ class _PremiumProfilePageState extends State<PremiumProfilePage>  {
     );
   }
 
-  Widget _buildProfileCard({required String title, required List<Widget> children}) {
+  Widget _buildProfileCard(
+      {required String title, required List<Widget> children}) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -530,7 +500,7 @@ class _PremiumProfilePageState extends State<PremiumProfilePage>  {
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
-            offset: Offset(0, 4),
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -538,7 +508,7 @@ class _PremiumProfilePageState extends State<PremiumProfilePage>  {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
             child: Text(
               title,
               style: TextStyle(
@@ -566,14 +536,14 @@ class _PremiumProfilePageState extends State<PremiumProfilePage>  {
         width: 36,
         height: 36,
         decoration: BoxDecoration(
-          color: Colors.grey[50],
+          color: Colors.blue[50],
           shape: BoxShape.circle,
         ),
         child: Icon(icon, size: 20, color: Colors.grey[700]),
       ),
       title: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 15,
           fontWeight: FontWeight.w500,
           color: Colors.black87,
@@ -581,31 +551,34 @@ class _PremiumProfilePageState extends State<PremiumProfilePage>  {
       ),
       trailing: Icon(Icons.chevron_right, color: Colors.grey[400]),
       onTap: () => Get.toNamed(route),
-      contentPadding: EdgeInsets.symmetric(horizontal: 16),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
       minLeadingWidth: 0,
     );
   }
 
   void _showLogoutConfirmation() {
     Get.dialog(
-        AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            title: Text('Sign Out', style: TextStyle(fontWeight: FontWeight.w600)),
-            content: Text('Are you sure you want to sign out?'),
-            actions: [
-            TextButton(
+      AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        title: const Text('Sign Out',
+            style: TextStyle(fontWeight: FontWeight.w600)),
+        content: const Text('Are you sure you want to sign out?'),
+        actions: [
+          TextButton(
             onPressed: () => Get.back(),
-    child: Text('CANCEL', style: TextStyle(color: Colors.grey[600])),
-    ),TextButton(
-    onPressed: () {
-    Get.back();
-    AuthController.to.logout();
-    },
-    child: Text('SIGN OUT', style: TextStyle(color: Colors.red)),
-              )],
-    ),
+            child: Text('CANCEL', style: TextStyle(color: Colors.grey[600])),
+          ),
+          TextButton(
+            onPressed: () {
+              Get.back();
+              AuthController.to.logout();
+            },
+            child: const Text('SIGN OUT', style: TextStyle(color: Colors.red)),
+          )
+        ],
+      ),
     );
   }
 }

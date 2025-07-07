@@ -1,6 +1,7 @@
 import 'package:electronic_store/controllers/notification_controller.dart';
 import 'package:electronic_store/pages/main_page.dart';
 import 'package:electronic_store/pages/phone_verification_screen.dart';
+import 'package:electronic_store/utils/background_container_gradient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
@@ -38,17 +39,8 @@ class _LoginPageState extends State<LoginPage> {
       // backgroundColor: Colors.transparent,
 
 
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Theme.of(context).colorScheme.primary.withOpacity(0.8),
-              Theme.of(context).colorScheme.secondary.withOpacity(0.8),
-            ],
-          ),
-        ),
+      body: BackgroundContainerGradient(
+
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(24.0),
@@ -386,4 +378,13 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-} 
+}
+
+//    gradient: LinearGradient(
+//             begin: Alignment.topLeft,
+//             end: Alignment.bottomRight,
+//             colors: [
+//               Theme.of(context).colorScheme.primary.withOpacity(0.8),
+//               Theme.of(context).colorScheme.secondary.withOpacity(0.8),
+//             ],
+//           ),
