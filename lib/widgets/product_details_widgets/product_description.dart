@@ -24,12 +24,13 @@ class ProductDescription extends StatelessWidget {
           ReadMoreText(
             description,
             trimLines: 3,
-            colorClickableText: Theme.of(context).primaryColor,
+            colorClickableText: Colors.black,
             trimMode: TrimMode.Line,
             trimCollapsedText: 'Show more',
             trimExpandedText: 'Show less',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               color: Colors.black,
+              fontWeight: FontWeight.bold,
               fontSize: 14,
             ),
           ),

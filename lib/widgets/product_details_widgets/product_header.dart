@@ -35,7 +35,7 @@ class ProductHeader extends StatelessWidget {
               Text(
                 brand,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontWeight: FontWeight.bold,
 
                 ),

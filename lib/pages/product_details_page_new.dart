@@ -1,4 +1,5 @@
 import 'package:electronic_store/utils/background_container.dart';
+import 'package:electronic_store/utils/background_container_gradient.dart';
 import 'package:electronic_store/widgets/horizontal_product_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -51,7 +52,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
     return Scaffold(
 
 
-      body: BackgroundContainer(
+      body: BackgroundContainerGradient(
         child: Obx(() {
           if (productDetailsController.isLoading.value) {
             return const Center(child: CircularProgressIndicator());
@@ -136,7 +137,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                   ),
                   Divider(
                     thickness: 1,
-                    color: Colors.grey.shade300,),
+                    color: Colors.white,),
                   ProductDescription(description: product.description),
                   Divider(
                     thickness: 1,
