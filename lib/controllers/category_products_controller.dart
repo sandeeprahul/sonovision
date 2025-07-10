@@ -22,7 +22,7 @@ class CategoryProductsController extends GetxController {
 
   @override
   void onInit() {
-    // fetchProductsByCategory(categoryId);
+    fetchProductsByCategory(categoryId);
     super.onInit();
   }
 

@@ -57,8 +57,9 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
 
   Future<void> _loadProducts() async {
     print("_loadProducts ${widget.categoryId}");
-    setState(() => _isLoading = true);
-    // TODO: Replace with actual API call
+    setState(() {
+      _isLoading = true;
+    }); // TODO: Replace with actual API call
     categoryProductsController.fetchProductsByCategory(widget.categoryId);
     // Get.put(CategoryProductsController(widget.categoryId));
 
@@ -70,10 +71,13 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
 
   Future<void> _loadMoreProducts() async {
     if (!_isLoading) {
-      setState(() => _isLoading = true);
-      await Future.delayed(const Duration(seconds: 1));
+      setState(() {
+        _isLoading = true;
+      });      await Future.delayed(const Duration(seconds: 1));
       // TODO: Implement pagination
-      setState(() => _isLoading = false);
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -101,21 +105,43 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
         slivers: [
           _buildSliverAppBar(),
           // _buildFiltersBar(),
-          if (categoryProductsController.isLoading.value)
-            const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Center(child:  CircularProgressIndicator()),
-              ),
-            ),
 
-          if (categoryProductsController.products.isEmpty)
-            const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Center(child: Text('No products found')),
-              ),
-            ),
+          Obx(() {
+            if (categoryProductsController.isLoading.value) {
+              return const SliverToBoxAdapter(
+                child: Center(child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: CircularProgressIndicator(),
+                )),
+              );
+            }
+
+            if (categoryProductsController.products.isEmpty) {
+              return const SliverToBoxAdapter(
+                child: Center(child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text("No products found"),
+                )),
+              );
+            }
+
+            return _buildProductGrid(); // ✅ If products are loaded
+          })
+          // if (categoryProductsController.isLoading.value)
+          //   const SliverToBoxAdapter(
+          //     child: Padding(
+          //       padding: EdgeInsets.all(16.0),
+          //       child: Center(child: CircularProgressIndicator()),
+          //     ),
+          //   ),
+          //
+          // if (categoryProductsController.products.isEmpty)
+          //   const SliverToBoxAdapter(
+          //     child: Padding(
+          //       padding: EdgeInsets.all(16.0),
+          //       child: Center(child: Text('No products found')),
+          //     ),
+          //   ),
           // if (_isLoading)
           //   const SliverToBoxAdapter(
           //     child: Padding(
@@ -123,9 +149,9 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
           //       child: Center(child: CircularProgressIndicator()),
           //     ),
           //   ),
-
-          if (categoryProductsController.products.isNotEmpty)
-            _buildProductGrid(),
+          //
+          // if (categoryProductsController.products.isNotEmpty)
+          //   _buildProductGrid(),
         ],
       ),
     );
@@ -159,66 +185,25 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
     );
   }
 
-  Widget _buildFiltersBar() {
-    return SliverToBoxAdapter(
-      child: Container(
-        height: 50,
-        margin: const EdgeInsets.symmetric(vertical: 8),
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: _filters.length,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          itemBuilder: (context, index) {
-            final filter = _filters[index];
-            final isSelected = filter == _selectedFilter;
-            return Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: FilterChip(
-                label: Text(filter),
-                selected: isSelected,
-
-                onSelected: (selected) {
-                  setState(() => _selectedFilter = filter);
-                  _loadProducts(); // Reload with new filter
-                },
-                checkmarkColor: Colors.white,
-                // <-- sets the icon color when selected
-
-                backgroundColor: Colors.grey[200],
-                selectedColor: Colors.black87,
-                labelStyle: TextStyle(
-                  color: isSelected ? Colors.white : Colors.black87,
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                ),
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
-
   Widget _buildProductGrid() {
-    return Obx(
-       () {
-        return SliverPadding(
-          padding: const EdgeInsets.all(16),
-          sliver: SliverGrid(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 0.5,
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
-            ),
-            delegate: SliverChildBuilderDelegate(
-              (context, index) =>
-                  _buildProductCard(categoryProductsController.products[index]),
-              childCount: categoryProductsController.products.length>20?20:categoryProductsController.products.length,
-            ),
+    return Obx(() {
+      return SliverPadding(
+        padding: const EdgeInsets.all(16),
+        sliver: SliverGrid(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 0.5,
+            mainAxisSpacing: 16,
+            crossAxisSpacing: 16,
           ),
-        );
-      }
-    );
+          delegate: SliverChildBuilderDelegate(
+            (context, index) =>
+                _buildProductCard(categoryProductsController.products[index]),
+            childCount: categoryProductsController.products.length,
+          ),
+        ),
+      );
+    });
   }
 
   Widget _buildProductCard(ProductDetailsData product) {
