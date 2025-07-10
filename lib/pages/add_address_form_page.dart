@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
 
 import '../services/api_service.dart';
+import '../theme/app_theme.dart';
 
 class AddressFormPage extends StatefulWidget {
   @override
@@ -115,7 +116,9 @@ class _AddressFormPageState extends State<AddressFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+
         title: const Text('Add Address'),
         backgroundColor: Colors.black,
         elevation: 0,
@@ -147,7 +150,10 @@ class _AddressFormPageState extends State<AddressFormPage> {
                   const SizedBox(height: 20),
                   Center(
                     child: ElevatedButton(
-                      onPressed: _submitForm,
+                      onPressed: (){
+                        _submitForm();
+                      },
+                      // onPressed: _submitForm,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
                         padding: const EdgeInsets.symmetric(
@@ -208,6 +214,7 @@ class _AddressFormPageState extends State<AddressFormPage> {
 
   void _submitForm() async {
     await _getCurrentLocation();
+
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       final addressData = {
@@ -220,6 +227,8 @@ class _AddressFormPageState extends State<AddressFormPage> {
         "latitude": latitude,
         "longitude": longitude,
       };
+
+      Get.snackbar('Alert!', 'Please wait',overlayBlur: 2,backgroundColor: Colors.green,colorText: Colors.white);
 
       final url = Uri.parse(
           '${ApiService.baseUrl}/api/address'); // Replace with your API base URL

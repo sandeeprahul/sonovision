@@ -94,7 +94,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 ),
                 ElevatedButton.icon(
                   onPressed: () {
-                    Get.toNamed( '/add-address');
+                    Get.offNamed( '/add-address');
                   },
                   icon: const Icon(Icons.add),
                   label: const Text('Add New Address'),
