@@ -289,10 +289,10 @@ class PremiumCartScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Free Delivery', style: TextStyle(
+                Text('Delivery info', style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14)),
-                Text('Delivery within 2-3 business days',
+                Text('Delivery within 5-7 business days',
                     style: TextStyle(color: Colors.grey, fontSize: 12)),
               ],
             ),

@@ -119,7 +119,8 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
         setState(() => _selectedIndex = _tabController.index);
       }
     });
-    controller.getCurrentLocation();
-  }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.getCurrentLocation();
+    });  }
 
 }

@@ -8,6 +8,8 @@ import '../services/api_service.dart';
 import '../utils/version_alert.dart';
 
 class HomeController extends GetxController {
+  static HomeController get to => Get.put(HomeController());
+
   final Rx<Map<String, dynamic>> homeData = Rx<Map<String, dynamic>>({});
   final RxBool isLoading = true.obs;
   final RxString error = ''.obs;

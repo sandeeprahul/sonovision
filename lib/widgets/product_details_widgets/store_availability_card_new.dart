@@ -1,5 +1,7 @@
+import 'package:electronic_store/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class StoreAvailabilityCardNew extends StatelessWidget {
   final int storeCount;
@@ -103,12 +105,17 @@ class StoreAvailabilityCardNew extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Text(
-            'Nearest store: 1.2 km away',
-            style: TextStyle(
-              fontSize: 13,
-              color: Colors.grey[600],
-            ),
+          child: Obx(
+             () {
+              return Text(
+                HomeController.to.addressLine1.value,
+                // 'Nearest store: 1.2 km away',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.grey[600],
+                ),
+              );
+            }
           ),
         ),
         const SizedBox(height: 8),

@@ -22,7 +22,7 @@ class CategoryProductsController extends GetxController {
 
   @override
   void onInit() {
-    fetchProductsByCategory(categoryId);
+    // fetchProductsByCategory(categoryId);
     super.onInit();
   }
 
@@ -32,7 +32,7 @@ class CategoryProductsController extends GetxController {
     errorMessage.value = '';
     isEmpty.value = false;
     products.clear();
-    allProducts.clear();
+    // allProducts.clear();
 
     try {
       final response = await http.get(
@@ -45,10 +45,10 @@ class CategoryProductsController extends GetxController {
         if (data.isEmpty) {
           isEmpty.value = true;
         } else {
-          allProducts.addAll(data.map((e) => ProductDetailsData.fromJson(e)));
+          // allProducts.addAll(data.map((e) => ProductDetailsData.fromJson(e)));
 
           products.value = data.map((e) => ProductDetailsData.fromJson(e)).toList();
-          applyFilter('All');
+          // applyFilter('All');
 
         }
       } else {

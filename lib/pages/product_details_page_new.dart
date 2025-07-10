@@ -52,7 +52,11 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
     return Scaffold(
 
 
-      body: BackgroundContainerGradient(
+      body: Container(
+        // color: Colors.grey.shade200,
+     /*   decoration: BoxDecoration(
+          gradient: LinearGradient(colors: [Colors.black,Colors.blue.shade300],begin: Alignment.topCenter,end: Alignment.bottomCenter)
+        ),*/
         child: Obx(() {
           if (productDetailsController.isLoading.value) {
             return const Center(child: CircularProgressIndicator());
@@ -99,7 +103,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
 
                             return Text(
                               productDetailsController.product.value!.brand,
-                              style: const TextStyle(color: Colors.white,fontSize: 20),
+                              style: const TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w500),
                             );
                           }),
                         ),
@@ -135,14 +139,16 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                       ],
                     ),
                   ),
-                  Divider(
+                   Divider(
                     thickness: 1,
-                    color: Colors.white,),
+                    color:Colors.grey.shade300,),
                   ProductDescription(description: product.description),
                   Divider(
                     thickness: 1,
                     color: Colors.grey.shade300,),
-                  const StoreAvailabilityCard(storeCount: 15),
+                   StoreAvailabilityCard(storeCount: 15,onSeeLocations: (){
+
+                   },),
         
                   SpecificationsList(specifications: product.specifications ?? {}),
         
@@ -157,7 +163,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text(
-                      'Related Products',
+                      'Recently Brought',
                       style: theme.textTheme.headlineMedium!.copyWith(
                         fontWeight: FontWeight.bold,
                       ),

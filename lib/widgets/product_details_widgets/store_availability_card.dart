@@ -46,7 +46,7 @@ import 'package:flutter/material.dart';
               child: customMapPreview ?? _buildDefaultMapPreview(),
             ),
 
-            const StoreAvailabilityCardNew(storeCount: 2, isAvailable: true),
+            const StoreAvailabilityCardNew(storeCount: 1, isAvailable: true),
 
             // Store Info Section
        /*     Visibility(

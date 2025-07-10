@@ -31,7 +31,7 @@ class PriceDisplay extends StatelessWidget {
             '₹$originalPrice',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               decoration: TextDecoration.lineThrough,
-              color: Colors.grey[600],
+              color: Colors.red,
             ),
           ),
           const SizedBox(width: 8),

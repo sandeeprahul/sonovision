@@ -32,10 +32,12 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
   @override
   void initState() {
     super.initState();
-    categoryProductsController = Get.put(CategoryProductsController(widget.categoryId));
+    categoryProductsController =
+        Get.put(CategoryProductsController(widget.categoryId));
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadProducts();
-    });    _scrollController.addListener(_onScroll);
+    });
+    _scrollController.addListener(_onScroll);
   }
 
   @override
@@ -58,7 +60,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
     setState(() => _isLoading = true);
     // TODO: Replace with actual API call
     categoryProductsController.fetchProductsByCategory(widget.categoryId);
-        // Get.put(CategoryProductsController(widget.categoryId));
+    // Get.put(CategoryProductsController(widget.categoryId));
 
     await Future.delayed(const Duration(seconds: 1));
     setState(() {
@@ -74,8 +76,8 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
       setState(() => _isLoading = false);
     }
   }
-  Widget buildFilterChips() {
 
+  Widget buildFilterChips() {
     return Obx(() {
       return Wrap(
         spacing: 8,
@@ -99,31 +101,31 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
         slivers: [
           _buildSliverAppBar(),
           // _buildFiltersBar(),
-               if(categoryProductsController.products.isNotEmpty)
-          _buildProductGrid(),
-
-          if(categoryProductsController.isLoading.value)
+          if (categoryProductsController.isLoading.value)
             const SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.all(16.0),
-                child: Center(child: Text('Please wait..')),
+                child: Center(child:  CircularProgressIndicator()),
               ),
             ),
 
-          if(categoryProductsController.products.isEmpty)
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Center(child: Text('No products found')),
-            ),
-          ),
-          if (_isLoading)
+          if (categoryProductsController.products.isEmpty)
             const SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.all(16.0),
-                child: Center(child: CircularProgressIndicator()),
+                child: Center(child: Text('No products found')),
               ),
             ),
+          // if (_isLoading)
+          //   const SliverToBoxAdapter(
+          //     child: Padding(
+          //       padding: EdgeInsets.all(16.0),
+          //       child: Center(child: CircularProgressIndicator()),
+          //     ),
+          //   ),
+
+          if (categoryProductsController.products.isNotEmpty)
+            _buildProductGrid(),
         ],
       ),
     );
@@ -197,21 +199,25 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
   }
 
   Widget _buildProductGrid() {
-    return SliverPadding(
-      padding: const EdgeInsets.all(16),
-      sliver: SliverGrid(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.5,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-        ),
-        delegate: SliverChildBuilderDelegate(
-          (context, index) =>
-              _buildProductCard(categoryProductsController.products[index]),
-          childCount: categoryProductsController.products.length,
-        ),
-      ),
+    return Obx(
+       () {
+        return SliverPadding(
+          padding: const EdgeInsets.all(16),
+          sliver: SliverGrid(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.5,
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 16,
+            ),
+            delegate: SliverChildBuilderDelegate(
+              (context, index) =>
+                  _buildProductCard(categoryProductsController.products[index]),
+              childCount: categoryProductsController.products.length>20?20:categoryProductsController.products.length,
+            ),
+          ),
+        );
+      }
     );
   }
 
@@ -265,7 +271,9 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                             child: Center(
                               child: Icon(
                                 Icons.shopping_bag_rounded,
-                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant,
                               ),
                             ),
                           ),
@@ -345,11 +353,11 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                   const SizedBox(height: 4),
 
                   SizedBox(
-                /*    padding: const EdgeInsets.all(12),
+                    /*    padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                         color: Colors.black,
 
-                        borderRadius: BorderRadius.circular(8)),*/// width: double.infinity,
+                        borderRadius: BorderRadius.circular(8)),*/ // width: double.infinity,
                     child: InkWell(
                       /*      style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
@@ -377,7 +385,8 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                           controller.addItem(CartItem(
                             name: product.name,
                             image: product.images[0],
-                            color: product.colors.isEmpty ? '' : product.colors[0],
+                            color:
+                                product.colors.isEmpty ? '' : product.colors[0],
                             price: product.price,
                             productId: product.id,
                           ));
