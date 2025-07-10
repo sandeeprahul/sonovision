@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../services/auth_service.dart';
+import '../theme/app_theme.dart';
 
 class PremiumEditProfileScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -12,13 +13,19 @@ class PremiumEditProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration:  BoxDecoration(
+              gradient: AppTheme.appbarGradientBlue
+          ),
+        ),
         title: Text('Edit Profile', style: TextStyle(fontWeight: FontWeight.w600)),
         centerTitle: true,
         elevation: 0,
         actions: [
           TextButton(
-            child: Text('SAVE', style: TextStyle(color: Colors.blue)),
+            child: Text('SAVE', style: TextStyle(color: Colors.white)),
             onPressed: (){},
             // onPressed: _saveProfile,
           ),
@@ -52,7 +59,7 @@ class PremiumEditProfileScreen extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.all(6),
                       decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: Colors.blue.shade800,
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.white, width: 2),
                       ),
@@ -99,49 +106,43 @@ class PremiumEditProfileScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-
-              // Change Password Section
-              ExpansionTile(
-                title: Text('Change Password',
-                    style: TextStyle(fontWeight: FontWeight.w500)),
-                children: [
-                  SizedBox(height: 12),
-                  _PremiumTextField(
-                    label: 'Current Password',
-                    icon: Icons.lock_outline,
-                    obscureText: true,
-                    validator: (value) => value!.isEmpty ? 'Required' : null,
-                  ),
-                  SizedBox(height: 16),
-                  _PremiumTextField(
-                    label: 'New Password',
-                    icon: Icons.lock_reset,
-                    obscureText: true,
-                    validator: (value) => value!.length < 6 ? 'Min 6 characters' : null,
-                  ),
-                  SizedBox(height: 16),
-                  _PremiumTextField(
-                      label: 'Confirm New Password',
-                      icon: Icons.lock_reset,
-                      obscureText: true,
-                      validator: (value) => value != _newPasswordController.text
-                          ? 'Passwords didnt match' : null,
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: (){
-
-                    },
-                    // onPressed: _changePassword,
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                    ),
-                    child: Text('UPDATE PASSWORD'),
-                  ),
-                ],
+              SizedBox(height: 12),
+              _PremiumTextField(
+                label: 'Current Password',
+                icon: Icons.lock_outline,
+                obscureText: true,
+                validator: (value) => value!.isEmpty ? 'Required' : null,
               ),
+              SizedBox(height: 16),
+              _PremiumTextField(
+                label: 'New Password',
+                icon: Icons.lock_reset,
+                obscureText: true,
+                validator: (value) => value!.length < 6 ? 'Min 6 characters' : null,
+              ),
+              SizedBox(height: 16),
+              _PremiumTextField(
+                label: 'Confirm New Password',
+                icon: Icons.lock_reset,
+                obscureText: true,
+                validator: (value) => value != _newPasswordController.text
+                    ? 'Passwords didnt match' : null,
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: (){
+
+                },
+                // onPressed: _changePassword,
+                style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),),
+                    backgroundColor: Colors.blue.shade800
+                ),
+                child: Text('UPDATE PASSWORD'),
+              ),
+
             ],
           ),
         ),

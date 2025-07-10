@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import '../controllers/checkout_controller.dart';
 import '../services/api_service.dart';
 import '../services/auth_service.dart';
+import '../theme/app_theme.dart';
 
 class MyAddressPage extends StatefulWidget {
   const MyAddressPage({Key? key}) : super(key: key);
@@ -21,21 +22,29 @@ class MyAddressPage extends StatefulWidget {
 class _MyAddressPageState extends State<MyAddressPage> {
   final _formKey = GlobalKey<FormState>();
 
- final controller = Get.put(CheckoutController());
+  final controller = Get.put(CheckoutController());
 
   @override
   void initState() {
     super.initState();
     controller.fetchAddresses();
   }
+
   @override
   void dispose() {
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('My Address')),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text('My Address'),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(gradient: AppTheme.appbarGradientBlue),
+        ),
+      ),
       body: Column(
         children: [
           Expanded(
@@ -54,10 +63,11 @@ class _MyAddressPageState extends State<MyAddressPage> {
                 itemCount: controller.addresses.length,
                 itemBuilder: (context, index) {
                   // Sort by most recent first
-                 /* final sortedAddresses = controller.addresses.toList()
+                  /* final sortedAddresses = controller.addresses.toList()
                     ..sort((a, b) => b.createdAt.compareTo(a.createdAt));*/
                   final address = controller.addresses[index];
-                  final isSelected = controller.selectedAddress.value?.id == address.id;
+                  final isSelected =
+                      controller.selectedAddress.value?.id == address.id;
                   // final address = sortedAddresses[index];
                   // final isSelected = controller.selectedAddress.value?.id == address.id;
 
@@ -83,8 +93,12 @@ class _MyAddressPageState extends State<MyAddressPage> {
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: [
-                              Theme.of(context).colorScheme.surfaceContainerHigh,
-                              Theme.of(context).colorScheme.surfaceContainerHighest,
+                              Theme.of(context)
+                                  .colorScheme
+                                  .surfaceContainerHigh,
+                              Theme.of(context)
+                                  .colorScheme
+                                  .surfaceContainerHighest,
                             ],
                           ),
                           boxShadow: [
@@ -101,7 +115,7 @@ class _MyAddressPageState extends State<MyAddressPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // Header with selection indicator
-                            /*  Row(
+                              /*  Row(
                                 children: [
                                   Container(
                                     width: 10,
@@ -165,17 +179,23 @@ class _MyAddressPageState extends State<MyAddressPage> {
                                   // Delete button
                                   Expanded(
                                     child: FilledButton(
-                                      onPressed: () => _showEditBottomSheet(context, address),
+                                      onPressed: () => _showEditBottomSheet(
+                                          context, address),
                                       style: FilledButton.styleFrom(
-                                        backgroundColor: Colors.black,
-                                        foregroundColor: Theme.of(context).colorScheme.onErrorContainer,
+                                        backgroundColor: Colors.blue.shade800,
+                                        foregroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .onErrorContainer,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                         ),
-                                        padding: const EdgeInsets.symmetric(vertical: 14),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 14),
                                       ),
                                       child: const Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           Icon(Icons.edit_outlined, size: 18),
                                           SizedBox(width: 8),
@@ -199,7 +219,8 @@ class _MyAddressPageState extends State<MyAddressPage> {
                 itemCount: controller.addresses.length,
                 itemBuilder: (context, index) {
                   final address = controller.addresses[index];
-                  final isSelected = controller.selectedAddress.value?.id == address.id;
+                  final isSelected =
+                      controller.selectedAddress.value?.id == address.id;
 
                   return Stack(
                     children: [
@@ -207,12 +228,16 @@ class _MyAddressPageState extends State<MyAddressPage> {
                         onTap: () => controller.selectedAddress.value = address,
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
-                          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: isSelected ? Colors.blue.shade50 : Colors.white,
+                            color:
+                                isSelected ? Colors.blue.shade50 : Colors.white,
                             border: Border.all(
-                              color: isSelected ? Colors.blue : Colors.grey.shade300,
+                              color: isSelected
+                                  ? Colors.blue
+                                  : Colors.grey.shade300,
                               width: isSelected ? 2 : 1,
                             ),
                             borderRadius: BorderRadius.circular(16),
@@ -230,16 +255,24 @@ class _MyAddressPageState extends State<MyAddressPage> {
                               // _rowText(Icons.person, address.name),
                               Row(
                                 children: [
-                                  Icon(Icons.person, size: 18, color: Colors.grey.shade700),
+                                  Icon(Icons.person,
+                                      size: 18, color: Colors.grey.shade700),
                                   const SizedBox(width: 8),
-                                  Expanded(child: Text(address.name, style: const TextStyle(fontSize: 16,color: Colors.black,fontWeight: FontWeight.bold))),
+                                  Expanded(
+                                      child: Text(address.name,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold))),
                                 ],
                               ),
                               const SizedBox(height: 6),
 
                               _rowText(Icons.home, address.addressLine1),
-                              _rowText(Icons.location_city, address.addressLine2),
-                              _rowText(Icons.place, '${address.city}, ${address.postalCode}'),
+                              _rowText(
+                                  Icons.location_city, address.addressLine2),
+                              _rowText(Icons.place,
+                                  '${address.city}, ${address.postalCode}'),
                               const SizedBox(height: 6),
 
                               Row(
@@ -248,26 +281,33 @@ class _MyAddressPageState extends State<MyAddressPage> {
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.black,
-                                        padding: const EdgeInsets.symmetric(vertical: 10),
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16)),
                                       ),
-                                                      onPressed: () => _showEditBottomSheet(context, address),
-
-                                      child: const Text("Edit", style: TextStyle(fontSize: 12)),
+                                      onPressed: () => _showEditBottomSheet(
+                                          context, address),
+                                      child: const Text("Edit",
+                                          style: TextStyle(fontSize: 12)),
                                     ),
                                   ),
                                   const SizedBox(width: 6),
-
                                   Expanded(
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.red,
-                                        padding: const EdgeInsets.symmetric(vertical: 10),
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16)),
                                       ),
-                                      onPressed: () => _confirmDelete(context, address.id),
-
-                                      child: const Text("Delete", style: TextStyle(fontSize: 12)),
+                                      onPressed: () =>
+                                          _confirmDelete(context, address.id),
+                                      child: const Text("Delete",
+                                          style: TextStyle(fontSize: 12)),
                                     ),
                                   ),
                                 ],
@@ -276,7 +316,6 @@ class _MyAddressPageState extends State<MyAddressPage> {
                           ),
                         ),
                       ),
-
                     ],
                   );
                 },
@@ -284,19 +323,27 @@ class _MyAddressPageState extends State<MyAddressPage> {
             }),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 28),
             child: SizedBox(
-              width: double.infinity,
-                child: ElevatedButton(onPressed: (){
-                  Get.toNamed('/add-address');
-                }, child: const Text('ADD NEW ADDRESS'))),
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue.shade800,
+
+                  ),
+                    onPressed: () {
+                      Get.toNamed('/add-address');
+                    },
+                    child: const Text('ADD NEW ADDRESS'))),
           ),
         ],
       ),
     );
   }
+
   // Helper widget for detail rows
-  Widget _buildDetailRow(BuildContext context, {required IconData icon, required String text}) {
+  Widget _buildDetailRow(BuildContext context,
+      {required IconData icon, required String text}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
@@ -312,14 +359,15 @@ class _MyAddressPageState extends State<MyAddressPage> {
             child: Text(
               text,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
             ),
           ),
         ],
       ),
     );
   }
+
   void _showEditBottomSheet(BuildContext context, AddressModel address) {
     final nameController = TextEditingController(text: address.name);
     final line1Controller = TextEditingController(text: address.addressLine1);
@@ -333,13 +381,26 @@ class _MyAddressPageState extends State<MyAddressPage> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              const Text("Edit Address", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const Text("Edit Address",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 12),
-              TextField(controller: nameController, decoration: const InputDecoration(labelText: 'Name')),
-              TextField(controller: line1Controller, decoration: const InputDecoration(labelText: 'Address Line 1')),
-              TextField(controller: line2Controller, decoration: const InputDecoration(labelText: 'Address Line 2')),
-              TextField(controller: cityController, decoration: const InputDecoration(labelText: 'City')),
-              TextField(controller: postalController, decoration: const InputDecoration(labelText: 'Postal Code')),
+              TextField(
+                  controller: nameController,
+                  decoration: const InputDecoration(labelText: 'Name')),
+              TextField(
+                  controller: line1Controller,
+                  decoration:
+                      const InputDecoration(labelText: 'Address Line 1')),
+              TextField(
+                  controller: line2Controller,
+                  decoration:
+                      const InputDecoration(labelText: 'Address Line 2')),
+              TextField(
+                  controller: cityController,
+                  decoration: const InputDecoration(labelText: 'City')),
+              TextField(
+                  controller: postalController,
+                  decoration: const InputDecoration(labelText: 'Postal Code')),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
@@ -369,6 +430,7 @@ class _MyAddressPageState extends State<MyAddressPage> {
       ),
     );
   }
+
   var latitude = 0.0;
   var longitude = 0.0;
 
@@ -379,7 +441,8 @@ class _MyAddressPageState extends State<MyAddressPage> {
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks.first;
 
-        print('Full Address: ${place.street}, ${place.locality}, ${place.postalCode}, ${place.country}');
+        print(
+            'Full Address: ${place.street}, ${place.locality}, ${place.postalCode}, ${place.country}');
 
         setState(() {
           // _addressLine1 = place.street;
@@ -392,7 +455,6 @@ class _MyAddressPageState extends State<MyAddressPage> {
       print('Failed to get address: $e');
     }
   }
-
 
   Future<void> _getCurrentLocation() async {
     // Request location permission
@@ -414,16 +476,14 @@ class _MyAddressPageState extends State<MyAddressPage> {
           longitude = position.longitude;
         });
         _getAddressFromLatLng(latitude, longitude);
-
-
-
       } catch (e) {
         Get.snackbar('Error', 'Could not get location: $e');
       }
     } else if (status.isDenied) {
       Get.defaultDialog(
         title: "Permission Denied",
-        middleText: "Location permission is required to get your current position.",
+        middleText:
+            "Location permission is required to get your current position.",
         confirm: ElevatedButton(
           onPressed: () {
             openAppSettings(); // Open settings to enable manually
@@ -458,42 +518,39 @@ class _MyAddressPageState extends State<MyAddressPage> {
   void _submitForm(Map<String, Object> newData) async {
     await _getCurrentLocation();
 
+    final url = Uri.parse(
+        '${ApiService.baseUrl}/api/address'); // Replace with your API base URL
 
-      final url = Uri.parse(
-          '${ApiService.baseUrl}/api/address'); // Replace with your API base URL
+    AuthController authController = Get.put(AuthController());
+    await authController.loadUserAndToken();
+    final tokenValue = authController.token.value;
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $tokenValue"
+        },
+        body: jsonEncode(newData),
+      );
 
-      AuthController authController = Get.put(AuthController());
-      await authController.loadUserAndToken();
-      final tokenValue = authController.token.value;
-      try {
-        final response = await http.post(
-          url,
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer $tokenValue"
-          },
-          body: jsonEncode(newData),
-        );
-
-        if (response.statusCode == 200 || response.statusCode == 201) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Address submitted successfully')),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content:
-                Text('Failed to submit. Status: ${response.statusCode}')),
-          );
-        }
-      } catch (e) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
+          const SnackBar(content: Text('Address submitted successfully')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content:
+                  Text('Failed to submit. Status: ${response.statusCode}')),
         );
       }
-
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
   }
-
 
   void _confirmDelete(BuildContext context, String id) {
     showDialog(
@@ -502,7 +559,9 @@ class _MyAddressPageState extends State<MyAddressPage> {
         title: const Text("Delete Address"),
         content: const Text("Are you sure you want to delete this address?"),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("Cancel")),
+          TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Cancel")),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
@@ -526,7 +585,5 @@ class _MyAddressPageState extends State<MyAddressPage> {
     );
   }
 }
-
-
 
 //   }

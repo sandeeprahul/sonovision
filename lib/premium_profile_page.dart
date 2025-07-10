@@ -3,6 +3,7 @@ import 'package:electronic_store/utils/background_container_gradient.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /*class PremiumProfilePage extends StatelessWidget {
   @override
@@ -388,7 +389,7 @@ class _PremiumProfilePageState extends State<PremiumProfilePage> {
                           fontWeight: FontWeight.bold
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    // const SizedBox(height: 8),
                     Text(
                       user['email'] ?? 'email@example.com',
                       style: const TextStyle(
@@ -443,11 +444,36 @@ class _PremiumProfilePageState extends State<PremiumProfilePage> {
                       title: 'Contact Us',
                       route: '/contact-us',
                     ),
-                    _buildProfileItem(
-                      icon: Icons.privacy_tip_outlined,
-                      title: 'Privacy Policy',
-                      route: '/privacy-policy',
+
+                    ListTile(
+                      leading: Container(
+                        width: 36,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          color: Colors.blue[50],
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                    Icons.privacy_tip_outlined,
+                            size: 20, color: Colors.grey[700]),
+                      ),
+                      title: Text(
+                        'Privacy Policy',
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      trailing: Icon(Icons.chevron_right, color: Colors.grey[400]),
+                      onTap: (){
+                        launchUrl(Uri.parse('http://sonovision.asquare.org.in/webpages/privacy-policy.html'), mode: LaunchMode.externalApplication);
+
+                      },
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                      minLeadingWidth: 0,
                     ),
+
                   ],
                 ),
                 const SizedBox(height: 24),

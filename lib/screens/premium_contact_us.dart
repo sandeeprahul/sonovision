@@ -1,4 +1,6 @@
+import 'package:electronic_store/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PremiumContactUs extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -8,10 +10,18 @@ class PremiumContactUs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration:  BoxDecoration(
+            gradient: AppTheme.appbarGradientBlue
+          ),
+        ),
         title: const Text('Contact Us', style: TextStyle(fontWeight: FontWeight.w600)),
         centerTitle: true,
         elevation: 0,
+        // backgroundColor: Colors.blue.shade800,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
@@ -24,73 +34,75 @@ class PremiumContactUs extends StatelessWidget {
             Text('Typically replies within 24 hours',
                 style: TextStyle(color: Colors.grey[600])),
             const SizedBox(height: 32),
-
-            // Contact Methods
-            Row(
-              children: [
-                _ContactMethod(
-                  icon: Icons.email,
-                  label: 'Email',
-                  value: 'support@sonovision.com',
-                  onTap: () {},
-                  // onTap: () => _launchEmail(),
-                ),
-                const SizedBox(width: 16),
-                _ContactMethod(
-                  icon: Icons.phone,
-                  label: 'Phone',
-                  value: '+91 91123-45670',
-                  onTap: () {},
-                  // onTap: () => _launchPhone(),
-                ),
-              ],
+            _ContactMethod(
+              icon: Icons.email,
+              label: 'Email',
+              value: 'support@sonovision.com',
+              onTap: () {
+                launchUrl(Uri.parse('mailto:support@sonovision.com'));
+              },
+              // onTap: () => _launchEmail(),
             ),
             const SizedBox(height: 32),
 
-            // Contact Form
-            const Text('Send us a message',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-            const SizedBox(height: 16),
-
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  _PremiumTextField(
-                    controller: _subjectController,
-                    label: 'Subject',
-                    icon: Icons.short_text,
-                    validator: (v) => v!.isEmpty ? 'Required' : null,
-                  ),
-                  const SizedBox(height: 20),
-
-                  TextFormField(
-                    controller: _messageController,
-                    maxLines: 5,
-                    decoration: InputDecoration(
-                      labelText: 'Your Message',
-                      alignLabelWithHint: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    validator: (v) => v!.isEmpty ? 'Please enter your message' : null,
-                  ),
-                  const SizedBox(height: 24),
-
-                  ElevatedButton(
-                    onPressed: (){},
-                    // onPressed: _submitForm,
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                    ),
-                    child: const Text('SEND MESSAGE'),
-                  ),
-                ],
-              ),
+            _ContactMethod(
+              icon: Icons.phone,
+              label: 'Phone',
+              value: '+91 91123-45670',
+              onTap: () {
+                launchUrl(Uri.parse('tel:+919112345670'));
+              },
+              // onTap: () => _launchPhone(),
             ),
+
+
+            // // Contact Form
+            // const Text('Send us a message',
+            //     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+            // const SizedBox(height: 16),
+            //
+            // Form(
+            //   key: _formKey,
+            //   child: Column(
+            //     children: [
+            //       _PremiumTextField(
+            //         controller: _subjectController,
+            //         label: 'Subject',
+            //         icon: Icons.short_text,
+            //         validator: (v) => v!.isEmpty ? 'Required' : null,
+            //       ),
+            //       const SizedBox(height: 20),
+            //
+            //       TextFormField(
+            //         controller: _messageController,
+            //         maxLines: 5,
+            //         decoration: InputDecoration(
+            //           labelText: 'Your Message',
+            //           alignLabelWithHint: true,
+            //           border: OutlineInputBorder(
+            //             borderRadius: BorderRadius.circular(12),
+            //           ),
+            //         ),
+            //         validator: (v) => v!.isEmpty ? 'Please enter your message' : null,
+            //       ),
+            //       const SizedBox(height: 24),
+            //
+            //       ElevatedButton(
+            //         onPressed: (){
+            //           launchUrl(Uri.parse('mailto:support@sonovision.com'));
+            //
+            //         },
+            //         // onPressed: _submitForm,
+            //         style: ElevatedButton.styleFrom(
+            //           minimumSize: const Size(double.infinity, 50),
+            //           shape: RoundedRectangleBorder(
+            //               borderRadius: BorderRadius.circular(12)),
+            //         ),
+            //         child: const Text('SEND MESSAGE'),
+            //       ),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ),
@@ -113,28 +125,31 @@ class _ContactMethod extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.grey[50],
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Column(
-            children: [
-              Icon(icon, size: 30, color: Colors.blue),
-              const SizedBox(height: 12),
-              Text(label, style: const TextStyle(fontWeight: FontWeight.w500)),
-              const SizedBox(height: 4),
-              Text(value,
-                style: const TextStyle(color: Colors.blue),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.grey[50],
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          children: [
+            Icon(icon, size: 30, color: Colors.blue.shade800),
+            const SizedBox(height: 12),
+            Text(label, style: const TextStyle(fontWeight: FontWeight.w500)),
+            const SizedBox(height: 4),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(value,
+                  style:  TextStyle(color: Colors.blue.shade800),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

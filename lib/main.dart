@@ -4,6 +4,7 @@ import 'package:electronic_store/pages/add_address_form_page.dart';
 import 'package:electronic_store/pages/help_support_page.dart';
 import 'package:electronic_store/pages/login_page.dart';
 import 'package:electronic_store/pages/order_screen.dart';
+import 'package:electronic_store/pages/privacy_policy_page.dart';
 import 'package:electronic_store/pages/product_details_page_new.dart';
 import 'package:electronic_store/pages/register_page.dart';
 import 'package:electronic_store/pages/settings_page.dart';
@@ -107,7 +108,7 @@ class MyApp extends StatelessWidget {
       home: const SplashScreen(),
       getPages: [
         GetPage(
-            name: '/product-details', page: () => const ProductDetailsScreenNew()),////ProductDetailsPage
+            name: '/product-details', page: () => const ProductDetailsScreenNew()),
       ],
       routes: {
         '/cart': (context) => PremiumCartScreen(),

@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../theme/app_theme.dart';
+
 class NotificationPage extends StatelessWidget {
   final NotificationController controller = Get.put(NotificationController());
 
@@ -20,6 +22,11 @@ class NotificationPage extends StatelessWidget {
       backgroundColor: Colors.white,
 
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration:  BoxDecoration(
+              gradient: AppTheme.appbarGradientBlue
+          ),
+        ),
         title: const Text('Notifications', style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         // actions: [
@@ -31,60 +38,58 @@ class NotificationPage extends StatelessWidget {
         //       : const SizedBox()),
         // ],
       ),
-      body: BackgroundContainer(
-        child: Obx(() {
-          if (controller.isLoading.value && controller.notifications.isEmpty) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      body: Obx(() {
+        if (controller.isLoading.value && controller.notifications.isEmpty) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-          if (controller.errorMessage.value.isNotEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(controller.errorMessage.value),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: controller.fetchNotifications,
-                    child: const Text('Retry'),
-                  ),
-                ],
-              ),
-            );
-          }
-
-          if (controller.notifications.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.notifications_off, size: 64, color: Colors.grey[400]),
-                  const SizedBox(height: 16),
-                  Text('No notifications yet', style: TextStyle(color: Colors.grey[600])),
-                  const SizedBox(height: 8),
-                  TextButton(
-                    onPressed: controller.fetchNotifications,
-                    child: const Text('Refresh'),
-                  ),
-                ],
-              ),
-            );
-          }
-
-          return RefreshIndicator(
-            onRefresh: controller.refreshNotifications,
-            child: ListView.separated(
-              padding: const EdgeInsets.all(16),
-              itemCount: controller.notifications.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 12),
-              itemBuilder: (context, index) {
-                final notification = controller.notifications[index];
-                return _buildNotificationCard(notification, context);
-              },
+        if (controller.errorMessage.value.isNotEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(controller.errorMessage.value),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: controller.fetchNotifications,
+                  child: const Text('Retry'),
+                ),
+              ],
             ),
           );
-        }),
-      ),
+        }
+
+        if (controller.notifications.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.notifications_off, size: 64, color: Colors.grey[400]),
+                const SizedBox(height: 16),
+                Text('No notifications yet', style: TextStyle(color: Colors.grey[600])),
+                const SizedBox(height: 8),
+                TextButton(
+                  onPressed: controller.fetchNotifications,
+                  child: const Text('Refresh'),
+                ),
+              ],
+            ),
+          );
+        }
+
+        return RefreshIndicator(
+          onRefresh: controller.refreshNotifications,
+          child: ListView.separated(
+            padding: const EdgeInsets.all(16),
+            itemCount: controller.notifications.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 12),
+            itemBuilder: (context, index) {
+              final notification = controller.notifications[index];
+              return _buildNotificationCard(notification, context);
+            },
+          ),
+        );
+      }),
     );
   }
 

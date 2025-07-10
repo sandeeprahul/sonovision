@@ -62,6 +62,18 @@ class AppTheme {
         end: Alignment.bottomRight,
       );
 
+  static Gradient get appbarGradient =>  LinearGradient(
+    colors: [Colors.red, Colors.red.shade900],
+    begin: Alignment.bottomLeft,
+    end: Alignment.topRight,
+      );
+  static Gradient get appbarGradientBlue =>  LinearGradient(
+    colors: [Colors.blue, Colors.blue.shade900],
+    begin: Alignment.bottomLeft,
+    end: Alignment.topRight,
+      );
+
+
   // Text Styles
   static final TextStyle titleStyle = GoogleFonts.montserrat(
     fontSize: 18,

@@ -2,14 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/notification_settings_controller.dart';
+import '../theme/app_theme.dart';
 
 class PremiumNotificationSettings extends StatelessWidget {
   final _settings = NotificationSettingsController();
 
+  PremiumNotificationSettings({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration:  BoxDecoration(
+              gradient: AppTheme.appbarGradientBlue
+          ),
+        ),
         title: const Text('Notifications', style: TextStyle(fontWeight: FontWeight.w600)),
         centerTitle: true,
         elevation: 0,
