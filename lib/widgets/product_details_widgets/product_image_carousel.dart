@@ -194,7 +194,7 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> with Single
                       (index) {
                     final isActive = _currentImageIndex == index;
                     return Container(
-                      width: 24, // Total container width for each indicator
+                      width: 16, // Total container width for each indicator
                       height: 4,
                       margin: const EdgeInsets.symmetric(horizontal: 2),
                       child: Stack(
@@ -210,7 +210,7 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> with Single
                               animation: _indicatorAnimation,
                               builder: (context, child) {
                                 return Container(
-                                  width: 24 * _indicatorAnimation.value,
+                                  width: 16 * _indicatorAnimation.value,
                                   decoration: BoxDecoration(
                                     color: Theme.of(context).primaryColor,
                                     borderRadius: BorderRadius.circular(2),

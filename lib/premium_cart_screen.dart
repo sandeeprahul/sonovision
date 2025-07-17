@@ -1,4 +1,3 @@
-
 import 'package:electronic_store/pages/main_page.dart';
 import 'package:electronic_store/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -22,11 +21,9 @@ class PremiumCartScreen extends StatelessWidget {
 
   AppBar _buildAppBar() {
     return AppBar(
-      title: const Text('My Cart', style: TextStyle(
-        fontWeight: FontWeight.w600,
-        color: Colors.white,
-        fontSize: 22
-      )),
+      title: const Text('My Cart',
+          style: TextStyle(
+              fontWeight: FontWeight.w600, color: Colors.white, fontSize: 22)),
       centerTitle: true,
       elevation: 0,
       backgroundColor: Colors.blue.shade800,
@@ -34,12 +31,12 @@ class PremiumCartScreen extends StatelessWidget {
         icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87),
         onPressed: () => Get.back(),
       ),*/
-      actions: [
+    /*  actions: [
         IconButton(
           icon: const Icon(Icons.favorite_border, color: Colors.white),
           onPressed: () {},
         ),
-      ],
+      ],*/
     );
   }
 
@@ -58,14 +55,13 @@ class PremiumCartScreen extends StatelessWidget {
         }
         return Column(
           children: [
-
             Expanded(
               child: CustomScrollView(
                 slivers: [
                   const SliverToBoxAdapter(child: SizedBox(height: 16)),
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
-                          (context, index) {
+                      (context, index) {
                         final item = controller.cartItems[index];
                         return _buildCartItem(item, index, context);
                       },
@@ -89,32 +85,36 @@ class PremiumCartScreen extends StatelessWidget {
   Widget _buildEmptyCart() {
     return Center(
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-          const Icon(Icons.shopping_bag_outlined, size: 120, color: Colors.black),
-      const SizedBox(height: 16),
-       const Text('Your Cart is Empty', style: TextStyle(
-        fontSize: 22,
-        fontWeight: FontWeight.w600,
-        color: Colors.black,
-        // color: Colors.white,
-      )),
-      const SizedBox(height: 8),
-      const Text('Explore  electronics and add some items',
-          style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
-      const SizedBox(height: 24),
-      ElevatedButton(
-        onPressed: () => Get.off(const MainPage()),
-        style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          backgroundColor: Colors.black,
-        ),
-        child: const Text('Continue Shopping',
-            style: TextStyle(color: Colors.white)),
-      ) ],
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.shopping_bag_outlined,
+              size: 120, color: Colors.black),
+          const SizedBox(height: 16),
+          const Text('Your Cart is Empty',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+                // color: Colors.white,
+              )),
+          const SizedBox(height: 8),
+          const Text('Explore  electronics and add some items',
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 24),
+          ElevatedButton(
+            onPressed: () => Get.off(const MainPage()),
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              backgroundColor: Colors.black,
+            ),
+            child: const Text('Continue Shopping',
+                style: TextStyle(color: Colors.white)),
+          )
+        ],
       ),
     );
   }
@@ -166,14 +166,14 @@ class PremiumCartScreen extends StatelessWidget {
                 children: [
                   Text(item.name,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      )),
+                            fontWeight: FontWeight.w600,
+                          )),
                   const SizedBox(height: 4),
                   Text('Color: ${item.color}',
                       style: TextStyle(color: Colors.grey[600], fontSize: 12)),
                   const SizedBox(height: 8),
-                  Text('\$${item.price}',
-                      style: const TextStyle(
+                  Text('₹${item.price}',
+                      style:  Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                           color: Colors.black87)),
@@ -187,17 +187,18 @@ class PremiumCartScreen extends StatelessWidget {
                         width: 40,
                         alignment: Alignment.center,
                         child: Text('${item.quantity}',
-                            style: const TextStyle(fontWeight: FontWeight.w600)),
+                            style:
+                                const TextStyle(fontWeight: FontWeight.w600)),
                       ),
                       _buildQuantityButton(
                           icon: Icons.add,
                           onPressed: () => controller.increaseQuantity(index)),
-                      const Spacer(),
+                  /*    const Spacer(),
                       IconButton(
                         icon: const Icon(Icons.favorite_border, size: 20),
                         onPressed: () {},
                         color: Colors.grey,
-                      ),
+                      ),*/
                     ],
                   ),
                 ],
@@ -209,7 +210,8 @@ class PremiumCartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildQuantityButton({required IconData icon, required VoidCallback onPressed}) {
+  Widget _buildQuantityButton(
+      {required IconData icon, required VoidCallback onPressed}) {
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
@@ -244,12 +246,14 @@ class PremiumCartScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Independence Day Sale!', style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14)),
+                const Text('Independence Day Sale!',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14)),
                 Text('Get 20% off on selected items',
-                    style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 12)),
+                    style: TextStyle(
+                        color: Colors.white.withOpacity(0.9), fontSize: 12)),
               ],
             ),
           ),
@@ -289,9 +293,9 @@ class PremiumCartScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Delivery info', style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14)),
+                Text('Delivery info',
+                    style:
+                        TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
                 Text('Delivery within 5-7 business days',
                     style: TextStyle(color: Colors.grey, fontSize: 12)),
               ],
@@ -318,24 +322,24 @@ class PremiumCartScreen extends StatelessWidget {
         ],
       ),
       child: Obx(() => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('Order Summary',
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
-          const SizedBox(height: 16),
-          _buildSummaryRow('Subtotal',
-              '₹${controller.subtotal.toStringAsFixed(2)}'),
-          _buildSummaryRow('Discount',
-              '-₹${controller.discount.value.toStringAsFixed(2)}',
-              isDiscount: true),
-          _buildSummaryRow('Delivery',
-              '₹${controller.deliveryCharge.value.toStringAsFixed(2)}'),
-          const Divider(height: 24, thickness: 1),
-          _buildSummaryRow('Total',
-              '₹${controller.total.toStringAsFixed(2)}',
-              isTotal: true),
-        ],
-      )),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('Order Summary',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
+              const SizedBox(height: 16),
+              _buildSummaryRow(
+                  'Subtotal', '₹${controller.subtotal.toStringAsFixed(2)}'),
+              _buildSummaryRow('Discount',
+                  '-₹${controller.discount.value.toStringAsFixed(2)}',
+                  isDiscount: true),
+              _buildSummaryRow('Delivery',
+                  '₹${controller.deliveryCharge.value.toStringAsFixed(2)}'),
+              const Divider(height: 24, thickness: 1),
+              _buildSummaryRow(
+                  'Total', '₹${controller.total.toStringAsFixed(2)}',
+                  isTotal: true),
+            ],
+          )),
     );
   }
 
@@ -356,8 +360,8 @@ class PremiumCartScreen extends StatelessWidget {
                   color: isDiscount
                       ? Colors.green
                       : isTotal
-                      ? Colors.black
-                      : Colors.black,
+                          ? Colors.black
+                          : Colors.black,
                   fontSize: isTotal ? 16 : 14,
                   fontWeight: isTotal ? FontWeight.w600 : FontWeight.normal)),
         ],
@@ -383,8 +387,8 @@ class PremiumCartScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Apply Coupon', style: TextStyle(
-              fontWeight: FontWeight.w600, fontSize: 14)),
+          const Text('Apply Coupon',
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
           const SizedBox(height: 12),
           Row(
             children: [
@@ -401,7 +405,8 @@ class PremiumCartScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(color: Colors.grey[300]!),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
                   ),
                 ),
               ),
@@ -418,13 +423,15 @@ class PremiumCartScreen extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                   backgroundColor: Colors.black,
                 ),
-                child: const Text('Apply', style: TextStyle(color: Colors.white)),
+                child:
+                    const Text('Apply', style: TextStyle(color: Colors.white)),
               ),
             ],
           ),
@@ -437,33 +444,33 @@ class PremiumCartScreen extends StatelessWidget {
     return Obx(() {
       if (controller.cartItems.isEmpty) return const SizedBox.shrink();
       return Container(
-          padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-      color: Colors.white,
-      border: Border(top: BorderSide(color: Colors.grey[200]!))),
-      child: ElevatedButton(
-      onPressed: () {
-      controller.authController.isLoggedIn
-      ? Get.toNamed('/checkout')
-          : Get.toNamed('/login');
-      },
-      style: ElevatedButton.styleFrom(
-      padding: const EdgeInsets.symmetric(vertical: 18),
-      shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-      ),
-      backgroundColor: Colors.black,
-      ),
-      child: const Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-      Text('PROCEED TO CHECKOUT',
-      style: TextStyle(color: Colors.white, letterSpacing: 1)),
-      SizedBox(width: 8),
-      Icon(Icons.arrow_forward, color: Colors.white, size: 18),
-      ],
-      ),
-      ),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(top: BorderSide(color: Colors.grey[200]!))),
+        child: ElevatedButton(
+          onPressed: () {
+            controller.authController.isLoggedIn
+                ? Get.toNamed('/checkout')
+                : Get.toNamed('/login');
+          },
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 18),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            backgroundColor: Colors.black,
+          ),
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('PROCEED TO CHECKOUT',
+                  style: TextStyle(color: Colors.white, letterSpacing: 1)),
+              // SizedBox(width: 8),
+              // Icon(Icons.arrow_forward, color: Colors.white, size: 18),
+            ],
+          ),
+        ),
       );
     });
   }

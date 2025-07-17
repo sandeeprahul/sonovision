@@ -25,9 +25,9 @@ class SpecificationsList extends StatelessWidget {
             return Container(
               padding: const EdgeInsets.symmetric(vertical: 8),
               decoration: BoxDecoration(
-                border: Border(
+                /*border: Border(
                   bottom: BorderSide(color: Colors.grey[200]!),
-                ),
+                ),*/
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,

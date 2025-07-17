@@ -52,7 +52,9 @@ class _LoginPageState extends State<LoginPage> {
                   alignment: Alignment.topLeft,
                   child: IconButton(
                     onPressed: () {
-                      Get.off(()=>const MainPage());
+                      // Get.off(()=>const MainPage());
+                      Get.offAllNamed('/main');
+
                     },
                     icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
                   ),                ),
@@ -219,6 +221,7 @@ class _LoginPageState extends State<LoginPage> {
 
                                           NotificationController.to.registerTokenToServerToUserId();
                                           if (mounted) {
+
                                             Get.off(const PhoneVerificationScreen());
                                             // Get.offAllNamed('/main');
                                           }

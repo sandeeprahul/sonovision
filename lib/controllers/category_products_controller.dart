@@ -20,6 +20,18 @@ class CategoryProductsController extends GetxController {
   final RxBool isEmpty = false.obs;
   final RxString selectedFilter = 'All'.obs;
 
+  // Brand filtering variables
+  final RxList<String> availableBrands = <String>[].obs;
+  final RxString selectedBrand = 'All'.obs;
+
+  // Price filtering variables
+  final RxDouble minPrice = 0.0.obs;
+  final RxDouble maxPrice = 0.0.obs;
+  final RxDouble selectedMinPrice = 0.0.obs;
+  final RxDouble selectedMaxPrice = 0.0.obs;
+
+
+
   @override
   void onInit() {
     fetchProductsByCategory(categoryId);
@@ -45,10 +57,15 @@ class CategoryProductsController extends GetxController {
         if (data.isEmpty) {
           isEmpty.value = true;
         } else {
-          // allProducts.addAll(data.map((e) => ProductDetailsData.fromJson(e)));
+          allProducts.assignAll(data.map((e) => ProductDetailsData.fromJson(e)).toList());
+          products.assignAll(allProducts);
+          // products.value = data.map((e) => ProductDetailsData.fromJson(e)).toList();
+          // Initialize brand filters
+          _initializeBrandFilters();
 
-          products.value = data.map((e) => ProductDetailsData.fromJson(e)).toList();
-          // applyFilter('All');
+          // Initialize price range filters
+          _initializePriceRangeFilters();
+
 
         }
       } else {
@@ -66,59 +83,84 @@ class CategoryProductsController extends GetxController {
     }
   }
 
-  void applyFilter(String filter) {
-    selectedFilter.value = filter;
-
-    switch (filter) {
-      case 'All':
-        products.assignAll(allProducts);
-        break;
-
-      case 'Price ↑':
-        products.assignAll(List.from(allProducts)..sort((a, b) => a.price.compareTo(b.price)));
-        break;
-
-      case 'Price ↓':
-        products.assignAll(List.from(allProducts)..sort((a, b) => b.price.compareTo(a.price)));
-        break;
-
-      case 'Popular':
-        products.assignAll(List.from(allProducts)..sort((a, b) => b.discountPercentage.compareTo(a.discountPercentage)));
-        break;
-
-      case 'New':
-        products.assignAll(List.from(allProducts)..reversed.toList()); // Replace with actual 'isNew' or 'createdAt' logic if available
-        break;
-
-      default:
-        products.assignAll(allProducts);
-    }
+  void _initializeBrandFilters() {
+    // Extract all unique brands from products
+    final brands = allProducts.map((p) => p.brand).whereType<String>().toSet().toList();
+    availableBrands.assignAll(['All', ...brands]);
+    selectedBrand.value = 'All';
   }
 
+  void _initializePriceRangeFilters() {
+    if (allProducts.isEmpty) return;
 
-  void applyFilteddr(String filter) {
+    // Find min and max prices
+    final prices = allProducts.map((p) => p.price).toList();
+    minPrice.value = prices.reduce((a, b) => a < b ? a : b);
+    maxPrice.value = prices.reduce((a, b) => a > b ? a : b);
+
+    // Set initial selected range to full range
+    selectedMinPrice.value = minPrice.value;
+    selectedMaxPrice.value = maxPrice.value;
+  }
+
+  void applyFilter(String filter) {
     selectedFilter.value = filter;
+    _applyAllFilters();
+  }
 
-    switch (filter) {
-      case 'Popular':
-        products.value = List.from(allProducts)
-          ..sort((a, b) => b.discountPercentage.compareTo(a.discountPercentage));
-        break;
-      case 'New':
-      // If you have createdAt field, sort by it. For now use as-is
-        products.value = List.from(allProducts);
+  void selectBrand(String brand) {
+    selectedBrand.value = brand;
+    _applyAllFilters();
+  }
+
+  void updatePriceRange(double min, double max) {
+    selectedMinPrice.value = min;
+    selectedMaxPrice.value = max;
+    _applyAllFilters();
+  }
+
+  void _applyAllFilters() {
+    List<ProductDetailsData> filteredProducts = List.from(allProducts);
+
+    // Apply brand filter
+    if (selectedBrand.value != 'All') {
+      filteredProducts = filteredProducts.where((p) => p.brand == selectedBrand.value).toList();
+    }
+
+    // Apply price range filter
+    filteredProducts = filteredProducts.where((p) =>
+    p.price >= selectedMinPrice.value && p.price <= selectedMaxPrice.value
+    ).toList();
+
+    // Apply sorting filter
+    switch (selectedFilter.value) {
+      case 'Price ↓':
+        filteredProducts.sort((a, b) => a.price.compareTo(b.price));
         break;
       case 'Price ↑':
-        products.value = List.from(allProducts)
-          ..sort((a, b) => a.price.compareTo(b.price));
+        filteredProducts.sort((a, b) => b.price.compareTo(a.price));
         break;
-      case 'Price ↓':
-        products.value = List.from(allProducts)
-          ..sort((a, b) => b.price.compareTo(a.price));
+      case 'Popular':
+        filteredProducts.sort((a, b) => b.discountPercentage.compareTo(a.discountPercentage));
+        break;
+      case 'New':
+      // If you have createdAt field, use: b.createdAt.compareTo(a.createdAt)
+        filteredProducts = filteredProducts.reversed.toList();
         break;
       case 'All':
       default:
-        products.value = List.from(allProducts);
+      // No additional sorting needed
+        break;
     }
+
+    products.assignAll(filteredProducts);
+  }
+
+  void resetFilters() {
+    selectedFilter.value = 'All';
+    selectedBrand.value = 'All';
+    selectedMinPrice.value = minPrice.value;
+    selectedMaxPrice.value = maxPrice.value;
+    _applyAllFilters();
   }
 }

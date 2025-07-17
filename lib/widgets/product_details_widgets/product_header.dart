@@ -31,7 +31,7 @@ class ProductHeader extends StatelessWidget {
                   color: Colors.black,
                 ),
               ),
-              const SizedBox(height: 4),
+           /*   const SizedBox(height: 4),
               Text(
                 brand,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -39,7 +39,7 @@ class ProductHeader extends StatelessWidget {
                   fontWeight: FontWeight.bold,
 
                 ),
-              ),
+              ),*/
             ],
           ),
         ),

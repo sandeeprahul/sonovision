@@ -4,6 +4,7 @@ import 'package:electronic_store/widgets/horizontal_product_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../controllers/cart_controller.dart';
 import '../controllers/product_details_controller.dart';
@@ -18,24 +19,23 @@ import '../widgets/product_details_widgets/specifications_list.dart';
 import '../widgets/product_details_widgets/store_availability_card.dart';
 import '../widgets/product_details_widgets/store_availability_card_new.dart';
 
-
-
 class ProductDetailsScreenNew extends StatefulWidget {
-
-  const ProductDetailsScreenNew({super.key, });
+  const ProductDetailsScreenNew({
+    super.key,
+  });
 
   @override
-  State<ProductDetailsScreenNew> createState() => _ProductDetailsScreenNewState();
+  State<ProductDetailsScreenNew> createState() =>
+      _ProductDetailsScreenNewState();
 }
 
 class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
   late final Map<String, dynamic> product;
 
-
   @override
   void initState() {
     super.initState();
-   /* WidgetsBinding.instance.addPostFrameCallback((_) {
+    /* WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });*/
     // _scrollController.addListener(_onScroll);
@@ -50,33 +50,35 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
     final theme = Theme.of(context);
 
     return Scaffold(
-
-
       body: Container(
         // color: Colors.grey.shade200,
-     /*   decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [Colors.black,Colors.blue.shade300],begin: Alignment.topCenter,end: Alignment.bottomCenter)
-        ),*/
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Colors.blue, Colors.white],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter)),
         child: Obx(() {
           if (productDetailsController.isLoading.value) {
             return const Center(child: CircularProgressIndicator());
           }
-        
+
           final product = productDetailsController.product.value;
           if (product == null) {
             return const Center(child: Text('Product not found'));
           }
-        
-          final discountedPrice = product.price - (product.price * product.discountPercentage / 100);
-        
+
+          final discountedPrice = product.price -
+              (product.price * product.discountPercentage / 100);
+
           return SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
-                  const SizedBox(height: 12,),
+                  const SizedBox(
+                    height: 12,
+                  ),
                   SizedBox(
                     height: 56,
                     child: Stack(
@@ -88,7 +90,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                           child: IconButton(
                             icon: const Icon(
                               Icons.arrow_back_ios_new,
-                              color:Colors.white,
+                              color: Colors.white,
                               size: 20,
                             ),
                             onPressed: () => Navigator.pop(context),
@@ -102,12 +104,15 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                             }
 
                             return Text(
+                             // 'Details',
                               productDetailsController.product.value!.brand,
-                              style: const TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w500),
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500),
                             );
                           }),
                         ),
-
                       ],
                     ),
                   ),
@@ -117,7 +122,9 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                   ),
                   const Divider(
                     thickness: 1,
-                    color: Colors.transparent,),
+
+                    color: Colors.transparent,
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
@@ -126,40 +133,62 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                         ProductHeader(
                           name: product.name,
                           brand: product.brand,
-                          averageRating: productDetailsController.averageRating.value,
-                          totalReviews: productDetailsController.totalReviews.value,
+                          averageRating:
+                              productDetailsController.averageRating.value,
+                          totalReviews:
+                              productDetailsController.totalReviews.value,
                         ),
                         const SizedBox(height: 12),
-        
                         PriceDisplay(
                           originalPrice: product.price,
                           discountedPrice: discountedPrice,
-                          discountPercentage: (product.discountPercentage).toDouble(),
+                          discountPercentage:
+                              (product.discountPercentage).toDouble(),
                         ),
                       ],
                     ),
                   ),
-                   Divider(
-                    thickness: 1,
-                    color:Colors.grey.shade300,),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
+                    child: Divider(
+                      thickness: 1,
+                      color: Colors.grey.shade300,
+                    ),
+                  ),
                   ProductDescription(description: product.description),
-                  Divider(
-                    thickness: 1,
-                    color: Colors.grey.shade300,),
-                   StoreAvailabilityCard(storeCount: 15,onSeeLocations: (){
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
+                    child: Divider(
+                      thickness: 1,
+                      color: Colors.grey.shade300,
+                    ),
+                  ),
 
-                   },),
-        
-                  SpecificationsList(specifications: product.specifications ?? {}),
-        
+                  SpecificationsList(
+                      specifications: product.specifications ?? {}),
                   HighlightsList(highlights: product.highlights),
-                  Divider(
-                    thickness: 1,
-                    color: Colors.grey.shade300,),
+                  product.highlights.isNotEmpty?
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
+                    child: Divider(
+                      thickness: 1,
+                      color: Colors.grey.shade300,
+                    ),
+                  ):SizedBox(),
                   ReviewSection(productId: product.id),
-                  Divider(
-                    thickness: 1,
-                    color: Colors.grey.shade300,),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
+                    child: Divider(
+                      thickness: 1,
+                      color: Colors.grey.shade300,
+                    ),
+                  ),
+                  StoreAvailabilityCard(
+                    storeCount: 15,
+                    onSeeLocations: () {
+                      // openGoogleMapDirections();
+                    },
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text(
@@ -169,7 +198,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                       ),
                     ),
                   ),
-                   HorizontalProductList(),
+                  HorizontalProductList(),
                 ],
               ),
             ),
@@ -179,6 +208,17 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
       bottomNavigationBar: _buildBottomBar(context),
     );
   }
+
+  Future<void> openGoogleMapDirections(double destLat, double destLng) async {
+    final Uri url = Uri.parse('https://www.google.com/maps/dir/?api=1&destination=$destLat,$destLng');
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch directions.';
+    }
+  }
+
 
   Widget _buildBottomBar(BuildContext context) {
     final theme = Theme.of(context);
@@ -214,8 +254,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                     color: theme.primaryColor,
                   ),
                 ),
-              )
-                  ,
+              ),
 
               // Cart count badge
               Positioned(
@@ -225,30 +264,28 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                   final controller = Get.put(CartController());
                   return controller.cartItems.isNotEmpty
                       ? Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: const BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
-                    ),
-                    constraints: const BoxConstraints(
-                        minWidth: 20, minHeight: 20),
-                    child: Text(
-                      '${controller.cartItems.length}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  )
+                          padding: const EdgeInsets.all(4),
+                          decoration: const BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                          constraints:
+                              const BoxConstraints(minWidth: 20, minHeight: 20),
+                          child: Text(
+                            '${controller.cartItems.length}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
                       : const SizedBox.shrink();
                 }),
               ),
             ],
           ),
-
-
           const SizedBox(width: 8),
           Expanded(
             child: ElevatedButton(
@@ -266,6 +303,9 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                 final exists = controller.cartItems
                     .any((item) => item.productId == product.id);
 
+                final discountedPrice = product.price -
+                    (product.price * product.discountPercentage / 100);
+
                 if (exists) {
                   Get.snackbar(
                     'Info',
@@ -282,13 +322,12 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                     name: product.name,
                     image: product.images[0],
                     color: 'Black',
-                    price: product.price,
+                    price: discountedPrice,
                     productId: product.id,
                   ));
                   CartBottomSheet.show();
                 }
               },
-
               child: const Text(
                 'Add to Cart',
                 style: TextStyle(

@@ -7,6 +7,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../controllers/cart_controller.dart';
+import '../pages/login_page.dart';
+import '../premium_profile_page.dart';
+import '../services/auth_service.dart';
 import '../theme/app_theme.dart';
 import '../controllers/home_controller.dart';
 import '../utils/CartHelper.dart';
@@ -49,31 +52,34 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
         IconButton(onPressed: (){}, icon: Icon(Icons.notifications))
       ],),*/
       backgroundColor: Colors.grey.shade100,
-      body: Stack(
-        children: [
-          Image.asset(
-            'assets/sonovision_bg_homepage.png',
-            height: double.infinity,
-            // height: double.infinity,
-            fit: BoxFit.cover,
-          ),
-          SafeArea(
-            child: Obx(() {
-              if (controller.isLoading.value) {
-                return const Center(child: CircularProgressIndicator());
-              }
+      body: Obx(
+         () {
+           if (controller.isLoading.value) {
+             return const Center(child: CircularProgressIndicator());
+           }
 
-              if (controller.error.isNotEmpty) {
-                return _buildErrorWidget(controller);
-              }
+           if (controller.error.isNotEmpty) {
+             return _buildErrorWidget(controller);
+           }
 
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: _buildHomeContent(context, controller),
-              );
-            }),
-          ),
-        ],
+
+           return Stack(
+            children: [
+              Image.asset(
+                'assets/sonovision_bg_homepage.png',
+                height: double.infinity,
+                // height: double.infinity,
+                fit: BoxFit.cover,
+              ),
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: _buildHomeContent(context, controller),
+                ),
+              ),
+            ],
+          );
+        }
       ),
     );
   }
@@ -157,7 +163,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
         return _buildSearchBar();*/
       case 'flashSale':
 
-        ///best selling
+        ///recently viewed
         return FlashSaleWidget(
           widgetData: widget,
         );
@@ -179,10 +185,29 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
         return const SizedBox.shrink();
     }
   }
+  String _formatWidgetType(String key) {
+    // Converts 'dealOfDay' → 'Deal of the Day'
+    final buffer = StringBuffer();
+    for (int i = 0; i < key.length; i++) {
+      final char = key[i];
+      if (i == 0) {
+        buffer.write(char.toUpperCase());
+      } else if (char.toUpperCase() == char && char != '_') {
+        buffer.write(' ');
+        buffer.write(char);
+      } else {
+        buffer.write(char);
+      }
+    }
+    return buffer.toString();
+  }
 
   Widget _buildDealOfDay(Map<String, dynamic> widget) {
     final style = widget['style'];
     final deal = widget['data'];
+
+    final widgetType = widget['widgetType'];
+    final title = _formatWidgetType(widgetType); // Convert camelCase to readable
 
     return Container(
       margin:
@@ -192,12 +217,12 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+               Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
                   // textAlign: TextAlign.center,
-                  'Deal of the Day',
-                  style: TextStyle(
+                  title,
+                  style: const TextStyle(
                       fontSize: 20,
                       // color: Colors.black,
                       // fontSize: style['cardStyle']?['titleStyle']?['fontSize']
@@ -294,7 +319,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                                     ),
                                     const SizedBox(width: 8),
                                     Text(
-                                      '\$${deal['product']?['strikePrice']}' ??
+                                      '₹${deal['product']?['strikePrice']}' ??
                                           '',
                                       style: TextStyle(
                                         fontSize: 16,
@@ -878,7 +903,14 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
               radius: 18,
               child: IconButton(
                 onPressed: () {
-                  controller.getCurrentLocation();
+                  if (AuthController.to.token.value.isEmpty) {
+                    Get.off(const LoginPage());
+                    return;
+                  }else{
+                    Get.to( PremiumProfilePage());
+
+                  }
+                  // controller.getCurrentLocation();
                 },
                 icon: const Icon(Icons.person_outlined),
                 color: Colors.black,

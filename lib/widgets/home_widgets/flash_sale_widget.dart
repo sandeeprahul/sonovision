@@ -17,6 +17,7 @@ class FlashSaleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final style = widgetData['style'];
+    final title = widgetData['label'];
     final products = widgetData['data']['products'] as List;
     final endTime = DateTime.parse(widgetData['data']['endTime']);
 
@@ -27,7 +28,7 @@ class FlashSaleWidget extends StatelessWidget {
         children: [
           // const SizedBox(height: 16),
           //
-          _buildHeader(endTime),
+          _buildHeader(endTime,title),
           const SizedBox(height: 16),
           SizedBox(
             // height: 306,
@@ -50,15 +51,15 @@ class FlashSaleWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(DateTime endTime) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+  Widget _buildHeader(DateTime endTime, String title) {
+    return  Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Best selling',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.black),
+            title,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.black),
           ),
           // _buildCountdownTimer(endTime),
         ],

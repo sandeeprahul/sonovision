@@ -102,8 +102,9 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
 
     if (index == 2) {
       final authController = Get.put(AuthController());
+      // ;
       final token = await authController.loadUserAndToken();
-      if (authController.token.value.isEmpty) {
+      if (AuthController.to.token.value.isEmpty) {
         Get.off(const LoginPage());
         return;
       }

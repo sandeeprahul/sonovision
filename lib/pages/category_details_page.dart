@@ -96,10 +96,270 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
     });
   }
 
+
+  void openFilterBottomSheet() {
+    Get.bottomSheet(
+        Obx(() {
+          return Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 16,
+                  spreadRadius: 0,
+                  offset: const Offset(0, -4),
+                ),
+              ],
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Filter Header
+                Row(
+                  children: [
+                    Icon(Icons.tune_rounded, size: 20, color: Theme.of(context).primaryColor),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Filters',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    const Spacer(),
+                    TextButton(
+                      onPressed: () => categoryProductsController.resetFilters(),
+                      child: Text(
+                        'Reset',
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 12),
+
+                // Brand Filter
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 4, bottom: 6),
+                      child: Text(
+                        'Brand',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey[700],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).cardColor,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: Colors.grey.withOpacity(0.2),
+                          width: 1,
+                        ),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          value: categoryProductsController.selectedBrand.value,
+                          icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey[600]),
+                          items: categoryProductsController.availableBrands.map((String brand) {
+                            return DropdownMenuItem<String>(
+                              value: brand,
+                              child: Text(
+                                brand,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: brand == 'All' ? Colors.grey[500] : Colors.black,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (newValue) {
+                            categoryProductsController.selectBrand(newValue!);
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 16),
+
+                // Sort Filter
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 4, bottom: 6),
+                      child: Text(
+                        'Sort By',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey[700],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).cardColor,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: Colors.grey.withOpacity(0.2),
+                          width: 1,
+                        ),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          value: categoryProductsController.selectedFilter.value,
+                          icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey[600]),
+                          items: ['All', 'Price ↑', 'Price ↓', 'Popular', 'New'].map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: value == 'All' ? Colors.grey[500] : Colors.black,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (newValue) {
+                            categoryProductsController.applyFilter(newValue!);
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 16),
+
+                // Price Range Filter
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 4, bottom: 6),
+                      child: Text(
+                        'Price Range',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey[700],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).cardColor,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: Colors.grey.withOpacity(0.2),
+                          width: 1,
+                        ),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      child: Column(
+                        children: [
+                          RangeSlider(
+                            values: RangeValues(
+                              categoryProductsController.selectedMinPrice.value,
+                              categoryProductsController.selectedMaxPrice.value,
+                            ),
+                            min: categoryProductsController.minPrice.value,
+                            max: categoryProductsController.maxPrice.value,
+                            divisions: 10,
+                            labels: RangeLabels(
+                              '₹${categoryProductsController.selectedMinPrice.value.toStringAsFixed(0)}',
+                              '₹${categoryProductsController.selectedMaxPrice.value.toStringAsFixed(0)}',
+                            ),
+                            onChanged: (RangeValues values) {
+                              categoryProductsController.updatePriceRange(values.start, values.end);
+                            },
+                            activeColor: Theme.of(context).primaryColor,
+                            inactiveColor: Colors.grey[300],
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '₹${categoryProductsController.minPrice.value.toStringAsFixed(0)}',
+                                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                              ),
+                              Text(
+                                '₹${categoryProductsController.maxPrice.value.toStringAsFixed(0)}',
+                                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 16),
+
+                // Apply Button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context); // Close the bottom sheet
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                    child: const Text('Apply Filters'),
+                  ),
+                ),
+              ],
+            ),
+          );
+        })
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      bottomSheet: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.black),
+            onPressed: openFilterBottomSheet, child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('Filters'),
+          ],
+        )),
+      ),
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
@@ -206,152 +466,403 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
     });
   }
 
-  Widget _buildProductCard(ProductDetailsData product) {
-    final originalPrice = product.price as num;
-    final discountPercentage = product.discountPercentage as num;
-    final discountedPrice =
-        originalPrice - (originalPrice * discountPercentage / 100);
+    Widget _buildProductCardf(ProductDetailsData product) {
+      final originalPrice = product.price as num;
+      final discountPercentage = product.discountPercentage as num;
+      final discountedPrice =
+          originalPrice - (originalPrice * discountPercentage / 100);
 
-    return GestureDetector(
-      //          arguments: product['_id'],
-      onTap: () {
-        var productDetails = {
-          '_id': product.id,
-        };
-        Get.toNamed('/product-details', arguments: productDetails);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          // color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          /*  boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],*/
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(12)),
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    Container(
-                      color: const Color(0xfff9f5f4),
-                      child: Hero(
-                        tag: 'product-${product.id}-${product.images[0]}',
-                        child: CachedNetworkImage(
-                          imageUrl: product.images[0],
-                          // fit: BoxFit.cover,
-                          placeholder: (_, __) => Container(
-                            color: Theme.of(context).colorScheme.surfaceVariant,
-                          ),
-                          errorWidget: (_, __, ___) => Container(
-                            color: Theme.of(context).colorScheme.surfaceVariant,
-                            child: Center(
-                              child: Icon(
-                                Icons.shopping_bag_rounded,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSurfaceVariant,
+      return GestureDetector(
+        //          arguments: product['_id'],
+        onTap: () {
+          var productDetails = {
+            '_id': product.id,
+          };
+          Get.toNamed('/product-details', arguments: productDetails);
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            // color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            /*  boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 10,
+                offset: const Offset(0, 5),
+              ),
+            ],*/
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(12)),
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Container(
+                        color: const Color(0xfff9f5f4),
+                        child: Hero(
+                          tag: 'product-${product.id}-${product.images[0]}',
+                          child: CachedNetworkImage(
+                            imageUrl: product.images[0],
+                            // fit: BoxFit.cover,
+                            placeholder: (_, __) => Container(
+                              color: Theme.of(context).colorScheme.surfaceVariant,
+                            ),
+                            errorWidget: (_, __, ___) => Container(
+                              color: Theme.of(context).colorScheme.surfaceVariant,
+                              child: Center(
+                                child: Icon(
+                                  Icons.shopping_bag_rounded,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurfaceVariant,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    if (discountPercentage > 0)
-                      Positioned(
-                        top: 8,
-                        left: 8,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            '${discountPercentage.toStringAsFixed(0)}% OFF',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
+                      if (discountPercentage > 0)
+                        Positioned(
+                          top: 8,
+                          left: 8,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              '${discountPercentage.toStringAsFixed(0)}% OFF',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      product.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 14,
                       ),
+                    ),
+                    const SizedBox(height: 4),
+                    /*    Text(
+                      product.brand,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+
+                      ),
+                    ),*/
+                    const SizedBox(height: 4),
+                    Text(
+                      '₹${discountedPrice.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                          fontSize: 13,
+                          color: Color(0xffaa6d6a),
+                          fontWeight: FontWeight.bold),
+                    ),
+                    // if (discountPercentage > 0) ...[
+                    //   const SizedBox(width: 4),
+                    //   Text(
+                    //     '₹${originalPrice.toStringAsFixed(2)}',
+                    //     style: TextStyle(
+                    //       decoration: TextDecoration.lineThrough,
+                    //       color: Colors.grey[600],
+                    //       fontSize: 10,
+                    //     ),
+                    //   ),
+                    // ],
+                    const SizedBox(height: 4),
+
+                    SizedBox(
+                      /*    padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+
+                          borderRadius: BorderRadius.circular(8)),*/ // width: double.infinity,
+                      child: InkWell(
+                        /*      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        ),*/
+                        onTap: () {
+                          final controller = Get.put(CartController());
+
+                          final exists = controller.cartItems
+                              .any((item) => item.productId == product.id);
+
+                          if (exists) {
+                            Get.snackbar(
+                              'Info',
+                              'Item already in cart',
+                              overlayBlur: 2,
+                              overlayColor: Colors.black26,
+                              backgroundColor: Colors.white,
+                              colorText: Colors.black,
+                              snackPosition: SnackPosition.BOTTOM,
+                              duration: const Duration(milliseconds: 1500),
+                            );
+                          } else {
+                            controller.addItem(CartItem(
+                              name: product.name,
+                              image: product.images[0],
+                              color:
+                                  product.colors.isEmpty ? '' : product.colors[0],
+                              price: product.price,
+                              productId: product.id,
+                            ));
+                            CartBottomSheet.show();
+                          }
+                          // CartBottomSheet.show();
+
+                          // Get.snackbar("Cart", "${product['name']} added to cart",snackPosition:SnackPosition.BOTTOM,overlayBlur: 2);
+                        },
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "Add to Cart",
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.black,
+                                  // color: Color(0xffaa6d6a),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Icon(
+                              Icons.shopping_cart_outlined,
+                              color: Colors.black,
+                              // color: Color(0xffaa6d6a),
+                              size: 14,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
+            ],
+          ),
+        ),
+      );
+    }
+
+  Widget _buildProductCard(ProductDetailsData product) {
+    final originalPrice = product.price as num;
+    final discountPercentage = product.discountPercentage as num;
+    final discountedPrice = originalPrice - (originalPrice * discountPercentage / 100);
+
+    return GestureDetector(
+      onTap: () {
+        var productDetails = {'_id': product.id};
+        Get.toNamed('/product-details', arguments: productDetails);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 12,
+              offset: const Offset(0, 6),
             ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Image Section
+            Stack(
+              children: [
+                Container(
+                  height: 160,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                    color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                    child: Hero(
+                      tag: 'product-${product.id}-${product.images[0]}',
+                      child: CachedNetworkImage(
+                        imageUrl: product.images[0],
+                        fit: BoxFit.contain,
+                        placeholder: (_, __) => Center(
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                        errorWidget: (_, __, ___) => Center(
+                          child: Icon(
+                            Icons.shopping_bag_outlined,
+                            size: 40,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                // Discount Badge
+                if (discountPercentage > 0)
+                  Positioned(
+                    top: 12,
+                    left: 12,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color(0xFFFF5F6D),
+                            Color(0xFFFFC371),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.red.withOpacity(0.2),
+                            blurRadius: 6,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        '${discountPercentage.toStringAsFixed(0)}% OFF',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                // Favorite Button
+                Visibility(
+                  visible: false,
+                  child: Positioned(
+                    top: 12,
+                    right: 12,
+                    child: Container(
+                      width: 32,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 6,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.favorite_border,
+                          size: 16,
+                          color: Colors.grey[600],
+                        ),
+                        onPressed: () {},
+                        padding: EdgeInsets.zero,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            // Product Info Section
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Brand Name
+                  if (product.brand != null && product.brand.isNotEmpty)
+                    Text(
+                      product.brand.toUpperCase(),
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).primaryColor,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+
+                  // Product Name
+                  const SizedBox(height: 4),
                   Text(
                     product.name,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
                       fontSize: 14,
+                      height: 1.3,
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  /*    Text(
-                    product.brand,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 12,
 
-                    ),
-                  ),*/
-                  const SizedBox(height: 4),
-                  Text(
-                    '₹${discountedPrice.toStringAsFixed(2)}',
-                    style: const TextStyle(
-                        fontSize: 13,
-                        color: Color(0xffaa6d6a),
-                        fontWeight: FontWeight.bold),
+                  // Price Section
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Text(
+                        '₹${originalPrice.toStringAsFixed(2)}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                  /*    const SizedBox(width: 6),
+                      if (discountPercentage > 0)
+                        Text(
+                          '₹${originalPrice.toStringAsFixed(2)}',
+                          style: TextStyle(
+                            decoration: TextDecoration.lineThrough,
+                            color: Colors.grey[500],
+                            fontSize: 12,
+                          ),
+                        ),*/
+                    ],
                   ),
-                  // if (discountPercentage > 0) ...[
-                  //   const SizedBox(width: 4),
-                  //   Text(
-                  //     '₹${originalPrice.toStringAsFixed(2)}',
-                  //     style: TextStyle(
-                  //       decoration: TextDecoration.lineThrough,
-                  //       color: Colors.grey[600],
-                  //       fontSize: 10,
-                  //     ),
-                  //   ),
-                  // ],
-                  const SizedBox(height: 4),
 
-                  SizedBox(
-                    /*    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                        color: Colors.black,
-
-                        borderRadius: BorderRadius.circular(8)),*/ // width: double.infinity,
-                    child: InkWell(
-                      /*      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                      ),*/
-                      onTap: () {
+                  // Add to Cart Button
+                  const SizedBox(height: 12),
+                  Container(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
                         final controller = Get.put(CartController());
-
                         final exists = controller.cartItems
                             .any((item) => item.productId == product.id);
 
@@ -359,45 +870,37 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                           Get.snackbar(
                             'Info',
                             'Item already in cart',
-                            overlayBlur: 2,
-                            overlayColor: Colors.black26,
+                            snackPosition: SnackPosition.BOTTOM,
                             backgroundColor: Colors.white,
                             colorText: Colors.black,
-                            snackPosition: SnackPosition.BOTTOM,
-                            duration: const Duration(milliseconds: 1500),
+                            margin: const EdgeInsets.all(12),
                           );
                         } else {
                           controller.addItem(CartItem(
                             name: product.name,
                             image: product.images[0],
-                            color:
-                                product.colors.isEmpty ? '' : product.colors[0],
+                            color: product.colors.isEmpty ? '' : product.colors[0],
                             price: product.price,
                             productId: product.id,
                           ));
                           CartBottomSheet.show();
                         }
-                        // CartBottomSheet.show();
-
-                        // Get.snackbar("Cart", "${product['name']} added to cart",snackPosition:SnackPosition.BOTTOM,overlayBlur: 2);
                       },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        elevation: 0,
+                      ),
                       child: const Row(
-                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            "Add to Cart",
-                            style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.black,
-                                // color: Color(0xffaa6d6a),
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Icon(
-                            Icons.shopping_cart_outlined,
-                            color: Colors.black,
-                            // color: Color(0xffaa6d6a),
-                            size: 14,
-                          )
+                          Icon(Icons.shopping_cart_outlined, size: 16),
+                          SizedBox(width: 6),
+                          Text('Add to Cart', style: TextStyle(fontSize: 13)),
                         ],
                       ),
                     ),

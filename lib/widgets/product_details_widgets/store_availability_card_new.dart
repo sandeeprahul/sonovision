@@ -80,13 +80,13 @@ class StoreAvailabilityCardNew extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (isAvailable) ...[
+             /*   if (isAvailable) ...[
                   const SizedBox(width: 8),
                   Icon(
                     Icons.chevron_right,
                     color: theme.colorScheme.onSurface.withOpacity(0.5),
                   ),
-                ],
+                ],*/
               ],
             ),
             if (isAvailable) ...[

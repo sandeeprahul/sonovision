@@ -23,7 +23,7 @@ class HorizontalProductList extends StatelessWidget {
       }
 
       return Container(
-        margin: const EdgeInsets.only(right: 12,bottom: 12,),
+        margin: const EdgeInsets.only(right: 12,bottom: 12,left: 6),
         height: 340,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,

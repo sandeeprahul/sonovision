@@ -76,7 +76,7 @@ class ReviewSection extends StatelessWidget {
 
   Widget _buildEmptyReviews(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.grey[50],
@@ -84,6 +84,8 @@ class ReviewSection extends StatelessWidget {
       ),
       child: Column(
         children: [
+          Row(),
+
           Icon(Icons.reviews, size: 50, color: Colors.grey[400]),
           const SizedBox(height: 16),
           Text(

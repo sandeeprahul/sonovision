@@ -20,7 +20,7 @@ import 'package:flutter/material.dart';
     return GestureDetector(
       onTap: onSeeLocations,
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 8,horizontal: 8),
+        margin: const EdgeInsets.symmetric(vertical: 8,horizontal: 16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: Colors.white,
@@ -37,14 +37,14 @@ import 'package:flutter/material.dart';
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Map Preview Section
-            Container(
+         /*   Container(
               height: 120,
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                 color: Colors.grey[100],
               ),
               child: customMapPreview ?? _buildDefaultMapPreview(),
-            ),
+            ),*/
 
             const StoreAvailabilityCardNew(storeCount: 1, isAvailable: true),
 
