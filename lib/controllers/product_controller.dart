@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ProductController extends GetxController {
+  static ProductController get to => Get.put(ProductController());
+
   var isLoading = true.obs;
   var productList = [].obs;
 

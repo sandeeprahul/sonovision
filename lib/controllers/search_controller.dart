@@ -1,6 +1,8 @@
 import 'package:electronic_store/controllers/product_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
+
 class SearchhController extends GetxController {
   final RxString query = ''.obs;
   final RxList<dynamic> results = <dynamic>[].obs;
@@ -14,8 +16,18 @@ class SearchhController extends GetxController {
   @override
   void onInit() {
     _loadPopularSearches();
+    ever(query, (_) => textController.text = query.value);
+
     super.onInit();
   }
+
+  @override
+  void onClose() {
+    searchFocusNode.dispose();
+    textController.dispose();
+    super.onClose();
+  }
+
 
   Future<void> _loadPopularSearches() async {
     // Replace with actual API call if needed
@@ -43,12 +55,22 @@ class SearchhController extends GetxController {
 
     try {
       // Search in local product list first
-      final controller = Get.put(ProductController());
+      final controller = ProductController.to;
+
       final localResults = controller.productList
           .where((product) =>
-      product['name'].toString().toLowerCase().contains(q.toLowerCase()) ||
-          product['brand'].toString().toLowerCase().contains(q.toLowerCase()) ||
-          product['highlights'].toString().toLowerCase().contains(q.toLowerCase()))
+              product['name']
+                  .toString()
+                  .toLowerCase()
+                  .contains(q.toLowerCase()) ||
+              product['brand']
+                  .toString()
+                  .toLowerCase()
+                  .contains(q.toLowerCase()) ||
+              product['highlights']
+                  .toString()
+                  .toLowerCase()
+                  .contains(q.toLowerCase()))
           .toList();
 
       results.value = localResults;
@@ -60,7 +82,7 @@ class SearchhController extends GetxController {
       }
     } catch (e) {
       Get.snackbar('Error', 'Search failed: ${e.toString()}');
-      print( 'Search failed: ${e.toString()}');
+      print('Search failed: ${e.toString()}');
     } finally {
       isSearching.value = false;
     }
@@ -68,11 +90,20 @@ class SearchhController extends GetxController {
 
   void clearSearch() {
     query.value = '';
+    textController.clear();
     results.clear();
     searchFocusNode.unfocus();
   }
-
   void selectSuggestion(String suggestion) {
+    textController.text = suggestion;
+    textController.selection = TextSelection.fromPosition(
+      TextPosition(offset: suggestion.length),
+    );
+    search(suggestion);
+  }
+  final deBouncer = Debouncer(delay: const Duration(milliseconds: 300));
+
+  void selectSuggestiond(String suggestion) {
     query.value = suggestion;
     textController.text = suggestion;
     textController.selection = TextSelection.fromPosition(
@@ -80,50 +111,5 @@ class SearchhController extends GetxController {
     );
     search(suggestion);
     searchFocusNode.requestFocus();
-  }
-}
-class SearchhControllerfff extends GetxController {
-  final RxString query = ''.obs;
-  final RxList results = [].obs;
-  final RxList suggestions = [
-    'iPhone',
-    'Samsung',
-    'Laptop',
-    'Headphones',
-    'Smartwatch',
-  ].obs;
-  final RxList history = [].obs;
-
-  // Temporary product data
-  final List<Map<String, dynamic>> products = [
-    {'name': 'iPhone 15 Pro', 'category': 'Mobile', 'price': 1299, 'image': 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-model-unselect-gallery-1-202309?wid=512&hei=512&fmt=jpeg&qlt=95&.v=1692912410452'},
-    {'name': 'Samsung Galaxy S24', 'category': 'Mobile', 'price': 1099, 'image': 'https://images.samsung.com/is/image/samsung/p6pim/in/sm-s921bzadins/gallery/in-galaxy-s24-s921-sm-s921bzadins-thumb-538876569?172_172_PNG'},
-    {'name': 'Sony WH-1000XM5', 'category': 'Headphones', 'price': 399, 'image': 'https://m.media-amazon.com/images/I/61bK6PMOC3L._SX679_.jpg'},
-    {'name': 'MacBook Air M3', 'category': 'Laptop', 'price': 1499, 'image': 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/macbook-air-15-m3-hero-202402?wid=512&hei=512&fmt=jpeg&qlt=95&.v=1707332184720'},
-    {'name': 'Apple Watch Series 9', 'category': 'Smartwatch', 'price': 499, 'image': 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MRX23ref_VW_34FR+watch-case-45-alum-starlight-nc-9s_VW_34FR_WF_CO_GEO_IN?wid=512&hei=512&fmt=jpeg&qlt=95&.v=1693186748290'},
-  ];
-
-  void search(String q) {
-    query.value = q;
-    if (q.isEmpty) {
-      results.clear();
-      return;
-    }
-    results.value = products
-        .where((product) => product['name'].toLowerCase().contains(q.toLowerCase()))
-        .toList();
-    if (q.isNotEmpty && !history.contains(q)) {
-      history.insert(0, q);
-      if (history.length > 5) history.removeLast();
-    }
-  }
-
-  void clearSearch() {
-    query.value = '';
-    results.clear();
-  }
-
-  void selectSuggestion(String suggestion) {
-    search(suggestion);
   }
 }

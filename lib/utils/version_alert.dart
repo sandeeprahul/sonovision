@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // Replace showDialog with Get.dialog and remove context parameter
+final Uri _url = Uri.parse('https://play.google.com/store/apps/details?id=com.aitrix.sonovision');
+Future<void> _launchUrl() async {
+  if (!await launchUrl(_url)) {
+    throw 'Could not launch $_url';
+  }
+}
 void showUpdateDialog() {
   Get.dialog(
     AnimatedScale(
@@ -62,7 +69,7 @@ void showUpdateDialog() {
                         style: Get.theme.textTheme.labelSmall,
                       ),
                       Text(
-                        '1.2.3',
+                        '1.0.0',
                         style: Get.theme.textTheme.bodyLarge?.copyWith(
                           color: Get.theme.colorScheme.error,
                         ),
@@ -80,7 +87,7 @@ void showUpdateDialog() {
                         style: Get.theme.textTheme.labelSmall,
                       ),
                       Text(
-                        '1.3.0',
+                        '1.0.1',
                         style: Get.theme.textTheme.bodyLarge?.copyWith(
                           color: Get.theme.colorScheme.primary,
                         ),
@@ -93,6 +100,8 @@ void showUpdateDialog() {
             FilledButton(
               onPressed: () {
                 // Launch app store/play store
+
+                _launchUrl();
                 Get.back(); // Replace Navigator.pop with Get.back
               },
               style: FilledButton.styleFrom(
@@ -106,7 +115,7 @@ void showUpdateDialog() {
               child: const Text('UPDATE NOW'),
             ),
             // Later button
-            TextButton(
+         /*   TextButton(
               onPressed: () {
                 Get.back(); // Replace Navigator.pop with Get.back
               },
@@ -117,7 +126,7 @@ void showUpdateDialog() {
                   color: Get.theme.colorScheme.onSurfaceVariant,
                 ),
               ),
-            ),
+            ),*/
           ],
         ),
         actions: const [
