@@ -16,7 +16,7 @@ class SearchhController extends GetxController {
   @override
   void onInit() {
     _loadPopularSearches();
-    ever(query, (_) => textController.text = query.value);
+    // ever(query, (_) => textController.text = query.value);
 
     super.onInit();
   }
@@ -66,6 +66,9 @@ class SearchhController extends GetxController {
               product['brand']
                   .toString()
                   .toLowerCase()
+                  .contains(q.toLowerCase()) ||product['specifications']
+                  .toString()
+                  .toLowerCase()
                   .contains(q.toLowerCase()) ||
               product['highlights']
                   .toString()
@@ -73,7 +76,8 @@ class SearchhController extends GetxController {
                   .contains(q.toLowerCase()))
           .toList();
 
-      results.value = localResults;
+      // results.value = localResults;
+      results.assignAll(localResults);
 
       // Add to search history
       if (q.isNotEmpty && !history.contains(q)) {
@@ -100,6 +104,8 @@ class SearchhController extends GetxController {
       TextPosition(offset: suggestion.length),
     );
     search(suggestion);
+    searchFocusNode.requestFocus();
+
   }
   final deBouncer = Debouncer(delay: const Duration(milliseconds: 300));
 

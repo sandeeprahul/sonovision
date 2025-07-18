@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 
 import '../controllers/search_controller.dart';
 
-
 class SearchPage extends StatefulWidget {
   SearchPage({super.key});
 
@@ -19,11 +18,9 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       backgroundColor: Colors.white,
       body: Column(
         children: [
-
           const SizedBox(height: 36),
           SizedBox(
             height: 56,
@@ -31,52 +28,70 @@ class _SearchPageState extends State<SearchPage> {
               children: [
                 Align(
                   alignment: Alignment.centerLeft,
-                  child:     IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back_ios_new,
-                      color:Colors.black,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.black,
+                      ),
+                      onPressed: () => Navigator.pop(context),
                     ),
-                    onPressed: () => Navigator.pop(context),
                   ),
                 ),
                 const Align(
-                  alignment: Alignment.center,
-                    child: Text('Search',style: TextStyle(color: Colors.black,fontSize: 22),)),
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Search',
+                      style: TextStyle(color: Colors.black, fontSize: 22),
+                    )),
               ],
             ),
           ),
           Container(
             height: 48,
-            margin: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
+            margin:
+                const EdgeInsets.only(left: 20, right: 20, top: 16, bottom: 16),
+            /*   decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surfaceContainerHigh,
               borderRadius: BorderRadius.circular(24),
-            ),
+            ),*/
             child: TextField(
               focusNode: controller.searchFocusNode,
               controller: controller.textController,
+              textInputAction: TextInputAction.search,
+              // ✅ sets "Search" on keyboard
 
               // controller: TextEditingController(text: controller.query.value),
               onChanged: (value) {
                 controller.query.value = value;
-                controller. deBouncer(() {
-                  if (value.isEmpty) {
-                    controller.results.clear();
-                  } else {
-                    controller.search(value);
-                  }
-                });
+                controller.deBouncer(() => controller.search(value));
+
+                // controller.deBouncer(() {
+                //   if (value.isEmpty) {
+                //     controller.results.clear();
+                //   } else {
+                //     controller.search(value);
+                //   }
+                // });
               },
 
               onSubmitted: (value) => controller.search(value),
               decoration: InputDecoration(
-                hintText: 'Search products...',
-                border: InputBorder.none,
+                hintText: 'Search ...',
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                focusedBorder:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                enabledBorder:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                disabledBorder:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 prefixIcon: Icon(
                   Icons.search_rounded,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
-             /*   suffixIcon: controller.query.isNotEmpty
+                /*   suffixIcon: controller.query.isNotEmpty
                     ? IconButton(
                   icon: Icon(
                     Icons.close_rounded,
@@ -90,7 +105,6 @@ class _SearchPageState extends State<SearchPage> {
               style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
-
           Expanded(
             child: Obx(() {
               if (controller.query.isEmpty) {
@@ -107,14 +121,9 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-
   Widget _buildInitialState(BuildContext context) {
     return CustomScrollView(
       slivers: [
-
-
-
-
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(24, 24, 24, 8),
@@ -124,27 +133,58 @@ class _SearchPageState extends State<SearchPage> {
                   'Popular Searches',
                   // 'Popular Searches',
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: Colors.black
-                  ),
+                      fontWeight: FontWeight.w800, color: Colors.black),
                 ),
-                const SizedBox(width: 6,),
-                const Icon(Icons.auto_graph,size: 20,)
+                const SizedBox(
+                  width: 6,
+                ),
+                const Icon(
+                  Icons.auto_graph,
+                  size: 20,
+                )
               ],
             ),
           ),
         ),
+
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           sliver: SliverGrid(
             delegate: SliverChildBuilderDelegate(
-                  (context, index) {
+              (context, index) {
                 final term = controller.suggestions[index];
                 return InkWell(
                   borderRadius: BorderRadius.circular(12),
-                  onTap: () {
-                    controller.query.value = term;
-                    controller.search(term); // manually trigger
+                  onTap: () async {
+                    // controller.query.value = ''; // Force change
+                    controller.textController.text = term;
+                    onSearchChanged(term);
+
+                    /*  Future.delayed(Duration(milliseconds: 10), () {
+                    });*/
+                    // controller.query.value = term;
+                    //
+                    // // ✅ Manually trigger search
+                    // controller.deBouncer(() {
+                    //   controller.search(term);
+                    // });
+                    // // FocusScope.of(context).unfocus();
+                    // //
+                    // controller.deBouncer(() => controller.search(term));
+                    //
+                    controller.searchFocusNode.requestFocus();
+
+                    // controller.search(term);
+                    // controller.search(term); // no need to set textController.text = term
+
+                    //
+                    // controller.textController.selection = TextSelection.collapsed(offset: term.length);
+                    //
+                    // await Future.delayed(const Duration(milliseconds: 50)); // Give time to update UI/controller
+                    //
+                    // controller.search(term);
+
+                    // Now call search
                   },
                   // onTap: () => controller.selectSuggestion(
                   // term),
@@ -155,10 +195,14 @@ class _SearchPageState extends State<SearchPage> {
                       color: Theme.of(context).colorScheme.surfaceContainerLow,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
                     child: Text(
                       term,
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.black),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(color: Colors.black),
                     ),
                   ),
                 );
@@ -182,14 +226,15 @@ class _SearchPageState extends State<SearchPage> {
                 Text(
                   'Browse Categories',
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: Colors.black
-                  ),
+                      fontWeight: FontWeight.w800, color: Colors.black),
                 ),
-                const SizedBox(width: 6,),
-
-                const Icon(Icons.category,size: 20,)
-
+                const SizedBox(
+                  width: 6,
+                ),
+                const Icon(
+                  Icons.category,
+                  size: 20,
+                )
               ],
             ),
           ),
@@ -198,8 +243,9 @@ class _SearchPageState extends State<SearchPage> {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           sliver: SliverGrid(
             delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                final category = ['Mobiles', 'Refrigerators', 'Tv', 'Accessories'][index];
+              (context, index) {
+                final category =
+                    ['Mobiles', 'Refrigerators', 'Tv', 'Accessories'][index];
                 return InkWell(
                   borderRadius: BorderRadius.circular(12),
                   onTap: () => controller.selectSuggestion(category),
@@ -212,14 +258,22 @@ class _SearchPageState extends State<SearchPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          [Icons.phone_android, Icons.kitchen, Icons.electrical_services, Icons.watch][index],
+                          [
+                            Icons.phone_android,
+                            Icons.kitchen,
+                            Icons.electrical_services,
+                            Icons.watch
+                          ][index],
                           size: 32,
                           color: Theme.of(context).colorScheme.primary,
                         ),
                         const SizedBox(height: 8),
-                        Text(category,
-                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.black),
-
+                        Text(
+                          category,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(color: Colors.black),
                         ),
                       ],
                     ),
@@ -238,6 +292,9 @@ class _SearchPageState extends State<SearchPage> {
         ),
       ],
     );
+  }void onSearchChanged(String term) {
+    controller.query.value = term;
+    controller. deBouncer(() =>controller. search(term));
   }
 
   Widget _buildLoadingState() {
@@ -272,19 +329,22 @@ class _SearchPageState extends State<SearchPage> {
             Icon(
               Icons.search_off_rounded,
               size: 64,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              color: Colors.transparent,
+              // color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
             const SizedBox(height: 16),
             Text(
-              'No results found',
+              '',
+              // 'No results found',
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
             Text(
-              'Try different keywords',
+              '',
+              // 'Try different keywords',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
             ),
           ],
         ),
@@ -295,27 +355,29 @@ class _SearchPageState extends State<SearchPage> {
       slivers: [
         SliverPadding(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-          sliver: SliverGrid(
-            delegate: SliverChildBuilderDelegate(
+          sliver: Obx(
+             () {
+              return SliverGrid(
+                delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                final product = controller.results[index];
-                return _buildProductCard(context, product);
-              },
-              childCount: controller.results.length,
-            ),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
-              childAspectRatio: 0.7,
-            ),
+                    final product = controller.results[index];
+                    return _buildProductCard(context, product);
+                  },
+                  childCount: controller.results.length,
+                ),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  childAspectRatio: 0.7,
+                ),
+              );
+            }
           ),
         ),
       ],
     );
   }
-
-
 
   Widget _buildProductCard(BuildContext context, dynamic product) {
     final price = product['price']?.toDouble() ?? 0.0;
@@ -327,6 +389,7 @@ class _SearchPageState extends State<SearchPage> {
       child: Material(
         color: Theme.of(context).colorScheme.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(10),
+        elevation: 2,
         child: Stack(
           children: [
             Column(
@@ -337,11 +400,16 @@ class _SearchPageState extends State<SearchPage> {
                   height: 160,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                    color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
+                    borderRadius:
+                        const BorderRadius.vertical(top: Radius.circular(16)),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .surfaceVariant
+                        .withOpacity(0.3),
                   ),
                   child: ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                    borderRadius:
+                        const BorderRadius.vertical(top: Radius.circular(16)),
                     child: CachedNetworkImage(
                       imageUrl: product['images']?.isNotEmpty == true
                           ? product['images'][0]
@@ -373,8 +441,10 @@ class _SearchPageState extends State<SearchPage> {
                       Text(
                         product['brand'] ?? '',
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
+                            ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -382,8 +452,8 @@ class _SearchPageState extends State<SearchPage> {
                       Text(
                         product['name'] ?? '',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
+                              fontWeight: FontWeight.w500,
+                            ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -394,29 +464,40 @@ class _SearchPageState extends State<SearchPage> {
                           children: [
                             Text(
                               '₹${discountedPrice.toStringAsFixed(0)}',
-                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  ),
                             ),
                             const SizedBox(width: 6),
                             Text(
                               '₹$price',
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                decoration: TextDecoration.lineThrough,
-                                color: Theme.of(context).colorScheme.onSurfaceVariant,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    decoration: TextDecoration.lineThrough,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant,
+                                  ),
                             ),
-
                           ],
                         )
                       else
                         Text(
                           '₹$price',
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
                         ),
                     ],
                   ),
@@ -424,13 +505,11 @@ class _SearchPageState extends State<SearchPage> {
               ],
             ),
             // Favorite button
-
           ],
         ),
       ),
     );
   }
-
 
 // Separate widget builder method
   Widget _buildSuggestionsGrid(BuildContext context) {
@@ -438,36 +517,36 @@ class _SearchPageState extends State<SearchPage> {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       sliver: Obx(() => SliverGrid(
-        delegate: SliverChildBuilderDelegate(
+            delegate: SliverChildBuilderDelegate(
               (context, index) {
-            final term = controller.suggestions[index];
-            return InkWell(
-              borderRadius: BorderRadius.circular(12),
-              onTap: () => controller.selectSuggestion(term),
-              child: Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerLow,
+                final term = controller.suggestions[index];
+                return InkWell(
                   borderRadius: BorderRadius.circular(12),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                child: Text(
-                  term,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ),
-            );
-          },
-          childCount: controller.suggestions.length,
-        ),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 3,
-          mainAxisSpacing: 8,
-          crossAxisSpacing: 8,
-        ),
-      )),
+                  onTap: () => controller.selectSuggestion(term),
+                  child: Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surfaceContainerLow,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                    child: Text(
+                      term,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ),
+                );
+              },
+              childCount: controller.suggestions.length,
+            ),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 3,
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+            ),
+          )),
     );
   }
 }
-
