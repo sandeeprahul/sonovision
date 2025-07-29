@@ -6,6 +6,7 @@ class ProductDetailsData {
   final double price;
   final int discountPercentage;
   final String description;
+  final bool isActive;
   final String highlights;
   final List<String> colors;
   final List<String> images;
@@ -25,6 +26,7 @@ class ProductDetailsData {
     required this.description,
     required this.highlights,
     required this.colors,
+    required this.isActive,
     required this.images,
     required this.stock,
     required this.storeCode,
@@ -36,6 +38,7 @@ class ProductDetailsData {
     return ProductDetailsData(
       id: json['_id'],
       name: json['name'],
+      isActive: json['isActive']??false,
       brand: json['brand'],
       categoryId: json['categoryId'],
       price: (json['price'] ?? 0).toDouble(),

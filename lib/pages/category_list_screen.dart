@@ -126,21 +126,14 @@ class CategoryListScreen extends StatelessWidget {
             Stack(
               children: [
                 Align(
-                  alignment: Alignment.topCenter,
+                  alignment: Alignment.topLeft,
                   child: IconButton(
                       onPressed: () {
                         Get.back();
                       },
                       icon: const Icon(CupertinoIcons.back,color: Colors.black,)),
                 ),
-                Positioned(
-                  // alignment: Alignment.center,
-                  left: 0,right: 0,
-                  child: Text(
-                    'Categories',
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                ),
+
               ],
             ),
             Expanded(
