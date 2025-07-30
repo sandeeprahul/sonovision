@@ -310,7 +310,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                                 Row(
                                   children: [
                                     Text(
-                                      '₹${deal['product']?['price']}' ?? '',
+                                      '₹${deal['product']?['price'] ?? ''}',
                                       style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -318,44 +318,49 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                                       ),
                                     ),
                                     const SizedBox(width: 8),
-                                    Text(
-                                      '₹${deal['product']?['strikePrice']}' ??
-                                          '',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.grey[600],
-                                        decoration: TextDecoration.lineThrough,
+                                    if (deal['product']?['strikePrice'] != null &&
+                                        deal['product']?['strikePrice'] != deal['product']?['price'])
+                                      Text(
+                                        '₹${deal['product']?['strikePrice']}',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey[600],
+                                          decoration: TextDecoration.lineThrough,
+                                        ),
                                       ),
-                                    ),
                                   ],
                                 ),
+
                               ],
                             ),
                           ),
                         ],
                       ),
-                      Positioned(
-                        top: 16,
-                        right: 16,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 6,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            '${deal['product']?['discount']}% OFF' ?? '',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
+                      if (deal['product']?['discount'] != null &&
+                          deal['product']?['discount'] != 0)
+                        Positioned(
+                          top: 16,
+                          right: 16,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              '${deal['product']?['discount']}% OFF',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
                             ),
                           ),
                         ),
-                      ),
+
                     ],
                   ),
                 ),

@@ -284,7 +284,9 @@ class _SearchPageState extends State<SearchPage> {
         ),
       ],
     );
-  }void onSearchChanged(String term) {
+  }
+
+  void onSearchChanged(String term) {
     controller.query.value = term;
     controller. deBouncer(() =>controller. search(term));
   }

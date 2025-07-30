@@ -53,10 +53,11 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
       body: Container(
         // color: Colors.grey.shade200,
         decoration: const BoxDecoration(
-            gradient: LinearGradient(
+         /*   gradient: LinearGradient(
                 colors: [Colors.blue, Colors.white],
                 begin: Alignment.topCenter,
-                end: Alignment.bottomCenter)),
+                end: Alignment.bottomCenter)*/
+        ),
         child: Obx(() {
           if (productDetailsController.isLoading.value) {
             return const Center(child: CircularProgressIndicator());
@@ -90,7 +91,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                           child: IconButton(
                             icon: const Icon(
                               Icons.arrow_back_ios_new,
-                              color: Colors.white,
+                              color: Colors.black,
                               size: 20,
                             ),
                             onPressed: () => Navigator.pop(context),
@@ -107,7 +108,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                              // 'Details',
                               productDetailsController.product.value!.brand,
                               style: const TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.black,
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500),
                             );

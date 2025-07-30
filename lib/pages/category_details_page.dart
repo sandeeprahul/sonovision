@@ -706,7 +706,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Image Section
-                Stack(
+                product.images.isNotEmpty? Stack(
                   children: [
                     Container(
                       height: 160,
@@ -739,7 +739,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                         ),
                       ),
                     ),
-        
+
                     // Discount Badge
                     if (discountPercentage > 0)
                       Positioned(
@@ -773,7 +773,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                           ),
                         ),
                       ),
-        
+
                     // Favorite Button
                     Visibility(
                       visible: false,
@@ -807,8 +807,8 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                       ),
                     ),
                   ],
-                ),
-        
+                ):const SizedBox(height: 160,),
+
                 // Product Info Section
                 Padding(
                   padding: const EdgeInsets.all(12),
@@ -826,7 +826,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                             letterSpacing: 0.5,
                           ),
                         ),
-        
+
                       // Product Name
                       const SizedBox(height: 4),
                       Text(
@@ -839,7 +839,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                           height: 1.3,
                         ),
                       ),
-        
+
                       // Price Section
                       const SizedBox(height: 8),
                       Row(
@@ -864,7 +864,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                             ),*/
                         ],
                       ),
-        
+
                       // Add to Cart Button
                       const SizedBox(height: 12),
                       Container(
@@ -874,7 +874,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                             final controller = Get.put(CartController());
                             final exists = controller.cartItems
                                 .any((item) => item.productId == product.id);
-        
+
                             if (exists) {
                               Get.snackbar(
                                 'Info',
@@ -904,12 +904,12 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             elevation: 0,
                           ),
-                          child: const Row(
+                          child:  Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(Icons.shopping_cart_outlined, size: 16),
                               SizedBox(width: 6),
-                              Text('Add to Cart', style: TextStyle(fontSize: 13)),
+                              Text(product.isActive?'Add to Cart':'Out of Stock', style: TextStyle(fontSize: 13)),
                             ],
                           ),
                         ),

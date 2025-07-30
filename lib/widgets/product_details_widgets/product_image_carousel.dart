@@ -70,8 +70,9 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> with Single
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     ).then((_) {
-      _animationController.forward();
-    });
+      if (mounted) {
+        _animationController.forward();
+      }    });
   }
 
   void _pauseAutoSlide() {
