@@ -96,45 +96,29 @@ class CategoryListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //
-      //   title: const Text('Categories'),
-      //     leading: IconButton(onPressed: (){
-      //       Get.back();
-      //     }, icon: const Icon(CupertinoIcons.back)),
-      //     flexibleSpace: Container(
-      //       decoration: BoxDecoration(
-      //         color: Colors.white,
-      //       /*  gradient: LinearGradient(
-      //           colors: [
-      //             Colors.black,
-      //             Colors.black.withOpacity(0.5),
-      //             Colors.black.withOpacity(0.05),
-      //           ],
-      //           begin: Alignment.topLeft,
-      //           end: Alignment.bottomRight,
-      //         ),*/
-      //       ),
-      //     ),
-      //     backgroundColor: Colors.transparent, // Make background transparent to see gradient
-      //     elevation: 0,
-      // ),
       body: Container(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Stack(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: IconButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      icon: const Icon(CupertinoIcons.back,color: Colors.black,)),
-                ),
+            const SizedBox(
+              height: 12,
+            ),
+            SizedBox(
+              height: 56,
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
 
-              ],
+                    child: IconButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        icon: const Icon(CupertinoIcons.back,color: Colors.black,)),
+                  ),
+
+                ],
+              ),
             ),
             Expanded(
               child: GridView.builder(

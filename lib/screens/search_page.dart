@@ -66,14 +66,6 @@ class _SearchPageState extends State<SearchPage> {
               onChanged: (value) {
                 controller.query.value = value;
                 controller.deBouncer(() => controller.search(value));
-
-                // controller.deBouncer(() {
-                //   if (value.isEmpty) {
-                //     controller.results.clear();
-                //   } else {
-                //     controller.search(value);
-                //   }
-                // });
               },
 
               onSubmitted: (value) => controller.search(value),
