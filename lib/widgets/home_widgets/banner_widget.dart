@@ -11,6 +11,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
 
+import '../product_details_widgets/count_down_timer_widget.dart';
+
 class BannerCarouselNew extends StatelessWidget {
   final List<dynamic> banners;
   final Map<String, dynamic> style;
@@ -39,7 +41,7 @@ class BannerCarouselNew extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 6),
-      child: Column(
+      child:banners.isEmpty?const SizedBox(): Column(
         children: [
           CarouselSlider.builder(
             itemCount: banners.length,
@@ -51,6 +53,10 @@ class BannerCarouselNew extends StatelessWidget {
               final badge = banner['badge'];
               final deepLink = banner['deeplink'];
               final id = banner['id'];
+              // final sale = banner['sale']??'';
+
+
+
 
               return GestureDetector(
                 onTap: () {
@@ -105,7 +111,7 @@ class BannerCarouselNew extends StatelessWidget {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular( 12.0),
 
-                                // color: Colors.black
+                                                         // color: Colors.black
 
                             ),
                             // padding: const EdgeInsets.all(20.0),
@@ -145,6 +151,8 @@ class BannerCarouselNew extends StatelessWidget {
                                         Theme.of(context).colorScheme.onSurface.withOpacity(0.8),*/
                                   ),
                                 ),
+
+
                                 const SizedBox(height: 2),
 
                               ],
@@ -167,6 +175,12 @@ class BannerCarouselNew extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: _parseColor(badge['color']) ??
                                   Theme.of(context).colorScheme.primaryContainer,
+                           /*   gradient: const LinearGradient(
+                                colors: [
+                                  Color(0xFFFF5F6D),
+                                  Color(0xFFFFC371),
+                                ],
+                              ),*/
                               borderRadius: BorderRadius.circular(16),
                             ),
                             child: Text(
@@ -178,6 +192,19 @@ class BannerCarouselNew extends StatelessWidget {
                             ),
                           ),
                         ),
+                      // Countdown Timer on Top-Right
+                   /*   Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Column(
+                          children: [
+                            // Title and subtitle...
+                            // Text('${saleEnd.day}')
+                              CountdownTimer(endTime: saleEnd), // Only one timer
+                          ],
+                        ),
+                      ),*/
                     ],
                   ),
                 ),

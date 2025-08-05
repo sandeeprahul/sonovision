@@ -8,7 +8,7 @@ class ProductDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return description.isEmpty?SizedBox():Container(
       padding: const EdgeInsets.all(16),
 
       child: Column(

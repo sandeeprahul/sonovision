@@ -174,6 +174,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
         final bannerData = widget['data']?['data'] ?? [];
         final style = widget['style'] ?? {};
 
+
         return BannerCarouselNew(banners: bannerData, style: style);
       case 'dealOfDay':
         return _buildDealOfDay(widget);

@@ -77,8 +77,12 @@ class CartController extends GetxController {
     if (cartItems[index].quantity > 1) {
       cartItems[index].quantity--;
       cartItems.refresh();
-      saveCart();
+    }else {
+      // Remove the item from the cart if its quantity is 1
+      cartItems.removeAt(index);
     }
+    saveCart();
+
   }
 
   void clearCart() {

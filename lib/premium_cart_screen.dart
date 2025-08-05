@@ -9,6 +9,8 @@ class PremiumCartScreen extends StatelessWidget {
   final CartController controller = Get.put(CartController());
   final couponController = TextEditingController();
 
+  PremiumCartScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +70,7 @@ class PremiumCartScreen extends StatelessWidget {
                       childCount: controller.cartItems.length,
                     ),
                   ),
-                  SliverToBoxAdapter(child: _buildPromoSection()),
+                  // SliverToBoxAdapter(child: _buildPromoSection()),
                   SliverToBoxAdapter(child: _buildDeliveryInfo()),
                   SliverToBoxAdapter(child: _buildOrderSummary()),
                   SliverToBoxAdapter(child: _buildCouponField()),

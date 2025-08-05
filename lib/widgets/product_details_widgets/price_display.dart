@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'FreedomSaleBanner.dart';
+
 class PriceDisplay extends StatelessWidget {
   final double originalPrice;
   final double discountedPrice;
@@ -31,26 +33,29 @@ class PriceDisplay extends StatelessWidget {
             '₹$originalPrice',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               decoration: TextDecoration.lineThrough,
-              color: Colors.red,
+              decorationColor: Colors.red,
+              color: Colors.black,
             ),
           ),
           const SizedBox(width: 8),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: Colors.red[50],
+              color: Colors.red,
               borderRadius: BorderRadius.circular(4),
             ),
             child: Text(
               '${discountPercentage.toStringAsFixed(0)}% OFF',
-              style: TextStyle(
-                color: Colors.red[700],
+              style: const TextStyle(
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
               ),
             ),
           ),
+
         ],
+
       ],
     );
   }

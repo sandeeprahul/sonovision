@@ -8,7 +8,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../controllers/cart_controller.dart';
 import '../controllers/product_details_controller.dart';
+import '../models/product_details_data.dart';
 import '../utils/cart_bottom_sheet.dart';
+import '../widgets/product_details_widgets/FreedomSaleBanner.dart';
+import '../widgets/product_details_widgets/count_down_timer_widget.dart';
 import '../widgets/product_details_widgets/highlights_list.dart';
 import '../widgets/product_details_widgets/price_display.dart';
 import '../widgets/product_details_widgets/product_description.dart';
@@ -51,9 +54,10 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
 
     return Scaffold(
       body: Container(
-        // color: Colors.grey.shade200,
-        decoration: const BoxDecoration(
-         /*   gradient: LinearGradient(
+        decoration:  const BoxDecoration(        color: Colors.white,
+
+
+          /*   gradient: LinearGradient(
                 colors: [Colors.blue, Colors.white],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter)*/
@@ -70,6 +74,14 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
 
           final discountedPrice = product.price -
               (product.price * product.discountPercentage / 100);
+
+          final sale = product.sale;
+
+          DateTime? saleEnd = sale?.endDate;
+
+          if (saleEnd != null) {
+            print('saleEnd Time: ${sale!.discountPercentage}');
+          }
 
           return SingleChildScrollView(
             child: Padding(
@@ -140,12 +152,27 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                               productDetailsController.totalReviews.value,
                         ),
                         const SizedBox(height: 12),
+                        if (sale != null)
                         PriceDisplay(
                           originalPrice: product.price,
-                          discountedPrice: discountedPrice,
+                          discountedPrice: product.finalPrice!,
                           discountPercentage:
-                              (product.discountPercentage).toDouble(),
+                              (product.sale!.discountPercentage!).toDouble(),
                         ),
+                        if(product.discountPercentage!=0)
+                          PriceDisplay(
+                            originalPrice: product.price,
+                            discountedPrice: discountedPrice,
+                            discountPercentage:
+                            (product.discountPercentage).toDouble(),
+                          ),
+                        if(sale==null)
+                          PriceDisplay(
+                            originalPrice: product.price,
+                            discountedPrice: discountedPrice,
+                            discountPercentage:
+                            (product.discountPercentage).toDouble(),
+                          ),
                       ],
                     ),
                   ),
@@ -156,14 +183,30 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                       color: Colors.grey.shade300,
                     ),
                   ),
+                  if(sale!=null)
+                    FreedomSaleBanner(
+                      saleEndTime: saleEnd!,
+                      // saleEndTime: DateTime.parse("2025-07-31 18:28:00Z"),
+                      discountPercent: double.parse('${sale.discountPercentage}'),
+                    ),
+                  if(sale!=null)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
+                      child: Divider(
+                        thickness: 1,
+                        color: Colors.grey.shade300,
+                      ),
+                    ),
                   ProductDescription(description: product.description),
-                  Padding(
+                  product.description.isEmpty? const SizedBox(): Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
                     child: Divider(
                       thickness: 1,
                       color: Colors.grey.shade300,
                     ),
                   ),
+                  // CountdownTimer(endTime: saleEnd!), // Only one timer
+
 
                   SpecificationsList(
                       specifications: product.specifications ?? {}),
@@ -175,7 +218,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                       thickness: 1,
                       color: Colors.grey.shade300,
                     ),
-                  ):SizedBox(),
+                  ):const SizedBox(),
                   ReviewSection(productId: product.id),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
@@ -304,8 +347,12 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                 final exists = controller.cartItems
                     .any((item) => item.productId == product.id);
 
-                final discountedPrice = product.price -
+                var discountedPrice = product.price -
                     (product.price * product.discountPercentage / 100);
+
+                if (product.sale!=null){
+                  discountedPrice = product.finalPrice!;
+                }
 
                 if (exists) {
                   Get.snackbar(
