@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:electronic_store/extensions.dart';
+import 'package:electronic_store/price_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
@@ -13,7 +15,7 @@ import 'package:get/get.dart';
 
 import '../product_details_widgets/count_down_timer_widget.dart';
 
-class BannerCarouselNew extends StatelessWidget {
+class BannerCarouselNew extends StatefulWidget {
   final List<dynamic> banners;
   final Map<String, dynamic> style;
 
@@ -24,15 +26,20 @@ class BannerCarouselNew extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<BannerCarouselNew> createState() => _BannerCarouselNewState();
+}
+
+class _BannerCarouselNewState extends State<BannerCarouselNew> {
+  @override
   Widget build(BuildContext context) {
     // Calculate height based on screen size for better visual appeal
     final double screenHeight = MediaQuery.of(context).size.height;
     final double height = screenHeight * 0.28; // 28% of screen height
 
-    final double aspectRatio = (style['aspectRatio'] ?? 2.5).toDouble();
-    final double margin = (style['margin'] ?? 20).toDouble();
-    final double spacing = (style['spacing'] ?? 16).toDouble();
-    final cardStyle = style['cardStyle'] ?? {};
+    final double aspectRatio = (widget.style['aspectRatio'] ?? 2.5).toDouble();
+    final double margin = (widget.style['margin'] ?? 20).toDouble();
+    final double spacing = (widget.style['spacing'] ?? 16).toDouble();
+    final cardStyle = widget.style['cardStyle'] ?? {};
     final double borderRadius = (cardStyle['borderRadius'] ?? 20).toDouble();
     final double elevation = (cardStyle['elevation'] ?? 8).toDouble();
     final overlayGradient = cardStyle['overlayGradient'] ?? {};
@@ -41,18 +48,20 @@ class BannerCarouselNew extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 6),
-      child:banners.isEmpty?const SizedBox(): Column(
+      child:widget.banners.isEmpty?const SizedBox(): Column(
         children: [
           CarouselSlider.builder(
-            itemCount: banners.length,
+            itemCount: widget.banners.length,
             itemBuilder: (context, index, _) {
-              final banner = banners[index];
+              final banner = widget.banners[index];
               final image = banner['image'];
               final title = banner['title'];
               final subtitle = banner['subtitle'];
               final badge = banner['badge'];
               final deepLink = banner['deeplink'];
               final id = banner['id'];
+              final formattedSubtitle = num.tryParse(subtitle.toString())?.toINR() ?? subtitle.toString();
+
               // final sale = banner['sale']??'';
 
 
@@ -142,7 +151,7 @@ class BannerCarouselNew extends StatelessWidget {
 
                                 // Subtitle with Material 3 typography
                                 Text(
-                                  subtitle ?? '',
+                                  formattedSubtitle ?? '',
                                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     fontSize: 12,
                                  color: Colors.black

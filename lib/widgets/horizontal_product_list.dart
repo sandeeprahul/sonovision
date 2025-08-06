@@ -1,4 +1,6 @@
+import 'package:electronic_store/extensions.dart';
 import 'package:electronic_store/pages/product_details_page.dart';
+import 'package:electronic_store/price_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -79,12 +81,12 @@ class HorizontalProductList extends StatelessWidget {
                     ),
                     const Spacer(),
                     Text(
-                      "₹${discountedPrice.toStringAsFixed(0)}",
+                      discountedPrice.toINR(),
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     if (discount > 0)
                       Text(
-                        "₹${price.toStringAsFixed(0)}",
+                        price.toINR(),
                         style: const TextStyle(
                           decoration: TextDecoration.lineThrough,
                           fontSize: 12,

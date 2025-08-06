@@ -166,7 +166,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                             discountPercentage:
                             (product.discountPercentage).toDouble(),
                           ),
-                        if(sale==null)
+                        if(product.discountPercentage==0&&sale==null)
                           PriceDisplay(
                             originalPrice: product.price,
                             discountedPrice: discountedPrice,
@@ -177,7 +177,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 6),
                     child: Divider(
                       thickness: 1,
                       color: Colors.grey.shade300,
@@ -191,7 +191,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                     ),
                   if(sale!=null)
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 6),
                       child: Divider(
                         thickness: 1,
                         color: Colors.grey.shade300,
@@ -199,7 +199,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                     ),
                   ProductDescription(description: product.description),
                   product.description.isEmpty? const SizedBox(): Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 6),
                     child: Divider(
                       thickness: 1,
                       color: Colors.grey.shade300,

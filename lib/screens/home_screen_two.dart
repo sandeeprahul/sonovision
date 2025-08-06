@@ -9,6 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../controllers/cart_controller.dart';
 import '../pages/login_page.dart';
 import '../premium_profile_page.dart';
+import '../price_extensions.dart';
 import '../services/auth_service.dart';
 import '../theme/app_theme.dart';
 import '../controllers/home_controller.dart';
@@ -236,7 +237,6 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
               const SizedBox(height: 16),
               InkWell(
                 onTap: () {
-                  print("PRODUCT ID: ${deal['product']['id']}");
                   var productJson = {
                     '_id': deal['product']['id'],
                     // other fields if needed
@@ -311,7 +311,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                                 Row(
                                   children: [
                                     Text(
-                                      '₹${deal['product']?['price'] ?? ''}',
+                                      '₹${maskPrice(deal['product']?['price'],starsCount: 3) ?? ''}',
                                       style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -397,7 +397,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                             name: deal['product']['name'],
                             image: deal['product']['image'],
                             color: 'Black',
-                            price: deal['product']['price'],
+                            price: (deal['product']['price'] as num).toDouble(), // ✅ converts int → double
                             productId: deal['product']['id'],
                           ));
                           CartBottomSheet.show();
@@ -418,14 +418,15 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
 
     return Container(
       margin:
-          EdgeInsets.symmetric(vertical: style['margin']?.toDouble() ?? 20.0),
+          const EdgeInsets.symmetric(vertical:  10.0),/*  margin:
+          EdgeInsets.symmetric(vertical: style['margin']?.toDouble() ?? 20.0),*/
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Text(
-              'Recently Viewed',
+              'Trending Products',
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

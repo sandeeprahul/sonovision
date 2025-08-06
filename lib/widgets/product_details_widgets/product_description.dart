@@ -8,8 +8,8 @@ class ProductDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return description.isEmpty?SizedBox():Container(
-      padding: const EdgeInsets.all(16),
+    return description.isEmpty?const SizedBox():Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
 
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
