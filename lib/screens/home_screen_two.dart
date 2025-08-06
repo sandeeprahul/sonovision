@@ -310,15 +310,25 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                                 const SizedBox(height: 16),*/
                                 Row(
                                   children: [
+
                                     Text(
                                       '₹${maskPrice(deal['product']?['price'],starsCount: 3) ?? ''}',
                                       style: const TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 17,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.green,
                                       ),
                                     ),
                                     const SizedBox(width: 8),
+                                    Text(
+                                      '₹${deal['product']?['price']}',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey[600],
+                                        decoration: TextDecoration.lineThrough,
+                                      ),
+                                    ),
+                                   /* const SizedBox(width: 8),
                                     if (deal['product']?['strikePrice'] != null &&
                                         deal['product']?['strikePrice'] != deal['product']?['price'])
                                       Text(
@@ -328,7 +338,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                                           color: Colors.grey[600],
                                           decoration: TextDecoration.lineThrough,
                                         ),
-                                      ),
+                                      ),*/
                                   ],
                                 ),
 
