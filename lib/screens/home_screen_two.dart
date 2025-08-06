@@ -309,6 +309,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                                 ),
                                 const SizedBox(height: 16),*/
                                 Row(
+                                  // mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
 
                                     Text(
@@ -320,14 +321,14 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                                       ),
                                     ),
                                     const SizedBox(width: 8),
-                                    Text(
+                                 /*   Text(
                                       '₹${deal['product']?['price']}',
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.grey[600],
                                         decoration: TextDecoration.lineThrough,
                                       ),
-                                    ),
+                                    ),*/
                                    /* const SizedBox(width: 8),
                                     if (deal['product']?['strikePrice'] != null &&
                                         deal['product']?['strikePrice'] != deal['product']?['price'])

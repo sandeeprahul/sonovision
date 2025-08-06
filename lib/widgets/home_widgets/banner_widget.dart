@@ -56,15 +56,19 @@ class _BannerCarouselNewState extends State<BannerCarouselNew> {
               final banner = widget.banners[index];
               final image = banner['image'];
               final title = banner['title'];
-              final subtitle = banner['subtitle'];
+              final subtitle = banner['subtitle']
+                  ?.toString()
+                  .replaceAll(RegExp(r'[^0-9.]'), '');
+              // final subtitle = banner['subtitle'];
               final badge = banner['badge'];
               final deepLink = banner['deeplink'];
               final id = banner['id'];
-              final formattedSubtitle = num.tryParse(subtitle.toString())?.toINR() ?? subtitle.toString();
+              // final formattedSubtitle = num.tryParse(subtitle.toString())?.toINR() ?? subtitle.toString();
 
-              // final sale = banner['sale']??'';
-
-
+              final value = num.tryParse(subtitle.toString());
+              final formattedSubtitle = value != null
+                  ? value.toINR() // your extension
+                  : subtitle.toString();
 
 
               return GestureDetector(
