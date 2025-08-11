@@ -77,50 +77,55 @@ class _BannerCarouselNewState extends State<BannerCarouselNew> {
                   var productJson = {'_id': productId};
                   Get.toNamed('/product-details', arguments: productJson);
                 },
-                child: Material(
-                  // elevation: elevation,
-                  borderRadius: BorderRadius.circular(12),
-                  // color: Theme.of(context).colorScheme.surface,
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 4), // ⬅️ Margin between items
 
-                      // Image with shimmer loading effect
-                      Padding(
+                  child: Material(
+                    // elevation: elevation,
+                    borderRadius: BorderRadius.circular(12),
+                    // color: Theme.of(context).colorScheme.surface,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
 
-                        padding: const EdgeInsets.only(bottom: 56,left: 12,right: 12,top: 12),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(borderRadius),
-                          child: CachedNetworkImage(
-                            imageUrl: image,
-                            fit: BoxFit.cover,
-                            placeholder: (ctx, url) => Container(
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Theme.of(context).colorScheme.surfaceContainer,
-                                    Theme.of(context).colorScheme.surfaceContainerHighest,
-                                  ],
+                        // Image with shimmer loading effect
+                        Padding(
+
+                          padding: const EdgeInsets.only(bottom: 56,left: 12,right: 12,top: 12),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(borderRadius),
+                            child: AspectRatio(
+                              aspectRatio:3 / 2, // Set your desired aspect ratio here
+
+                              child: CachedNetworkImage(
+                                imageUrl: image,
+                                // fit: BoxFit.cover,
+
+                                placeholder: (ctx, url) => Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Theme.of(context).colorScheme.surfaceContainer,
+                                        Theme.of(context).colorScheme.surfaceContainerHighest,
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                errorWidget: (ctx, url, error) => Icon(
+                                  Icons.error,
+                                  color: Theme.of(context).colorScheme.error,
                                 ),
                               ),
                             ),
-                            errorWidget: (ctx, url, error) => Icon(
-                              Icons.error,
-                              color: Theme.of(context).colorScheme.error,
-                            ),
                           ),
                         ),
-                      ),
 
 
-                      Positioned(
-                        bottom: 0,
-                        left: 0,right: 0,
-                        child: SizedBox(
-                          height: 60,
-                          // width: MediaQuery.of(context).size.width/1.2,
+                        Positioned(
+                          bottom: 0,
+                          left: 0,right: 0,
                           child: Container(
-                            // margin: EdgeInsets.only(bottom: ,left: 2,right: 2),
+                            margin: EdgeInsets.only(bottom:4 ),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular( 12.0),
 
@@ -134,21 +139,25 @@ class _BannerCarouselNewState extends State<BannerCarouselNew> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 // Title with Material 3 typography
-                                Text(
-                                  // title ?? '',
-                                  title.length > 35 ? '${title.substring(0, 35)}...' : title,
-                                  maxLines: 1,
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                                  child: Text(
+                                    title ?? '',
+                                    textAlign: TextAlign.center,
+                                    // title.length > 35 ? '${title.substring(0, 35)}...' : title,
+                                    maxLines: 2,
 
-                                  overflow: TextOverflow.ellipsis,
+                                    overflow: TextOverflow.ellipsis,
 
-                                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                    fontSize: 14,
+                                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                      fontSize: 14,
 
-                                    fontWeight: _parseFontWeight(titleStyle['fontWeight']) ?? FontWeight.bold,
-                                    /*color: _parseColor(titleStyle['color']) ??
-                                        Theme.of(context).colorScheme.onSurface,*/
-                                      color: Colors.black
+                                      fontWeight: _parseFontWeight(titleStyle['fontWeight']) ?? FontWeight.bold,
+                                      /*color: _parseColor(titleStyle['color']) ??
+                                          Theme.of(context).colorScheme.onSurface,*/
+                                        color: Colors.black
 
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(height: 2),
@@ -172,58 +181,72 @@ class _BannerCarouselNewState extends State<BannerCarouselNew> {
                             ),
                           ),
                         ),
-                      ),
 
-                      // Badge with Material 3 shape
-                      if (badge != null)
-                        Positioned(
-                          top: badge['position'] == 'top-right' ? 16 : null,
-                          bottom: badge['position'] == 'bottom-right' ? 16 : null,
-                          right: 16,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: _parseColor(badge['color']) ??
-                                  Theme.of(context).colorScheme.primaryContainer,
-                           /*   gradient: const LinearGradient(
-                                colors: [
-                                  Color(0xFFFF5F6D),
-                                  Color(0xFFFFC371),
-                                ],
-                              ),*/
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Text(
-                              badge['text'] ?? '',
-                              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                                color: _parseColor(badge['textColor']) ??
-                                    Theme.of(context).colorScheme.onPrimaryContainer,
+                        // Badge with Material 3 shape
+                        if (badge != null)
+                          Positioned(
+                            top: badge['position'] == 'top-right' ? 16 : null,
+                            bottom: badge['position'] == 'bottom-right' ? 16 : null,
+                            right: 16,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: _parseColor(badge['color']) ??
+                                    Theme.of(context).colorScheme.primaryContainer,
+                             /*   gradient: const LinearGradient(
+                                  colors: [
+                                    Color(0xFFFF5F6D),
+                                    Color(0xFFFFC371),
+                                  ],
+                                ),*/
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Text(
+                                badge['text'] ?? '',
+                                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                                  color: _parseColor(badge['textColor']) ??
+                                      Theme.of(context).colorScheme.onPrimaryContainer,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      // Countdown Timer on Top-Right
-                   /*   Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Column(
-                          children: [
-                            // Title and subtitle...
-                            // Text('${saleEnd.day}')
-                              CountdownTimer(endTime: saleEnd), // Only one timer
-                          ],
-                        ),
-                      ),*/
-                    ],
+                        // Countdown Timer on Top-Right
+                     /*   Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Column(
+                            children: [
+                              // Title and subtitle...
+                              // Text('${saleEnd.day}')
+                                CountdownTimer(endTime: saleEnd), // Only one timer
+                            ],
+                          ),
+                        ),*/
+                      ],
+                    ),
                   ),
                 ),
               );
             },
-            options: CarouselOptions(
+            options:CarouselOptions(
+              autoPlay: true,
+              height: 300,
+              aspectRatio: aspectRatio,
+              enableInfiniteScroll: true,
+              viewportFraction: 0.75, // Show parts of adjacent items
+              enlargeCenterPage: true,
+              enlargeFactor: 0.2,
+              enlargeStrategy: CenterPageEnlargeStrategy.height,
+              padEnds: true,
+              autoPlayInterval: const Duration(seconds: 3),
+              autoPlayAnimationDuration: const Duration(milliseconds: 200),
+              pauseAutoPlayOnTouch: true,
+            ),
+            /*CarouselOptions(
               autoPlay: true,
               height: 280,
               // height: height,
@@ -233,11 +256,11 @@ class _BannerCarouselNewState extends State<BannerCarouselNew> {
               enlargeCenterPage: true,
               enlargeFactor: 0.2,
               enlargeStrategy: CenterPageEnlargeStrategy.height,
-              padEnds: false,
-              autoPlayInterval: const Duration(seconds: 5),
-              autoPlayAnimationDuration: const Duration(milliseconds: 800),
+              padEnds: true,
+              autoPlayInterval: const Duration(seconds: 3),
+              autoPlayAnimationDuration: const Duration(milliseconds: 200),
               pauseAutoPlayOnTouch: true,
-            ),
+            ),*/
           ),
         ],
       ),

@@ -313,7 +313,8 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                                   children: [
 
                                     Text(
-                                      '₹${maskPrice(deal['product']?['price'],starsCount: 3) ?? ''}',
+                                '${deal['product']?['price']}',
+                                      // '₹${maskPrice(deal['product']?['price'],starsCount: 3) ?? ''}',
                                       style: const TextStyle(
                                         fontSize: 17,
                                         fontWeight: FontWeight.bold,

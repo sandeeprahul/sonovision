@@ -41,310 +41,308 @@ class _LoginPageState extends State<LoginPage> {
 
       body: BackgroundContainerGradient(
 
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 46,),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: IconButton(
-                    onPressed: () {
-                      // Get.off(()=>const MainPage());
-                      Get.offAllNamed('/main');
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 46,),
+              Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  onPressed: () {
+                    // Get.off(()=>const MainPage());
+                    Get.offAllNamed('/main');
 
-                    },
-                    icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-                  ),                ),
-                const SizedBox(height: 20),
+                  },
+                  icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                ),                ),
+              const SizedBox(height: 20),
 
-                // Welcome Text
-                Text(
-                  'Welcome Back!',
-                  style: GoogleFonts.poppins(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+              // Welcome Text
+              Text(
+                'Welcome Back!',
+                style: GoogleFonts.poppins(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
-                Text(
-                  'Sign in to continue',
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    color: Colors.white.withOpacity(0.8),
-                  ),
+              ),
+              Text(
+                'Sign in to continue',
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  color: Colors.white.withOpacity(0.8),
                 ),
-                const SizedBox(height: 40),
+              ),
+              const SizedBox(height: 40),
 
-                // Login Form
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 20,
-                        offset: const Offset(0, 10),
-                      ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          // Email Field
-                          TextFormField(
-                            controller: _emailController,
-                            style: const TextStyle(fontSize: 14),
-                            decoration: InputDecoration(
-                              labelText: 'Email',
+              // Login Form
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 20,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        // Email Field
+                        TextFormField(
+                          controller: _emailController,
+                          style: const TextStyle(fontSize: 14),
+                          decoration: InputDecoration(
+                            labelText: 'Email',
 
-                              prefixIcon: const Icon(Iconsax.sms),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your email';
-                              }
-                              if (!value.contains('@')) {
-                                return 'Please enter a valid email';
-                              }
-                              return null;
-                            },
-                          ),
-
-                          const SizedBox(height: 20),
-
-                          // Password Field
-                          TextFormField(
-                            controller: _passwordController,
-                            style: const TextStyle(fontSize: 14),
-
-                            decoration: InputDecoration(
-                              labelText: 'Password',
-                              prefixIcon: const Icon(Iconsax.lock),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _isPasswordVisible
-                                      ? Iconsax.eye
-                                      : Iconsax.eye_slash,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _isPasswordVisible = !_isPasswordVisible;
-                                  });
-                                },
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            obscureText: !_isPasswordVisible,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your password';
-                              }
-                              if (value.length < 6) {
-                                return 'Password must be at least 6 characters';
-                              }
-                              return null;
-                            },
-                          ),
-
-                          const SizedBox(height: 20),
-
-                          // Remember Me & Forgot Password
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // Remember Me
-                              Row(
-                                children: [
-                                  Checkbox(
-                                    value: _rememberMe,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _rememberMe = value!;
-                                      });
-                                    },
-                                  ),
-                                  Text(
-                                    'Remember me',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ],
-                              ),
-
-                              // Forgot Password
-                            ],
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              // TODO: Implement forgot password
-                            },
-                            child: Text(
-                              'Forgot Password?',
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
+                            prefixIcon: const Icon(Iconsax.sms),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
                             ),
                           ),
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            }
+                            if (!value.contains('@')) {
+                              return 'Please enter a valid email';
+                            }
+                            return null;
+                          },
+                        ),
 
-                          const SizedBox(height: 30),
+                        const SizedBox(height: 20),
 
-                          // Login Button
-                          SizedBox(
-                            width: double.infinity,
-                            height: 56,
-                            child: ElevatedButton(
-                              onPressed: _isLoading
-                                  ? null
-                                  : () async {
-                                      if (_formKey.currentState!.validate()) {
-                                        setState(() => _isLoading = true);
-                                        try {
-                                          await _authController.login(
-                                            _emailController.text,
-                                            _passwordController.text,
-                                          );
+                        // Password Field
+                        TextFormField(
+                          controller: _passwordController,
+                          style: const TextStyle(fontSize: 14),
 
-                                          NotificationController.to.registerTokenToServerToUserId();
-                                          if (mounted) {
-
-                                            Get.off(const PhoneVerificationScreen());
-                                            // Get.offAllNamed('/main');
-                                          }
-                                        } catch (e) {
-                                          if (mounted) {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                    'Login failed: ${e.toString()}'),
-                                                backgroundColor: Colors.red,
-                                              ),
-                                            );
-                                          }
-                                        } finally {
-                                          if (mounted) {
-                                            setState(() => _isLoading = false);
-                                          }
-                                        }
-                                      }
-                                    },
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
+                          decoration: InputDecoration(
+                            labelText: 'Password',
+                            prefixIcon: const Icon(Iconsax.lock),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isPasswordVisible
+                                    ? Iconsax.eye
+                                    : Iconsax.eye_slash,
                               ),
-                              child: _isLoading
-                                  ? const SizedBox(
-                                      width: 24,
-                                      height: 24,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                                Colors.white),
-                                      ),
-                                    )
-                                  : Text(
-                                      'Login',
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
+                              onPressed: () {
+                                setState(() {
+                                  _isPasswordVisible = !_isPasswordVisible;
+                                });
+                              },
                             ),
-                          ),//.animate().fadeIn(duration: 500.ms).slideX()
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          obscureText: !_isPasswordVisible,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            if (value.length < 6) {
+                              return 'Password must be at least 6 characters';
+                            }
+                            return null;
+                          },
+                        ),
 
-                          const SizedBox(height: 30),
+                        const SizedBox(height: 20),
 
-                          // Social Login
-                          Visibility(
-                            visible: true,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                        // Remember Me & Forgot Password
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Remember Me
+                            Row(
                               children: [
-                                // Google
-                                _buildSocialButton(
-                                  icon: 'assets/gmail_icon.png',
-                                  onTap: () {
-                                    // TODO: Implement Google login
+                                Checkbox(
+                                  value: _rememberMe,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _rememberMe = value!;
+                                    });
                                   },
                                 ),
-                                const SizedBox(width: 20),
-                                // Facebook
-                                _buildSocialButton(
-                                  icon: 'assets/facebook_icon.png',
-                                  onTap: () {
-                                    // TODO: Implement Facebook login
-                                  },
-                                ),
-                                const SizedBox(width: 20),
-                                // Apple
-                                _buildSocialButton(
-                                  icon: 'assets/apple_icon.png',
-                                  onTap: () {
-                                    // TODO: Implement Apple login
-                                  },
+                                Text(
+                                  'Remember me',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 14,
+                                  ),
                                 ),
                               ],
                             ),
+
+                            // Forgot Password
+                          ],
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            // TODO: Implement forgot password
+                          },
+                          child: Text(
+                            'Forgot Password?',
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
                           ),
+                        ),
 
-                          const SizedBox(height: 30),
+                        const SizedBox(height: 30),
 
-                          // Sign Up Link
-                          Row(
+                        // Login Button
+                        SizedBox(
+                          width: double.infinity,
+                          height: 56,
+                          child: ElevatedButton(
+                            onPressed: _isLoading
+                                ? null
+                                : () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      setState(() => _isLoading = true);
+                                      try {
+                                        await _authController.login(
+                                          _emailController.text,
+                                          _passwordController.text,
+                                        );
+
+                                        NotificationController.to.registerTokenToServerToUserId();
+                                        if (mounted) {
+
+                                          Get.off(const PhoneVerificationScreen());
+                                          // Get.offAllNamed('/main');
+                                        }
+                                      } catch (e) {
+                                        if (mounted) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                  'Login failed: ${e.toString()}'),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                        }
+                                      } finally {
+                                        if (mounted) {
+                                          setState(() => _isLoading = false);
+                                        }
+                                      }
+                                    }
+                                  },
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: _isLoading
+                                ? const SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor:
+                                          AlwaysStoppedAnimation<Color>(
+                                              Colors.white),
+                                    ),
+                                  )
+                                : Text(
+                                    'Login',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                          ),
+                        ),//.animate().fadeIn(duration: 500.ms).slideX()
+
+                        // const SizedBox(height: 30),
+
+                        // Social Login
+                        Visibility(
+                          visible: false,
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                "Don't have an account?",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14,
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const RegisterPage(),
-                                    ),
-                                  );
+                              // Google
+                              _buildSocialButton(
+                                icon: 'assets/gmail_icon.png',
+                                onTap: () {
+                                  // TODO: Implement Google login
                                 },
-                                child: Text(
-                                  'Register',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Theme.of(context).colorScheme.primary,
-                                  ),
-                                ),
+                              ),
+                              const SizedBox(width: 20),
+                              // Facebook
+                              _buildSocialButton(
+                                icon: 'assets/facebook_icon.png',
+                                onTap: () {
+                                  // TODO: Implement Facebook login
+                                },
+                              ),
+                              const SizedBox(width: 20),
+                              // Apple
+                              _buildSocialButton(
+                                icon: 'assets/apple_icon.png',
+                                onTap: () {
+                                  // TODO: Implement Apple login
+                                },
                               ),
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+
+                        const SizedBox(height: 30),
+
+                        // Sign Up Link
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Don't have an account?",
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const RegisterPage(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'Register',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
+              ),
 
-                const SizedBox(height: 100,)
-              ],
-            ),
+              const SizedBox(height: 100,)
+            ],
           ),
         ),
       ),
