@@ -9,6 +9,8 @@ import '../services/auth_service.dart';
 
 class OtpController extends GetxController {
   // Reactive variables
+  final phoneController = TextEditingController().obs;
+
   final isLoading = false.obs;
   final otpSent = false.obs;
   final isVerified = false.obs;
@@ -26,13 +28,17 @@ class OtpController extends GetxController {
   final String verifyOtpUrl = '$baseUrl/api/auth/verify-otp';
 
   // Send OTP method
-  Future<void> sendOtp(String phoneNumber) async {
+  Future<void> sendOtp() async {
     try {
       AuthController authController = Get.put(AuthController());
       await authController.loadUserAndToken();
       String tokenValue = authController.token.value;
-      String userId = authController.user.value['_id'];
-      if (phoneNumber.length < 10) {
+      // String userId = authController.user.value['_id'];
+      if (tokenValue.isEmpty) {
+        Get.snackbar('Error', 'User not authenticated');
+        return;
+      }
+      if (phoneController.value.text.length < 10) {
         errorMessage.value = 'Enter valid phone number';
         return;
       }
@@ -41,30 +47,36 @@ class OtpController extends GetxController {
       errorMessage.value = '';
 
       print(tokenValue);
+      print(phoneController.value.text.length);
+      print(phoneController.value.text);
       final response = await http.post(
         Uri.parse(sendOtpUrl),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': tokenValue, // Add if needed
+          'Authorization': 'Bearer $tokenValue',
         },
-        body: jsonEncode({'phone': phoneNumber}),
+        body: jsonEncode({'phone':'8977771266'}),
+        // body: jsonEncode({'phone': phoneController.value}),
       );
+      print(response);
 
       final responseData = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        phone.value = phoneNumber;
+        phone.value = phoneController.value.text;
         otpSent.value = true;
         _verificationId = responseData['verification_id'];
         startResendTimer();
         Get.snackbar(
           'OTP Sent',
-          'Verification code sent to $phoneNumber',
+          'Verification code sent',
+          // 'Verification code sent to ${phoneController.value}',
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
       } else {
+        print(responseData);
         errorMessage.value = responseData['message'] ?? 'Failed to send OTP';
         Get.snackbar(
           'Error',
@@ -102,7 +114,7 @@ class OtpController extends GetxController {
         Uri.parse(verifyOtpUrl),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': tokenValue, // Add if needed
+          'Authorization': 'Bearer $tokenValue',
         },        body: jsonEncode({'otp': otp}),
       );
 
@@ -147,7 +159,7 @@ class OtpController extends GetxController {
   Future<void> resendOtp() async {
     if (resendTimer.value > 0) return;
 
-    await sendOtp(phone.value);
+    await sendOtp();
   }
 
   // Timer methods

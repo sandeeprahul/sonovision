@@ -40,7 +40,7 @@ class ReviewController extends GetxController {
         Uri.parse(apiUrl),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': tokenValue, // Add if needed
+          'Authorization': 'Bearer $tokenValue',
         },
         body: jsonEncode(requestBody),
       );

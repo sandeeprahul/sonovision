@@ -40,7 +40,7 @@ class HomeController extends GetxController {
         }
       }
     } catch (e) {
-      error.value = 'Failed to load home data: ${e.toString()}';
+      error.value = 'Failed to load\nPlease try after sometime';
     } finally {
       isLoading.value = false;
     }

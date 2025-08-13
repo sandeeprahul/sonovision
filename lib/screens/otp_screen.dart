@@ -5,8 +5,7 @@ import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class OtpScreen extends StatelessWidget {
-  final OtpController auth = Get.put(OtpController());
-  final phoneController = TextEditingController();
+  final OtpController otpController = Get.put(OtpController());
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +28,8 @@ class OtpScreen extends StatelessWidget {
                 const SizedBox(height: 40),
 
                 // Dynamic Content (Phone Input or OTP)
-                if (!auth.otpSent.value) _buildPhoneInputSection(),
-                if (auth.otpSent.value) _buildOtpVerificationSection(),
+                if (!otpController.otpSent.value) _buildPhoneInputSection(),
+                if (otpController.otpSent.value) _buildOtpVerificationSection(),
 
                 const Spacer(),
 
@@ -47,7 +46,7 @@ class OtpScreen extends StatelessWidget {
   Widget _buildAnimatedBackButton() {
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 300),
-      child: auth.otpSent.value
+      child: otpController.otpSent.value
           ? IconButton(
         icon: Container(
           padding: const EdgeInsets.all(8),
@@ -65,8 +64,8 @@ class OtpScreen extends StatelessWidget {
           child: const Icon(Icons.arrow_back, color: Colors.black87),
         ),
         onPressed: () {
-          auth.otpSent.value = false;
-          auth.errorMessage.value = '';
+          otpController.otpSent.value = false;
+          otpController.errorMessage.value = '';
         },
       )
           : const SizedBox(),
@@ -78,7 +77,7 @@ class OtpScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          auth.otpSent.value ? 'Verify OTP' : 'Enter Phone',
+          otpController.otpSent.value ? 'Verify OTP' : 'Enter Phone',
           style: const TextStyle(
             fontSize: 32,
             fontWeight: FontWeight.bold,
@@ -87,8 +86,8 @@ class OtpScreen extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          auth.otpSent.value
-              ? 'We sent a 6-digit code to ${auth.phone.value}'
+          otpController.otpSent.value
+              ? 'We sent a 6-digit code to ${otpController.phone.value}'
               : 'We\'ll send a verification code',
           style: TextStyle(
             fontSize: 16,
@@ -116,7 +115,7 @@ class OtpScreen extends StatelessWidget {
             ],
           ),
           child: TextField(
-            controller: phoneController,
+            controller: otpController.phoneController.value,
             keyboardType: TextInputType.phone,
             style: const TextStyle(fontSize: 18),
             decoration: InputDecoration(
@@ -160,30 +159,34 @@ class OtpScreen extends StatelessWidget {
             ),
             child: Material(
               color: Colors.transparent,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(16),
-                onTap: auth.isLoading.value
-                    ? null
-                    : () => auth.sendOtp(phoneController.text),
-                child: Center(
-                  child: auth.isLoading.value
-                      ? const SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation(Colors.white),
+              child: Obx(
+                 () {
+                  return InkWell(
+                    borderRadius: BorderRadius.circular(16),
+                    onTap: otpController.isLoading.value
+                        ? null
+                        : () => otpController.sendOtp(),
+                    child: Center(
+                      child: otpController.isLoading.value
+                          ? const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation(Colors.white),
+                        ),
+                      )
+                          : const Text(
+                        'Continue',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  )
-                      : const Text(
-                    'Continue',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                  );
+                }
               ),
             ),
           ),
@@ -213,7 +216,7 @@ class OtpScreen extends StatelessWidget {
           animationDuration: const Duration(milliseconds: 300),
           enableActiveFill: true,
           keyboardType: TextInputType.number,
-          onCompleted: (value) => auth.verifyOtp(value),
+          onCompleted: (value) => otpController.verifyOtp(value),
           onChanged: (value) {},
           beforeTextPaste: (text) => false,
         ),
@@ -227,7 +230,7 @@ class OtpScreen extends StatelessWidget {
             elevation: 0,
             child: InkWell(
               borderRadius: BorderRadius.circular(16),
-              onTap: () => auth.verifyOtp(''), // Will be handled by auto-complete
+              onTap: () => otpController.verifyOtp(''), // Will be handled by auto-complete
               child: Ink(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -238,7 +241,7 @@ class OtpScreen extends StatelessWidget {
                 child: Container(
                   height: 56,
                   alignment: Alignment.center,
-                  child: auth.isLoading.value
+                  child: otpController.isLoading.value
                       ? const SizedBox(
                     width: 24,
                     height: 24,
@@ -272,17 +275,17 @@ class OtpScreen extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             TextButton(
-              onPressed: auth.resendTimer.value > 0 ? null : auth.resendOtp,
+              onPressed: otpController.resendTimer.value > 0 ? null : otpController.resendOtp,
               style: TextButton.styleFrom(
                 padding: EdgeInsets.zero,
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
               child: Text(
-                auth.resendTimer.value > 0
-                    ? 'Resend in ${auth.resendTimer.value}s'
+                otpController.resendTimer.value > 0
+                    ? 'Resend in ${otpController.resendTimer.value}s'
                     : 'Resend now',
                 style: TextStyle(
-                  color: auth.resendTimer.value > 0
+                  color: otpController.resendTimer.value > 0
                       ? Colors.grey
                       : Colors.blue[600],
                   fontWeight: FontWeight.bold,
@@ -298,7 +301,7 @@ class OtpScreen extends StatelessWidget {
   Widget _buildFooterGraphics() {
     return Column(
       children: [
-        if (auth.errorMessage.value.isNotEmpty)
+        if (otpController.errorMessage.value.isNotEmpty)
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -311,7 +314,7 @@ class OtpScreen extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    auth.errorMessage.value,
+                    otpController.errorMessage.value,
                     style: TextStyle(color: Colors.red[600]),
                   ),
                 ),
