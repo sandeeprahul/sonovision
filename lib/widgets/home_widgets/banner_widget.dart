@@ -52,7 +52,7 @@ class _BannerCarouselNewState extends State<BannerCarouselNew> {
           itemCount: widget.banners.length,
           options:CarouselOptions(
             autoPlay: true,
-            height: 300,
+            height: 280,
             aspectRatio: aspectRatio,
             enableInfiniteScroll: true,
             viewportFraction: 0.75, // Show parts of adjacent items
@@ -90,11 +90,12 @@ class _BannerCarouselNewState extends State<BannerCarouselNew> {
                 Get.toNamed('/product-details', arguments: productJson);
               },
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4), // ⬅️ Margin between items
+                margin: const EdgeInsets.symmetric(horizontal: 4,vertical: 10), // ⬅️ Margin between items
 
                 child: Material(
-                  // elevation: elevation,
-                  borderRadius: BorderRadius.circular(12),
+                  elevation: 5,
+                  borderRadius: BorderRadius.circular(10),
+                  // color: Colors.transparent,
                   // color: Theme.of(context).colorScheme.surface,
                   child: Stack(
                     fit: StackFit.expand,
@@ -103,7 +104,7 @@ class _BannerCarouselNewState extends State<BannerCarouselNew> {
                       // Image with shimmer loading effect
                       Padding(
 
-                        padding: const EdgeInsets.only(bottom: 56,left: 12,right: 12,top: 12),
+                        padding: const EdgeInsets.only(bottom: 62,left: 16,right: 16,top: 12),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(borderRadius),
                           child: AspectRatio(
@@ -137,7 +138,7 @@ class _BannerCarouselNewState extends State<BannerCarouselNew> {
                         bottom: 0,
                         left: 0,right: 0,
                         child: Container(
-                          margin: EdgeInsets.only(bottom:4 ),
+                          margin: const EdgeInsets.only(bottom:4 ),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular( 12.0),
 
@@ -151,18 +152,48 @@ class _BannerCarouselNewState extends State<BannerCarouselNew> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               // Title with Material 3 typography
+                              /*Padding(
+                                padding:  const EdgeInsets.only(left: 12,right: 12,top: 12),
+                                child: AspectRatio(
+                                  aspectRatio:3 / 2, // Set your desired aspect ratio here
+
+                                  child: CachedNetworkImage(
+                                    imageUrl: image,
+                                    // fit: BoxFit.cover,
+
+                                    placeholder: (ctx, url) => Container(
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Theme.of(context).colorScheme.surfaceContainer,
+                                            Theme.of(context).colorScheme.surfaceContainerHighest,
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    errorWidget: (ctx, url, error) => Icon(
+                                      Icons.error,
+                                      color: Theme.of(context).colorScheme.error,
+                                    ),
+                                  ),
+                                ),
+                              ),*/
+                              const SizedBox(height: 6),
+
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 6),
+                                padding: const EdgeInsets.symmetric(horizontal: 12),
                                 child: Text(
-                                  title ?? '',
-                                  textAlign: TextAlign.center,
+                                  // title ?? '',
+                                  title.length > 70 ? '${title.substring(0, 70)}...' : title,
+
+                                textAlign: TextAlign.center,
                                   // title.length > 35 ? '${title.substring(0, 35)}...' : title,
                                   maxLines: 2,
 
                                   overflow: TextOverflow.ellipsis,
 
                                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                    fontSize: 14,
+                                    fontSize: 12,
 
                                     fontWeight: _parseFontWeight(titleStyle['fontWeight']) ?? FontWeight.bold,
                                     /*color: _parseColor(titleStyle['color']) ??
@@ -172,22 +203,52 @@ class _BannerCarouselNewState extends State<BannerCarouselNew> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 2),
+                              const SizedBox(height: 4),
 
                               // Subtitle with Material 3 typography
-                              Text(
-                                formattedSubtitle ?? '',
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  fontSize: 12,
-                               color: Colors.black
-                               /*   color: _parseColor(subtitleStyle['color']) ??
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    formattedSubtitle ?? '',
+                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      fontSize: 12,
+                                   color: Colors.black
+                                   /*   color: _parseColor(subtitleStyle['color']) ??
 
-                                      Theme.of(context).colorScheme.onSurface.withOpacity(0.8),*/
-                                ),
+                                          Theme.of(context).colorScheme.onSurface.withOpacity(0.8),*/
+                                    ),
+                                  ),
+                                  const SizedBox(width: 6,),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 6,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: _parseColor(badge['color']) ??
+                                          Theme.of(context).colorScheme.primaryContainer,
+                                      gradient: const LinearGradient(
+                                        colors: [
+                                          Color(0xFFFF5F6D),
+                                          Color(0xFFFFC371),
+                                        ],
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Text(
+                                      badge['text'] ?? '',
+                                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                        color: _parseColor(badge['textColor']) ??
+                                            Theme.of(context).colorScheme.onPrimaryContainer,
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
 
 
-                              const SizedBox(height: 2),
+                              const SizedBox(height: 6),
 
                             ],
                           ),
@@ -196,31 +257,38 @@ class _BannerCarouselNewState extends State<BannerCarouselNew> {
 
                       // Badge with Material 3 shape
                       if (badge != null)
-                        Positioned(
-                          top: badge['position'] == 'top-right' ? 16 : null,
-                          bottom: badge['position'] == 'bottom-right' ? 16 : null,
-                          right: 16,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: _parseColor(badge['color']) ??
-                                  Theme.of(context).colorScheme.primaryContainer,
-                           /*   gradient: const LinearGradient(
-                                colors: [
-                                  Color(0xFFFF5F6D),
-                                  Color(0xFFFFC371),
-                                ],
-                              ),*/
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Text(
-                              badge['text'] ?? '',
-                              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                                color: _parseColor(badge['textColor']) ??
-                                    Theme.of(context).colorScheme.onPrimaryContainer,
+                        Visibility(
+                          visible: false,
+                          child: Positioned(
+                            top: badge['position'] == 'top-right' ? 16 : null,
+                            //
+                            bottom: badge['position'] == 'bottom-right' ? 16 : null,
+
+                            // top: 6 ,
+                            // bottom:16,
+                            right: 16,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: _parseColor(badge['color']) ??
+                                    Theme.of(context).colorScheme.primaryContainer,
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    Color(0xFFFF5F6D),
+                                    Color(0xFFFFC371),
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                badge['text'] ?? '',
+                                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                                  color: _parseColor(badge['textColor']) ??
+                                      Theme.of(context).colorScheme.onPrimaryContainer,
+                                ),
                               ),
                             ),
                           ),
