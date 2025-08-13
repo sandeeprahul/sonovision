@@ -1,6 +1,7 @@
 import 'package:electronic_store/controllers/notification_controller.dart';
 import 'package:electronic_store/pages/main_page.dart';
 import 'package:electronic_store/pages/phone_verification_screen.dart';
+import 'package:electronic_store/screens/otp_screen.dart';
 import 'package:electronic_store/utils/background_container_gradient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -221,7 +222,8 @@ class _LoginPageState extends State<LoginPage> {
                                         NotificationController.to.registerTokenToServerToUserId();
                                         if (mounted) {
 
-                                          Get.off(const PhoneVerificationScreen());
+                                          Get.off( OtpScreen());
+                                          // Get.off(const PhoneVerificationScreen());
                                           // Get.offAllNamed('/main');
                                         }
                                       } catch (e) {

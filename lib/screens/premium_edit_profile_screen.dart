@@ -20,19 +20,19 @@ class PremiumEditProfileScreen extends StatelessWidget {
               gradient: AppTheme.appbarGradientBlue
           ),
         ),
-        title: Text('Edit Profile', style: TextStyle(fontWeight: FontWeight.w600)),
+        title: const Text('Edit Profile', style: TextStyle(fontWeight: FontWeight.w600)),
         centerTitle: true,
         elevation: 0,
-        actions: [
+    /*    actions: [
           TextButton(
             child: Text('SAVE', style: TextStyle(color: Colors.white)),
             onPressed: (){},
             // onPressed: _saveProfile,
           ),
-        ],
+        ],*/
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(24),
+        padding: const EdgeInsets.all(24),
         child: Form(
           key: _formKey,
           child: Column(
@@ -57,18 +57,18 @@ class PremiumEditProfileScreen extends StatelessWidget {
                     bottom: 0,
                     right: 0,
                     child: Container(
-                      padding: EdgeInsets.all(6),
+                      padding: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
                         color: Colors.blue.shade800,
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.white, width: 2),
                       ),
-                      child: Icon(Icons.edit, size: 18, color: Colors.white),
+                      child: const Icon(Icons.edit, size: 18, color: Colors.white),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
 
               // Name Field
               _PremiumTextField(
@@ -77,11 +77,11 @@ class PremiumEditProfileScreen extends StatelessWidget {
                 icon: Icons.person_outline,
                 validator: (value) => value!.isEmpty ? 'Enter your name' : null,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Non-Editable Email
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
                   color: Colors.grey[100],
                   borderRadius: BorderRadius.circular(12),
@@ -89,7 +89,7 @@ class PremiumEditProfileScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     Icon(Icons.email_outlined, color: Colors.grey[600]),
-                    SizedBox(width: 16),
+                    const SizedBox(width: 16),
                     Expanded(
                       child: Obx(() {
                         final email = AuthController.to.user['email'] ?? '';
@@ -105,22 +105,22 @@ class PremiumEditProfileScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
-              SizedBox(height: 12),
+              const SizedBox(height: 20),
+              const SizedBox(height: 12),
               _PremiumTextField(
                 label: 'Current Password',
                 icon: Icons.lock_outline,
                 obscureText: true,
                 validator: (value) => value!.isEmpty ? 'Required' : null,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _PremiumTextField(
                 label: 'New Password',
                 icon: Icons.lock_reset,
                 obscureText: true,
                 validator: (value) => value!.length < 6 ? 'Min 6 characters' : null,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _PremiumTextField(
                 label: 'Confirm New Password',
                 icon: Icons.lock_reset,
@@ -128,19 +128,19 @@ class PremiumEditProfileScreen extends StatelessWidget {
                 validator: (value) => value != _newPasswordController.text
                     ? 'Passwords didnt match' : null,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: (){
-
+                  Get.snackbar('Alert!', 'Please try after sometime',overlayBlur: 2,backgroundColor: Colors.red,colorText: Colors.white);
                 },
                 // onPressed: _changePassword,
                 style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 50),
+                    minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),),
                     backgroundColor: Colors.blue.shade800
                 ),
-                child: Text('UPDATE PASSWORD'),
+                child: const Text('UPDATE PASSWORD'),
               ),
 
             ],

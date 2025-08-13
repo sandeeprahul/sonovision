@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import '../controllers/review_controller.dart';
 import '../services/order_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -63,6 +64,7 @@ class _OrderScreenState extends State<OrderScreen> {
                 final isCompleted = order['status'] == 'Completed';
                 final parsedDate = DateTime.parse(order['createdAt']);
 
+                print("${order['total']}");
                 return PhysicalModel(
                   color: Colors.white,
                   elevation: 2,
@@ -274,7 +276,7 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 // Add this new widget for rating
   Widget _buildRatingSection(BuildContext context, Map<String, dynamic> order) {
-    final rating =  3; // Default to 0 if no rating exists
+    const rating =  0; // Default to 0 if no rating exists
     // final rating = order['rating'] ?? 0; // Default to 0 if no rating exists
 
     return Column(
@@ -295,7 +297,8 @@ class _OrderScreenState extends State<OrderScreen> {
                 rating: rating.toDouble(),
                 onRatingChanged: (newRating) {
 
-                  _submitRating(order['_id'], newRating);
+                  _submitRating(order['_id'], newRating,order['products'][0]['product']['_id']);
+                  print('ProductId:${order['products'][0]['product']['_id']}');
                 },
                 starSize: 28,
                 color: Theme.of(context).colorScheme.primary,
@@ -495,8 +498,20 @@ class StarRating extends StatelessWidget {
 }
 
 // Helper function to submit rating
-void _submitRating(String orderId, double rating) {
+Future<void> _submitRating(String orderId, double rating, String productId) async {
   // Implement your rating submission logic here
   // Example: call API to update order rating
   print('Rating $rating submitted for order $orderId');
+  Get.back();
+
+  final ReviewController reviewController = Get.put(ReviewController());
+  await reviewController.submitReview(
+    productId:productId,
+    orderId: orderId,
+    rating: rating.toInt(),
+    review: "Good Product",
+    files: [
+
+    ],
+  );
 }

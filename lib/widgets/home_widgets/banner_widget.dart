@@ -46,224 +46,222 @@ class _BannerCarouselNewState extends State<BannerCarouselNew> {
     final titleStyle = cardStyle['titleStyle'] ?? {};
     final subtitleStyle = cardStyle['subtitleStyle'] ?? {};
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 6),
-      child:widget.banners.isEmpty?const SizedBox(): Column(
-        children: [
-          CarouselSlider.builder(
-            itemCount: widget.banners.length,
-            itemBuilder: (context, index, _) {
-              final banner = widget.banners[index];
-              final image = banner['image'];
-              final title = banner['title'];
-              final subtitle = banner['subtitle']
-                  ?.toString()
-                  .replaceAll(RegExp(r'[^0-9.]'), '');
-              // final subtitle = banner['subtitle'];
-              final badge = banner['badge'];
-              final deepLink = banner['deeplink'];
-              final id = banner['id'];
-              // final formattedSubtitle = num.tryParse(subtitle.toString())?.toINR() ?? subtitle.toString();
+    return widget.banners.isEmpty?const SizedBox(): Column(
+      children: [
+        CarouselSlider.builder(
+          itemCount: widget.banners.length,
+          options:CarouselOptions(
+            autoPlay: true,
+            height: 300,
+            aspectRatio: aspectRatio,
+            enableInfiniteScroll: true,
+            viewportFraction: 0.75, // Show parts of adjacent items
+            enlargeCenterPage: true,
+            enlargeFactor: 0.39,
+            enlargeStrategy: CenterPageEnlargeStrategy.height,
+            padEnds: true,
+            autoPlayInterval: const Duration(seconds: 3),
+            autoPlayAnimationDuration: const Duration(milliseconds: 200),
+            pauseAutoPlayOnTouch: true,
+          ),
+          itemBuilder: (context, index, _) {
+            final banner = widget.banners[index];
+            final image = banner['image'];
+            final title = banner['title'];
+            final subtitle = banner['subtitle']
+                ?.toString()
+                .replaceAll(RegExp(r'[^0-9.]'), '');
+            // final subtitle = banner['subtitle'];
+            final badge = banner['badge'];
+            final deepLink = banner['deeplink'];
+            final id = banner['id'];
+            // final formattedSubtitle = num.tryParse(subtitle.toString())?.toINR() ?? subtitle.toString();
 
-              final value = num.tryParse(subtitle.toString());
-              final formattedSubtitle = value != null
-                  ? value.toINR() // your extension
-                  : subtitle.toString();
+            final value = num.tryParse(subtitle.toString());
+            final formattedSubtitle = value != null
+                ? value.toINR() // your extension
+                : subtitle.toString();
 
 
-              return GestureDetector(
-                onTap: () {
-                  final productId = Uri.parse(deepLink ?? '').pathSegments.last;
-                  var productJson = {'_id': productId};
-                  Get.toNamed('/product-details', arguments: productJson);
-                },
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 4), // ⬅️ Margin between items
+            return GestureDetector(
+              onTap: () {
+                final productId = Uri.parse(deepLink ?? '').pathSegments.last;
+                var productJson = {'_id': productId};
+                Get.toNamed('/product-details', arguments: productJson);
+              },
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 4), // ⬅️ Margin between items
 
-                  child: Material(
-                    // elevation: elevation,
-                    borderRadius: BorderRadius.circular(12),
-                    // color: Theme.of(context).colorScheme.surface,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
+                child: Material(
+                  // elevation: elevation,
+                  borderRadius: BorderRadius.circular(12),
+                  // color: Theme.of(context).colorScheme.surface,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
 
-                        // Image with shimmer loading effect
-                        Padding(
+                      // Image with shimmer loading effect
+                      Padding(
 
-                          padding: const EdgeInsets.only(bottom: 56,left: 12,right: 12,top: 12),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(borderRadius),
-                            child: AspectRatio(
-                              aspectRatio:3 / 2, // Set your desired aspect ratio here
+                        padding: const EdgeInsets.only(bottom: 56,left: 12,right: 12,top: 12),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(borderRadius),
+                          child: AspectRatio(
+                            aspectRatio:3 / 2, // Set your desired aspect ratio here
 
-                              child: CachedNetworkImage(
-                                imageUrl: image,
-                                // fit: BoxFit.cover,
+                            child: CachedNetworkImage(
+                              imageUrl: image,
+                              // fit: BoxFit.cover,
 
-                                placeholder: (ctx, url) => Container(
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Theme.of(context).colorScheme.surfaceContainer,
-                                        Theme.of(context).colorScheme.surfaceContainerHighest,
-                                      ],
-                                    ),
+                              placeholder: (ctx, url) => Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Theme.of(context).colorScheme.surfaceContainer,
+                                      Theme.of(context).colorScheme.surfaceContainerHighest,
+                                    ],
                                   ),
                                 ),
-                                errorWidget: (ctx, url, error) => Icon(
-                                  Icons.error,
-                                  color: Theme.of(context).colorScheme.error,
-                                ),
+                              ),
+                              errorWidget: (ctx, url, error) => Icon(
+                                Icons.error,
+                                color: Theme.of(context).colorScheme.error,
                               ),
                             ),
                           ),
                         ),
+                      ),
 
 
-                        Positioned(
-                          bottom: 0,
-                          left: 0,right: 0,
-                          child: Container(
-                            margin: EdgeInsets.only(bottom:4 ),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular( 12.0),
+                      Positioned(
+                        bottom: 0,
+                        left: 0,right: 0,
+                        child: Container(
+                          margin: EdgeInsets.only(bottom:4 ),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular( 12.0),
 
-                                                         // color: Colors.black
+                                                       // color: Colors.black
 
-                            ),
-                            // padding: const EdgeInsets.all(20.0),
-                            child: Column(
-                              // mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                // Title with Material 3 typography
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                                  child: Text(
-                                    title ?? '',
-                                    textAlign: TextAlign.center,
-                                    // title.length > 35 ? '${title.substring(0, 35)}...' : title,
-                                    maxLines: 2,
-
-                                    overflow: TextOverflow.ellipsis,
-
-                                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                      fontSize: 14,
-
-                                      fontWeight: _parseFontWeight(titleStyle['fontWeight']) ?? FontWeight.bold,
-                                      /*color: _parseColor(titleStyle['color']) ??
-                                          Theme.of(context).colorScheme.onSurface,*/
-                                        color: Colors.black
-
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 2),
-
-                                // Subtitle with Material 3 typography
-                                Text(
-                                  formattedSubtitle ?? '',
-                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    fontSize: 12,
-                                 color: Colors.black
-                                 /*   color: _parseColor(subtitleStyle['color']) ??
-
-                                        Theme.of(context).colorScheme.onSurface.withOpacity(0.8),*/
-                                  ),
-                                ),
-
-
-                                const SizedBox(height: 2),
-
-                              ],
-                            ),
                           ),
-                        ),
-
-                        // Badge with Material 3 shape
-                        if (badge != null)
-                          Positioned(
-                            top: badge['position'] == 'top-right' ? 16 : null,
-                            bottom: badge['position'] == 'bottom-right' ? 16 : null,
-                            right: 16,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: _parseColor(badge['color']) ??
-                                    Theme.of(context).colorScheme.primaryContainer,
-                             /*   gradient: const LinearGradient(
-                                  colors: [
-                                    Color(0xFFFF5F6D),
-                                    Color(0xFFFFC371),
-                                  ],
-                                ),*/
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: Text(
-                                badge['text'] ?? '',
-                                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                                  color: _parseColor(badge['textColor']) ??
-                                      Theme.of(context).colorScheme.onPrimaryContainer,
-                                ),
-                              ),
-                            ),
-                          ),
-                        // Countdown Timer on Top-Right
-                     /*   Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
+                          // padding: const EdgeInsets.all(20.0),
                           child: Column(
+                            // mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              // Title and subtitle...
-                              // Text('${saleEnd.day}')
-                                CountdownTimer(endTime: saleEnd), // Only one timer
+                              // Title with Material 3 typography
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 6),
+                                child: Text(
+                                  title ?? '',
+                                  textAlign: TextAlign.center,
+                                  // title.length > 35 ? '${title.substring(0, 35)}...' : title,
+                                  maxLines: 2,
+
+                                  overflow: TextOverflow.ellipsis,
+
+                                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                    fontSize: 14,
+
+                                    fontWeight: _parseFontWeight(titleStyle['fontWeight']) ?? FontWeight.bold,
+                                    /*color: _parseColor(titleStyle['color']) ??
+                                        Theme.of(context).colorScheme.onSurface,*/
+                                      color: Colors.black
+
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+
+                              // Subtitle with Material 3 typography
+                              Text(
+                                formattedSubtitle ?? '',
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  fontSize: 12,
+                               color: Colors.black
+                               /*   color: _parseColor(subtitleStyle['color']) ??
+
+                                      Theme.of(context).colorScheme.onSurface.withOpacity(0.8),*/
+                                ),
+                              ),
+
+
+                              const SizedBox(height: 2),
+
                             ],
                           ),
-                        ),*/
-                      ],
-                    ),
+                        ),
+                      ),
+
+                      // Badge with Material 3 shape
+                      if (badge != null)
+                        Positioned(
+                          top: badge['position'] == 'top-right' ? 16 : null,
+                          bottom: badge['position'] == 'bottom-right' ? 16 : null,
+                          right: 16,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: _parseColor(badge['color']) ??
+                                  Theme.of(context).colorScheme.primaryContainer,
+                           /*   gradient: const LinearGradient(
+                                colors: [
+                                  Color(0xFFFF5F6D),
+                                  Color(0xFFFFC371),
+                                ],
+                              ),*/
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Text(
+                              badge['text'] ?? '',
+                              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                                color: _parseColor(badge['textColor']) ??
+                                    Theme.of(context).colorScheme.onPrimaryContainer,
+                              ),
+                            ),
+                          ),
+                        ),
+                      // Countdown Timer on Top-Right
+                   /*   Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Column(
+                          children: [
+                            // Title and subtitle...
+                            // Text('${saleEnd.day}')
+                              CountdownTimer(endTime: saleEnd), // Only one timer
+                          ],
+                        ),
+                      ),*/
+                    ],
                   ),
                 ),
-              );
-            },
-            options:CarouselOptions(
-              autoPlay: true,
-              height: 300,
-              aspectRatio: aspectRatio,
-              enableInfiniteScroll: true,
-              viewportFraction: 0.75, // Show parts of adjacent items
-              enlargeCenterPage: true,
-              enlargeFactor: 0.2,
-              enlargeStrategy: CenterPageEnlargeStrategy.height,
-              padEnds: true,
-              autoPlayInterval: const Duration(seconds: 3),
-              autoPlayAnimationDuration: const Duration(milliseconds: 200),
-              pauseAutoPlayOnTouch: true,
-            ),
-            /*CarouselOptions(
-              autoPlay: true,
-              height: 280,
-              // height: height,
-              aspectRatio: aspectRatio,
-              enableInfiniteScroll: true,
-              viewportFraction: 1.0,
-              enlargeCenterPage: true,
-              enlargeFactor: 0.2,
-              enlargeStrategy: CenterPageEnlargeStrategy.height,
-              padEnds: true,
-              autoPlayInterval: const Duration(seconds: 3),
-              autoPlayAnimationDuration: const Duration(milliseconds: 200),
-              pauseAutoPlayOnTouch: true,
-            ),*/
-          ),
-        ],
-      ),
+              ),
+            );
+          },
+
+          /*CarouselOptions(
+            autoPlay: true,
+            height: 280,
+            // height: height,
+            aspectRatio: aspectRatio,
+            enableInfiniteScroll: true,
+            viewportFraction: 1.0,
+            enlargeCenterPage: true,
+            enlargeFactor: 0.2,
+            enlargeStrategy: CenterPageEnlargeStrategy.height,
+            padEnds: true,
+            autoPlayInterval: const Duration(seconds: 3),
+            autoPlayAnimationDuration: const Duration(milliseconds: 200),
+            pauseAutoPlayOnTouch: true,
+          ),*/
+        ),
+      ],
     );
   }
 

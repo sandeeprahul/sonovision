@@ -1,7 +1,11 @@
+import 'dart:convert';
+
+import 'package:electronic_store/services/api_service.dart';
 import 'package:electronic_store/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class PhoneVerificationScreen extends StatefulWidget {
@@ -54,6 +58,112 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
     });
   }
 
+  Future<void> sendOtp(String phoneNumber) async {
+    try {
+      _isLoading = true;
+      errorMessage.value = '';
+      otpSent.value = false;
+
+      final response = await http.post(
+        Uri.parse('$baseUrl/api/auth/send-otp'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'phone': phoneNumber}),
+      );
+
+      final responseData = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        otpSent.value = true;
+        _verificationId = responseData['verification_id']; // If API returns one
+        Get.snackbar(
+          'OTP Sent',
+          'Verification code sent to $phoneNumber',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      } else {
+        errorMessage.value = responseData['message'] ?? 'Failed to send OTP';
+        Get.snackbar(
+          'Error',
+          errorMessage.value,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      errorMessage.value = 'Network error: ${e.toString()}';
+      Get.snackbar(
+        'Error',
+        errorMessage.value,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    } finally {
+      _isLoading = false;
+    }
+  }
+
+  final otpSent = false.obs;
+  final isVerified = false.obs;
+  final errorMessage = ''.obs;
+  String? _verificationId; // Store verification ID if needed
+  final String baseUrl = ApiService.baseUrl;
+
+  Future<void> verifyOtp(String otp) async {
+    try {
+      _isLoading = true;
+      errorMessage.value = '';
+
+      final response = await http.post(
+        Uri.parse('$baseUrl/api/auth/verify-otp'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'otp': otp}),
+      );
+
+      final responseData = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        isVerified.value = true;
+        Get.snackbar(
+          'Success',
+          'Phone number verified successfully!',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+        // Handle successful verification (navigate to home, store token etc.)
+        // Get.offAllNamed('/home');
+      } else {
+        errorMessage.value = responseData['message'] ?? 'Invalid OTP';
+        Get.snackbar(
+          'Error',
+          errorMessage.value,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      errorMessage.value = 'Verification failed: ${e.toString()}';
+      Get.snackbar(
+        'Error',
+        errorMessage.value,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    } finally {
+      _isLoading = false;
+    }
+  }
+
+  // Optional: Resend OTP
+  Future<void> resendOtp(String phoneNumber) async {
+    await sendOtp(phoneNumber);
+  }
   void _startResendTimer() {
     Future.delayed(const Duration(seconds: 1), () {
       if (_resendTimer > 0 && mounted) {
