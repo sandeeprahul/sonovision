@@ -4,40 +4,58 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
+import '../theme/app_theme.dart';
+
 class OtpScreen extends StatelessWidget {
   final OtpController otpController = Get.put(OtpController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Colors.white,
+
+      appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(gradient: AppTheme.appbarGradientBlue),
+        ),
+        title: const Text('', style: TextStyle(fontWeight: FontWeight.bold)),
+        centerTitle: true,
+        leading:   IconButton(
+          onPressed: () => Get.toNamed('/main'),
+          icon: Icon(Icons.arrow_back),
+        ),
+        actions: [
+
+        ],
+      ),
+      // backgroundColor: Colors.grey[50],
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
-            height: Get.height - 50,
-            child: Obx(() => Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Animated Back Button
-                _buildAnimatedBackButton(),
-                const SizedBox(height: 40),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          height: Get.height - 50,
+          child: Obx(() => Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
 
-                // Header Section
-                _buildHeaderSection(),
-                const SizedBox(height: 40),
+                children: [
+                  // Animated Back Button
+                  _buildAnimatedBackButton(),
+                  const SizedBox(height: 40),
 
-                // Dynamic Content (Phone Input or OTP)
-                if (!otpController.otpSent.value) _buildPhoneInputSection(),
-                if (otpController.otpSent.value) _buildOtpVerificationSection(),
+                  // Header Section
+                  _buildHeaderSection(),
+                  const SizedBox(height: 40),
 
-                const Spacer(),
+                  // Dynamic Content (Phone Input or OTP)
+                  if (!otpController.otpSent.value) _buildPhoneInputSection(),
+                  if (otpController.otpSent.value)
+                    _buildOtpVerificationSection(),
 
-                // Footer Graphics
-                // _buildFooterGraphics(),
-              ],
-            )),
-          ),
+                  const Spacer(),
+
+                  // Footer Graphics
+                  // _buildFooterGraphics(),
+                ],
+              )),
         ),
       ),
     );
@@ -48,26 +66,26 @@ class OtpScreen extends StatelessWidget {
       duration: const Duration(milliseconds: 300),
       child: otpController.otpSent.value
           ? IconButton(
-        icon: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
+              icon: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: const Icon(Icons.arrow_back, color: Colors.black87),
               ),
-            ],
-          ),
-          child: const Icon(Icons.arrow_back, color: Colors.black87),
-        ),
-        onPressed: () {
-          otpController.otpSent.value = false;
-          otpController.errorMessage.value = '';
-        },
-      )
+              onPressed: () {
+                otpController.otpSent.value = false;
+                otpController.errorMessage.value = '';
+              },
+            )
           : const SizedBox(),
     );
   }
@@ -159,35 +177,33 @@ class OtpScreen extends StatelessWidget {
             ),
             child: Material(
               color: Colors.transparent,
-              child: Obx(
-                 () {
-                  return InkWell(
-                    borderRadius: BorderRadius.circular(16),
-                    onTap: otpController.isLoading.value
-                        ? null
-                        : () => otpController.sendOtp(),
-                    child: Center(
-                      child: otpController.isLoading.value
-                          ? const SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation(Colors.white),
-                        ),
-                      )
-                          : const Text(
-                        'Continue',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  );
-                }
-              ),
+              child: Obx(() {
+                return InkWell(
+                  borderRadius: BorderRadius.circular(16),
+                  onTap: otpController.isLoading.value
+                      ? null
+                      : () => otpController.sendOtp(),
+                  child: Center(
+                    child: otpController.isLoading.value
+                        ? const SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation(Colors.white),
+                            ),
+                          )
+                        : const Text(
+                            'Continue',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                  ),
+                );
+              }),
             ),
           ),
         ),
@@ -230,7 +246,8 @@ class OtpScreen extends StatelessWidget {
             elevation: 0,
             child: InkWell(
               borderRadius: BorderRadius.circular(16),
-              onTap: () => otpController.verifyOtp(''), // Will be handled by auto-complete
+              onTap: () => otpController.verifyOtp(''),
+              // Will be handled by auto-complete
               child: Ink(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -243,21 +260,21 @@ class OtpScreen extends StatelessWidget {
                   alignment: Alignment.center,
                   child: otpController.isLoading.value
                       ? const SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation(Colors.white),
-                    ),
-                  )
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation(Colors.white),
+                          ),
+                        )
                       : const Text(
-                    'Verify',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                          'Verify',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 ),
               ),
             ),
@@ -275,7 +292,9 @@ class OtpScreen extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             TextButton(
-              onPressed: otpController.resendTimer.value > 0 ? null : otpController.resendOtp,
+              onPressed: otpController.resendTimer.value > 0
+                  ? null
+                  : otpController.resendOtp,
               style: TextButton.styleFrom(
                 padding: EdgeInsets.zero,
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -322,7 +341,6 @@ class OtpScreen extends StatelessWidget {
             ),
           ),
         const SizedBox(height: 20),
-
       ],
     );
   }
