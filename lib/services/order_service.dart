@@ -23,6 +23,7 @@ class OrderService {
     if (response.statusCode == 200) {
       print('$tokenValue');
       print("${ApiService.baseUrl}/api/orders");
+      print(response.body);
       return jsonDecode(response.body);
     } else {
       throw Exception('Failed to load orders');

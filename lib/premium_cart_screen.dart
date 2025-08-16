@@ -105,7 +105,7 @@ class PremiumCartScreen extends StatelessWidget {
                   TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
           const SizedBox(height: 24),
           ElevatedButton(
-            onPressed: () => Get.off(const MainPage()),
+            onPressed: () => Get.offAll(const MainPage()),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
               shape: RoundedRectangleBorder(

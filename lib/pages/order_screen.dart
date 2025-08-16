@@ -20,6 +20,12 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
+  Future<List<dynamic>>? _orderFuture;
+  @override
+  void initState() {
+    super.initState();
+    _orderFuture = OrderService.fetchOrders();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +37,7 @@ class _OrderScreenState extends State<OrderScreen> {
       body: BackgroundContainerGradient(
 
         child: FutureBuilder<List<dynamic>>(
-          future: OrderService.fetchOrders(),
+          future: _orderFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -255,11 +261,12 @@ class _OrderScreenState extends State<OrderScreen> {
                                 ),
                               ),
 
-                              // Rating section for completed orders
-                              if (isCompleted) ...[
-                                const SizedBox(height: 10),
-                                _buildRatingSection(context, order),
-                              ],
+                              ///enable in next update
+                              // // Rating section for completed orders
+                              // if (isCompleted) ...[
+                              //   const SizedBox(height: 10),
+                              //   _buildRatingSection(context, order),
+                              // ],
                             ],
                           ),
                         ),
@@ -296,9 +303,9 @@ class _OrderScreenState extends State<OrderScreen> {
               child: StarRating(
                 rating: rating.toDouble(),
                 onRatingChanged: (newRating) {
+                  print('ProductId:${order['products'][0]['product']['_id']}');
 
                   _submitRating(order['_id'], newRating,order['products'][0]['product']['_id']);
-                  print('ProductId:${order['products'][0]['product']['_id']}');
                 },
                 starSize: 28,
                 color: Theme.of(context).colorScheme.primary,
@@ -332,7 +339,26 @@ class _OrderScreenState extends State<OrderScreen> {
         return Colors.grey;
     }
   }
+  Future<void> _submitRating(String orderId, double rating, String productId) async {
+    // Implement your rating submission logic here
+    // Example: call API to update order rating
+    print('Rating $rating submitted for order $orderId');
+    // Get.back();
 
+    final ReviewController reviewController = Get.put(ReviewController());
+    await reviewController.submitReview(
+      productId:productId,
+      orderId: orderId,
+      rating: rating.toInt(),
+      review: "Good Product",
+      files: [
+
+      ],
+    );
+    setState(() {
+      _orderFuture = OrderService.fetchOrders();
+    });
+  }
   Color _getStatusColodr(String status) {
     switch (status) {
       case 'Delivered':
@@ -464,7 +490,7 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 }
 // StarRating widget (custom implementation)
-class StarRating extends StatelessWidget {
+class StarRating extends StatefulWidget {
   final double rating;
   final void Function(double) onRatingChanged;
   final double starSize;
@@ -479,17 +505,22 @@ class StarRating extends StatelessWidget {
   });
 
   @override
+  State<StarRating> createState() => _StarRatingState();
+}
+
+class _StarRatingState extends State<StarRating> {
+  @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: List.generate(5, (index) {
         return GestureDetector(
-          onTap: () => onRatingChanged(index + 1.0),
+          onTap: () => widget.onRatingChanged(index + 1.0),
           child: Icon(
-            index < rating.floor() ? Icons.star_rounded :
-            (index < rating.ceil() ? Icons.star_half_rounded : Icons.star_border_rounded),
-            size: starSize,
-            color: color,
+            index < widget.rating.floor() ? Icons.star_rounded :
+            (index < widget.rating.ceil() ? Icons.star_half_rounded : Icons.star_border_rounded),
+            size: widget.starSize,
+            color: widget.color,
           ),
         );
       }),
@@ -498,20 +529,3 @@ class StarRating extends StatelessWidget {
 }
 
 // Helper function to submit rating
-Future<void> _submitRating(String orderId, double rating, String productId) async {
-  // Implement your rating submission logic here
-  // Example: call API to update order rating
-  print('Rating $rating submitted for order $orderId');
-  Get.back();
-
-  final ReviewController reviewController = Get.put(ReviewController());
-  await reviewController.submitReview(
-    productId:productId,
-    orderId: orderId,
-    rating: rating.toInt(),
-    review: "Good Product",
-    files: [
-
-    ],
-  );
-}

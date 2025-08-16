@@ -38,7 +38,7 @@ class OtpScreen extends StatelessWidget {
 
                 children: [
                   // Animated Back Button
-                  _buildAnimatedBackButton(),
+                  // _buildAnimatedBackButton(),
                   const SizedBox(height: 40),
 
                   // Header Section

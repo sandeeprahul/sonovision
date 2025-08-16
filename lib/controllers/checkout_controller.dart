@@ -103,7 +103,8 @@ class CheckoutController extends GetxController {
     print(response);
     print(response.toString());
     print(response.orderId);
-    orderPaymentStatusUpdate(currentOrderId,"SUCCESS",response.orderId,"ONLINE",);
+    orderPaymentStatusUpdate(currentOrderId,"SUCCESS",response.paymentId,"ONLINE",);
+    // orderPaymentStatusUpdate(currentOrderId,"SUCCESS",response.orderId,"ONLINE",);
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
@@ -112,7 +113,7 @@ class CheckoutController extends GetxController {
     orderPaymentStatusUpdate(currentOrderId,"FAILED",pg!.key??"0","ONLINE",);
 
     // Get.back();
-    Get.snackbar("Payment Failed", "Order Successful. Payment Failed!");
+    Get.snackbar("Payment Failed", "Order Successful. Payment Failed!",backgroundColor: Colors.red);
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
@@ -222,6 +223,7 @@ class CheckoutController extends GetxController {
             if(pg.name=="razorpay"){
               ///pg.key=="KEY"
               var options = {
+                // 'key': '', // replace with your test key
                 'key': 'rzp_test_YkLFs7bxxbMl9I', // replace with your test key
                 'amount': cartController.total * 100, // in paise
                 'name': 'Sonovision Electronics Pvt. Ltd.',
