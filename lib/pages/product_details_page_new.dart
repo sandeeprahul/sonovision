@@ -73,7 +73,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
           }
 
           final discountedPrice = product.price -
-              (product.price * product.discountPercentage / 100);
+              (product.price * product.discountPercentage! / 100);
 
           final sale = product.sale;
 
@@ -118,7 +118,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
 
                             return Text(
                              // 'Details',
-                              productDetailsController.product.value!.brand,
+                              productDetailsController.product.value!.brand!.name,
                               style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 20,
@@ -145,7 +145,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                       children: [
                         ProductHeader(
                           name: product.name,
-                          brand: product.brand,
+                          brand: product.brand!.name,
                           averageRating:
                               productDetailsController.averageRating.value,
                           totalReviews:
@@ -164,14 +164,14 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                             originalPrice: product.price,
                             discountedPrice: discountedPrice,
                             discountPercentage:
-                            (product.discountPercentage).toDouble(),
+                            (product.discountPercentage!).toDouble(),
                           ),
                         if(product.discountPercentage==0&&sale==null)
                           PriceDisplay(
                             originalPrice: product.price,
                             discountedPrice: discountedPrice,
                             discountPercentage:
-                            (product.discountPercentage).toDouble(),
+                            (product.discountPercentage!).toDouble(),
                           ),
                       ],
                     ),
@@ -348,7 +348,7 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                     .any((item) => item.productId == product.id);
 
                 var discountedPrice = product.price -
-                    (product.price * product.discountPercentage / 100);
+                    (product.price * product.discountPercentage! / 100);
 
                 if (product.sale!=null){
                   discountedPrice = product.finalPrice!;

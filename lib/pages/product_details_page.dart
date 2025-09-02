@@ -254,7 +254,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           final originalPrice = product.price;
           final discountPercentage = product.discountPercentage;
           final discountedPrice =
-              originalPrice - (originalPrice * discountPercentage / 100);
+              originalPrice - (originalPrice * discountPercentage! / 100);
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: SingleChildScrollView(
@@ -353,7 +353,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    product.brand,
+                                    product.brand!.name,
                                     style:
                                         theme.textTheme.titleMedium!.copyWith(
                                       color: Colors.grey[700],

@@ -1,10 +1,10 @@
 class ProductDetailsData {
   final String id;
   final String name;
-  final String brand;
+  final Brand? brand;
   final String categoryId;
   final double price;
-  final int discountPercentage;
+  final int? discountPercentage;
   final String description;
   final bool isActive;
   final String highlights;
@@ -57,10 +57,15 @@ class ProductDetailsData {
       id: json['_id'],
       name: json['name'],
       isActive: json['isActive']??false,
-      brand: json['brand'],
-      categoryId: json['categoryId'],
+      brand: Brand.fromJson(json['brand'] ?? {}),
+      categoryId: json['category']?['_id'] ?? '',
       price: (json['price'] ?? 0).toDouble(),
-      discountPercentage: json['discountPercentage'] ?? 0,
+      discountPercentage: (() {
+        final value = json['discountPercentage'];
+        if (value == null) return null;
+        if (value is int) return value;
+        return int.tryParse(value.toString());
+      })(),
       description: json['description'] ?? '',
       highlights: json['highlights'] ?? '',
       colors: List<String>.from(json['colors'] ?? []),
@@ -79,7 +84,7 @@ class ProductDetailsData {
     return {
       '_id': id,
       'name': name,
-      'brand': brand,
+      'brand': brand!.toJson(),
       'price': price,
       'discountPercentage': discountPercentage,
       'images': images,
@@ -157,5 +162,35 @@ class Sale {
     final startsOk = startDate == null || now.isAfter(startDate!);
     final endsOk = endDate == null || now.isBefore(endDate!);
     return startsOk && endsOk;
+  }
+}
+
+class Brand {
+  final String id;
+  final String name;
+
+  Brand({
+    required this.id,
+    required this.name,
+  });
+
+  factory Brand.fromMap(Map<String, dynamic> map) {
+    return Brand(
+      id: map['_id'] ?? '',
+      name: map['name'] ?? '',
+    );
+  }
+  factory Brand.fromJson(Map<String, dynamic> json) {
+    return Brand(
+      id: json['_id'] ?? '',
+      name: json['name'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      '_id': id,
+      'name': name,
+    };
   }
 }

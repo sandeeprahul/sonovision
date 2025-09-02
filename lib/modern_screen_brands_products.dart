@@ -2,12 +2,23 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:electronic_store/models/product_of_brands.dart';
+import 'package:electronic_store/pages/category_details_page.dart';
 import 'package:electronic_store/price_extensions.dart';
 import 'package:electronic_store/widgets/price_range_carousel_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:marquee/marquee.dart';
+
+
+// Mock classes to make the code work (replace with your actual implementations)
+class ModernCategoryScreen extends StatefulWidget {
+  final String brandId;
+  const ModernCategoryScreen({super.key, required this.brandId});
+
+  @override
+  _ModernCategoryScreenState createState() => _ModernCategoryScreenState();
+}
 
 class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
   final BrandController controller = Get.put(BrandController());
@@ -131,7 +142,7 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
                       itemCount: categories.length,
                       itemBuilder: (context, index) {
                         final category = categories[index];
-                        return _buildCategoryCard(category);
+                        return _buildCategoryCard(category,brand);
                       },
                     ),
                   ),
@@ -144,71 +155,121 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
     );
   }
 
-  Widget _buildCategoryCard(Category category) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            blurRadius: 10,
-            spreadRadius: 2,
-          ),
-        ],
-      ),
-      child: Stack(
-        children: [
-          // Category icon as background with overlay
-          // Blurred Background Image
-          Positioned.fill(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  // Background Image
-                  Image.network(
-                    "http://sonovision.asquare.org.in/images/${category.icon}",
-                    fit: BoxFit.cover,
-                  ),
-
-                  // Blur Effect
-                  BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-                    child: Container(
-                      color: Colors.black
-                          .withOpacity(0.2), // Optional dark overlay
-                    ),
-                  ),
-                ],
-              ),
+  Widget _buildCategoryCard(Category category, Brand brand) {
+    return InkWell(
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CategoryDetailsPage(
+              categoryId: category.id,
+              categoryName: category.name,
+              imageUrl:  "http://sonovision.asquare.org.in/images/${category.icon}",
+              brandName: brand.name,
             ),
           ),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              blurRadius: 10,
+              spreadRadius: 2,
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            // Category icon as background with overlay
+            // Blurred Background Image
+            Positioned.fill(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    // Background Image
+                    Image.network(
+                      "http://sonovision.asquare.org.in/images/${category.icon}",
+                      fit: BoxFit.cover,
+                    ),
 
-          // Content
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Category name
-                SizedBox(
-                  height: 20,
-                  child:  category.name.length > 100?Marquee(
-                    scrollAxis: Axis.horizontal,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    blankSpace: 20.0,
-                    velocity: 30.0,
-                    pauseAfterRound: const Duration(seconds: 1),
-                    startPadding: 10.0,
-                    accelerationDuration: const Duration(seconds: 1),
-                    accelerationCurve: Curves.linear,
-                    decelerationDuration: const Duration(milliseconds: 500),
-                    decelerationCurve: Curves.easeOut,
-                    style: const TextStyle(
+                    // Blur Effect
+                    BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                      child: Container(
+                        color: Colors.black
+                            .withOpacity(0.2), // Optional dark overlay
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // Content
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Category name
+                  SizedBox(
+                    height: 20,
+                    child:  category.name.length > 100?Marquee(
+                      scrollAxis: Axis.horizontal,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      blankSpace: 20.0,
+                      velocity: 30.0,
+                      pauseAfterRound: const Duration(seconds: 1),
+                      startPadding: 10.0,
+                      accelerationDuration: const Duration(seconds: 1),
+                      accelerationCurve: Curves.linear,
+                      decelerationDuration: const Duration(milliseconds: 500),
+                      decelerationCurve: Curves.easeOut,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        shadows: [
+                          Shadow(
+                            blurRadius: 5.0,
+                            color: Colors.black,
+                            offset: Offset(1.0, 1.0),
+                          ),
+                        ],
+                      ),
+                      // maxLines: 2,
+                     /* overflow: TextOverflow.ellipsis,*/ text: '${ category.name}',
+                    ):Text(
+                      category.name,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        shadows: [
+                          Shadow(
+                            blurRadius: 5.0,
+                            color: Colors.black,
+                            offset: Offset(1.0, 1.0),
+                          ),
+                        ],
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+
+                  const SizedBox(height: 8),
+                  const Text(
+                    "Prices from",
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 16,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                       shadows: [
                         Shadow(
@@ -218,179 +279,150 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
                         ),
                       ],
                     ),
-                    // maxLines: 2,
-                   /* overflow: TextOverflow.ellipsis,*/ text: '${ category.name}',
-                  ):Text(
-                    category.name,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 5.0,
-                          color: Colors.black,
-                          offset: Offset(1.0, 1.0),
-                        ),
-                      ],
-                    ),
-                    maxLines: 1,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                ),
+                  const SizedBox(height: 8),
+                  PriceRangeCarousel(priceRanges: category.priceRanges,category:category),
 
-                const SizedBox(height: 8),
-                const Text(
-                  "Prices from",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    shadows: [
-                      Shadow(
-                        blurRadius: 5.0,
-                        color: Colors.black,
-                        offset: Offset(1.0, 1.0),
+                  // Price Ranges Grid (2x2)
+                 /* Expanded(
+                    child: GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 8,
+                        childAspectRatio: 2.2,
                       ),
-                    ],
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 8),
-                PriceRangeCarousel(priceRanges: category.priceRanges),
-
-                // Price Ranges Grid (2x2)
-               /* Expanded(
-                  child: GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
-                      childAspectRatio: 2.2,
-                    ),
-                    itemCount: category.priceRanges.length > 4 ? 4 : 0,
-                    itemBuilder: (context, index) {
-                      final range = category.priceRanges[index];
-
-                      final value = num.tryParse(range.min.toString());
-                      final formattedSubtitle = value != null
-                          ? value.toINR() // your extension
-                          : range.min.toString();
-
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.9),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Center(
-                          child: Text(
-                            formattedSubtitle,
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.blue.shade800,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),*/
-
-                // const SizedBox(height: 8),
-
-                // Products Horizontal List
-                if (category.products.isNotEmpty) ...[
-                  // const SizedBox(height: 4),
-                  SizedBox(
-                    height: 98,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: category.products.length,
+                      itemCount: category.priceRanges.length > 4 ? 4 : 0,
                       itemBuilder: (context, index) {
-                        final product = category.products[index];
+                        final range = category.priceRanges[index];
 
-                        final value = num.tryParse(product.price.toString());
+                        final value = num.tryParse(range.min.toString());
                         final formattedSubtitle = value != null
                             ? value.toINR() // your extension
-                            : product.price.toString();
+                            : range.min.toString();
+
                         return Container(
-                          width: 80,
-                          margin: const EdgeInsets.only(right: 8),
                           decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.9),
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // Product image
-                              if(product.images.isNotEmpty)
-                              Container(
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  image: DecorationImage(
-                                    image: NetworkImage(product.images[0]),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
+                          child: Center(
+                            child: Text(
+                              formattedSubtitle,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.blue.shade800,
                               ),
-                              const SizedBox(height: 4),
-
-                              // Product name
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 4.0),
-                                child: Text(
-                                  product.name,
-                                  style: const TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-
-                              // Product price
-                              /*    Text(
-                                formattedSubtitle,
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.blue.shade800,
-                                ),
-                              ),*/
-                            ],
+                            ),
                           ),
                         );
                       },
                     ),
-                  ),
+                  ),*/
+
+                  // const SizedBox(height: 8),
+
+                  // Products Horizontal List
+                  if (category.products.isNotEmpty) ...[
+                    // const SizedBox(height: 4),
+                    SizedBox(
+                      height: 98,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: category.products.length,
+                        itemBuilder: (context, index) {
+                          final product = category.products[index];
+
+                          final value = num.tryParse(product.price.toString());
+                          final formattedSubtitle = value != null
+                              ? value.toINR() // your extension
+                              : product.price.toString();
+                          return InkWell(
+                            onTap: (){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CategoryDetailsPage(
+                                    categoryId: category.id,
+                                    categoryName: category.name,
+                                    imageUrl:  "http://sonovision.asquare.org.in/images/${category.icon}",
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              width: 80,
+                              margin: const EdgeInsets.only(right: 8),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.9),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  // Product image
+                                  if(product.images.isNotEmpty)
+                                  Container(
+                                    height: 50,
+                                    width: 50,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      image: DecorationImage(
+                                        image: NetworkImage(product.images[0]),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+
+                                  // Product name
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(horizontal: 4.0),
+                                    child: Text(
+                                      product.name,
+                                      style: const TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+
+                                  // Product price
+                                  /*    Text(
+                                    formattedSubtitle,
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blue.shade800,
+                                    ),
+                                  ),*/
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ],
-              ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
 
-// Mock classes to make the code work (replace with your actual implementations)
-class ModernCategoryScreen extends StatefulWidget {
-  final String brandId;
-  const ModernCategoryScreen({super.key, required this.brandId});
-
-  @override
-  _ModernCategoryScreenState createState() => _ModernCategoryScreenState();
-}
 
 class BrandController extends GetxController {
   var isLoading = false.obs;

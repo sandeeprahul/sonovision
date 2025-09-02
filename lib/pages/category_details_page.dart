@@ -8,15 +8,24 @@ import '../controllers/category_products_controller.dart';
 import '../utils/cart_bottom_sheet.dart';
 
 class CategoryDetailsPage extends StatefulWidget {
+  final String? priceRangeMin;
+  final String? priceRangeMax;
   final String categoryId;
   final String categoryName;
   final String imageUrl;
+  final String? brandName;
+
+
 
   const CategoryDetailsPage({
     Key? key,
+    this.priceRangeMin,
+    this.priceRangeMax,
+    this.brandName,
     required this.categoryId,
     required this.categoryName,
     required this.imageUrl,
+
   }) : super(key: key);
 
   @override
@@ -35,8 +44,22 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
     super.initState();
     categoryProductsController =
         Get.put(CategoryProductsController(widget.categoryId));
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadProducts();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+     await _loadProducts();
+      // Check and apply price range if provided
+      final min = double.tryParse(widget.priceRangeMin ?? '');
+      final max = double.tryParse(widget.priceRangeMax ?? '');
+
+      if (min != null && max != null) {
+        categoryProductsController.setInitialPriceRange(min, max);
+      }
+      // Set initial brand if available
+      if (widget.brandName != null && widget.brandName!.isNotEmpty) {
+        categoryProductsController.setInitialBrand(widget.brandName!);
+      }
+
+      categoryProductsController.applyInitialFilters();
+
     });
     _scrollController.addListener(_onScroll);
   }
@@ -290,6 +313,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                   child: Column(
                     children: [
                       RangeSlider(
+
                         values: RangeValues(
                           categoryProductsController.selectedMinPrice.value,
                           categoryProductsController.selectedMaxPrice.value,
@@ -690,7 +714,8 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
 
   Widget _buildProductCard(ProductDetailsData product) {
     final originalPrice = product.price as num;
-    final discountPercentage = product.discountPercentage as num;
+    final discountPercentage = product.discountPercentage ?? 0;
+    // final discountPercentage = product.discountPercentage as   num;
     final discountedPrice =
         originalPrice - (originalPrice * discountPercentage / 100);
 
@@ -842,9 +867,9 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Brand Name
-                      if (product.brand != null && product.brand.isNotEmpty)
+                      if (product.brand != null && product.brand!.name.isNotEmpty)
                         Text(
-                          product.brand.toUpperCase(),
+                          product.brand!.name.toUpperCase(),
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w600,

@@ -3,6 +3,7 @@ import 'package:electronic_store/price_extensions.dart';
 import 'package:flutter/material.dart';
 
 import '../models/product_of_brands.dart';
+import '../pages/category_details_page.dart';
 
 // Helper function to chunk list
 List<List<T>> chunkList<T>(List<T> list, int size) {
@@ -13,10 +14,11 @@ List<List<T>> chunkList<T>(List<T> list, int size) {
   return chunks;
 }
 
-class PriceRangeCarousel extends StatefulWidget {
+class PriceRangeCarousel extends StatefulWidget {///
   final List<PriceRange> priceRanges; // your model
+  final Category category; // your model
 
-  const PriceRangeCarousel({super.key, required this.priceRanges});
+  const PriceRangeCarousel({super.key, required this.priceRanges, required this. category});
 
   @override
   State<PriceRangeCarousel> createState() => _PriceRangeCarouselState();
@@ -86,18 +88,34 @@ class _PriceRangeCarouselState extends State<PriceRangeCarousel> {
                     ? value.toINR()
                     : range.min.toString();
 
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Center(
-                    child: Text(
-                      formattedSubtitle,
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.blue.shade800,
+                return InkWell(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CategoryDetailsPage(
+                          categoryId: widget.category.id,
+                          categoryName:widget. category.name,
+                          imageUrl:  "http://sonovision.asquare.org.in/images/${widget.category.icon}",
+                          priceRangeMin: '${range.min}',
+                          priceRangeMax: '${range.max}',
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.9),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Center(
+                      child: Text(
+                        formattedSubtitle,
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.blue.shade800,
+                        ),
                       ),
                     ),
                   ),
