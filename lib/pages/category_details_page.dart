@@ -384,7 +384,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      bottomSheet: Padding(
+ /*     bottomSheet: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
@@ -395,7 +395,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                 Text('Filters'),
               ],
             )),
-      ),
+      ),*/
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [

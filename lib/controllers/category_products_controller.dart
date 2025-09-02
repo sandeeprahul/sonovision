@@ -100,7 +100,7 @@ class CategoryProductsController extends GetxController {
   void _applyAllFilters() {
     print('came to_applyAllFilters ');
     print(selectedBrand.value );
-    print(selectedBrand.value );
+    print(selectedMinPrice.value );
     List<ProductDetailsData> filteredProducts = List.from(allProducts);
 
     // Apply brand filter
@@ -174,7 +174,7 @@ class CategoryProductsController extends GetxController {
           // Initialize price range filters
           _initializePriceRangeFilters();
 
-
+          // Future.delayed(const Duration(seconds: 5));
         }
       } else {
         isError.value = true;
