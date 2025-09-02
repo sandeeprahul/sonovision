@@ -17,6 +17,7 @@ import '../utils/CartHelper.dart';
 import '../utils/cart_bottom_sheet.dart';
 import '../utils/loadImageBasedOnExtension.dart';
 import '../widgets/_buildCategoryGroup.dart';
+import '../widgets/home_brands_wdget.dart';
 import '../widgets/home_widgets/banner_widget.dart';
 
 // import '../widgets/home_widgets/brand_strip_widget.dart';
@@ -545,10 +546,13 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
       case 'product':
         return _buildProductGroup(context, widget);
 
+      case 'brand':
+        return BrandGrid(group: widget,);
+
       case 'category':
         return buildCategoryGroupWidget(widget);
-      /*   case 'category':
-        return _buildCategoryGroup(widget);*/
+
+
 
       default:
         return const SizedBox.shrink();
@@ -907,7 +911,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
               radius: 18,
               child: IconButton(
                 onPressed: () {
-                  Get.to(() => NotificationPage());
+                  Get.to(() => NotificationPage(), transition: Transition.rightToLeft);
                 },
                 icon: const Icon(
                   Icons.notifications_none_outlined,

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../controllers/cart_controller.dart';
 import '../controllers/checkout_controller.dart';
+import 'order_success_page.dart';
 
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({Key? key}) : super(key: key);
@@ -287,7 +288,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
             onPressed: () async {
 
               // final controller = Get.put(CheckoutController());
-
+              // if (controller.selectedPaymentMethod.value == "Cash on Delivery") {
+              //   Get.off(() => OrderSuccessPage(orderId: orderId));
+              // }
 
              await controller.placeOrder();
              Navigator.pop(context);

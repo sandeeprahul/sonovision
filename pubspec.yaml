@@ -38,6 +38,7 @@ dependencies:
   intl: ^0.18.1
   maps_launcher: ^3.0.0+1
   iconsax: ^0.0.8
+  marquee: ^2.2.3
   provider: ^6.1.1
   flutter_map: ^8.1.1
   flutter_svg: ^2.0.9

@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import '../controllers/category_controller.dart';
+import '../modern_screen_brands_products.dart';
 import '../pages/category_details_page.dart';
 import '../pages/category_list_screen.dart';
 import 'package:get/get.dart';
+
+import '../screens/categories_screen.dart';
 
 Widget buildCategoryGroupWidget(Map<String, dynamic> group) {
   final CategoryController controller = Get.put(CategoryController());
@@ -33,7 +36,7 @@ Widget buildCategoryGroupWidget(Map<String, dynamic> group) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 26),
+              const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
@@ -47,7 +50,19 @@ Widget buildCategoryGroupWidget(Map<String, dynamic> group) {
                     TextButton(
                       onPressed: () {
                         // Navigate to the CategoryListScreen
-                        Navigator.push(
+                     /*   Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>  ModernCategoryScreen(
+                            ),
+                          ),
+                        );*//* Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const BrandsCategoriesScreen(
+                            ),
+                          ),
+                        );*/   Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => CategoryListScreen(
@@ -55,6 +70,7 @@ Widget buildCategoryGroupWidget(Map<String, dynamic> group) {
                             ),
                           ),
                         );
+                        //ApplianceStoreApp
                       },
                       child: Text(
                         'See all',

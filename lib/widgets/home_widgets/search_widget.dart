@@ -63,7 +63,7 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar>
               padding: const EdgeInsets.only(top: 2.0, bottom: 2.0, left: 2.0, right: 2.0),
               child: InkWell(
                 onTap: (){
-                  Get.to(() =>  SearchPage());
+                  Get.to(() =>  SearchPage(), transition: Transition.rightToLeft);
 
                 },
                 child: Row(

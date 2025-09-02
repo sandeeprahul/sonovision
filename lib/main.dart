@@ -106,9 +106,10 @@ class MyApp extends StatelessWidget {
         ),
       ),*/
       home: const SplashScreen(),
+      defaultTransition:   Transition.rightToLeft,
       getPages: [
         GetPage(
-            name: '/product-details', page: () => const ProductDetailsScreenNew()),
+            name: '/product-details', page: () => const ProductDetailsScreenNew() ,transition: Transition.rightToLeft),
       ],
       routes: {
         '/cart': (context) => PremiumCartScreen(),
