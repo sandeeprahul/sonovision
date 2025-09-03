@@ -156,27 +156,45 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                               productDetailsController.totalReviews.value,
                         ),
                         const SizedBox(height: 12),
-                        if (sale != null)
-                        PriceDisplay(
-                          originalPrice: product.price,
-                          discountedPrice: product.finalPrice!,
-                          discountPercentage:
-                              (product.sale!.discountPercentage!).toDouble(),
-                        ),
-                        if(product.discountPercentage!=0)
+                        if (product.sale != null && product.sale!.isActive && product.finalPrice != null)
                           PriceDisplay(
                             originalPrice: product.price,
-                            discountedPrice: discountedPrice??product.price,
-                            discountPercentage:product.discountPercentage!=null?
-                            (product.discountPercentage!).toDouble():0.0,
-                          ),
-                        if(product.discountPercentage==0&&sale==null)
+                            discountedPrice: product.finalPrice!,
+                            discountPercentage: product.sale!.discountPercentage?.toDouble() ?? 0.0,
+                          )
+                        else if (product.discountPercentage != 0)
                           PriceDisplay(
                             originalPrice: product.price,
-                            discountedPrice: discountedPrice,
-                            discountPercentage:
-                            (product.discountPercentage!).toDouble(),
-                          ),
+                            discountedPrice: product.price - (product.price * (product.discountPercentage ?? 0) / 100),
+                            discountPercentage:(product.discountPercentage ?? 0).toDouble(),
+                          )
+                        else
+                          PriceDisplay(
+                            originalPrice: product.price,
+                            discountedPrice: product.price,
+                            discountPercentage: 0.0,
+                          )
+                        // if (sale != null)
+                        // PriceDisplay(
+                        //   originalPrice: product.price,
+                        //   discountedPrice: product.finalPrice!,
+                        //   discountPercentage:
+                        //       (product.sale!.discountPercentage!).toDouble(),
+                        // ),
+                        // if(product.discountPercentage!=0)
+                        //   PriceDisplay(
+                        //     originalPrice: product.price,
+                        //     discountedPrice: discountedPrice??product.price,
+                        //     discountPercentage:product.discountPercentage!=null?
+                        //     (product.discountPercentage!).toDouble():0.0,
+                        //   ),
+                        // if(product.discountPercentage==0&&sale==null)
+                        //   PriceDisplay(
+                        //     originalPrice: product.price,
+                        //     discountedPrice: discountedPrice,
+                        //     discountPercentage:
+                        //     (product.discountPercentage!).toDouble(),
+                        //   ),
                       ],
                     ),
                   ),
