@@ -198,7 +198,7 @@ class BrandCard extends StatelessWidget {
             strokeWidth: 2,
             valueColor: AlwaysStoppedAnimation(Colors.grey[300]),
           ),
-          errorWidget: (context, url, error) => const Icon(Icons.business),
+          errorWidget: (context, url, error) =>  Center(child: Text(brand.name,style: const TextStyle(fontWeight: FontWeight.bold),)),
         ),
       ),
     );
