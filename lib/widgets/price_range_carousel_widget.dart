@@ -83,10 +83,10 @@ class _PriceRangeCarouselState extends State<PriceRangeCarousel> {
               itemBuilder: (context, index) {
                 final range = currentChunk[index];
 
-                final value = num.tryParse(range.min.toString());
+                final value = num.tryParse(range.max.toString());
                 final formattedSubtitle = value != null
                     ? value.toINR()
-                    : range.min.toString();
+                    : range.max.toString();
 
                 return InkWell(
                   onTap: (){

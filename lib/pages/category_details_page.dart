@@ -379,12 +379,69 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
       );
     }));
   }
+  SliverToBoxAdapter _buildActiveFiltersChips() {
+    return SliverToBoxAdapter(
+      child: Obx(() {
+        List<Widget> chips = [];
+
+        if (categoryProductsController.selectedMinPrice.value != categoryProductsController.minPrice.value ||
+            categoryProductsController.selectedMaxPrice.value != categoryProductsController.maxPrice.value) {
+          chips.add(
+            Chip(
+              label: Text(
+                '₹${categoryProductsController.selectedMinPrice.value.toInt()} - ₹${categoryProductsController.selectedMaxPrice.value.toInt()}',
+              ),
+              onDeleted: () {
+                categoryProductsController.resetFilters();
+              },
+            ),
+          );
+        }
+
+        if (categoryProductsController.selectedBrand.value != 'All') {
+          chips.add(
+            Chip(
+              label: Text(categoryProductsController.selectedBrand.value),
+              onDeleted: () {
+                categoryProductsController.selectedBrand.value = 'All';
+                categoryProductsController.applyInitialFilters();
+              },
+            ),
+          );
+        }
+
+        if (chips.isEmpty) return SizedBox.shrink(); // Don't render anything if no chips
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Wrap(
+            spacing: 8,
+            runSpacing: 4,
+            children: chips,
+          ),
+        );
+      }),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
- /*     bottomSheet: Padding(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        // iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16.0),
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+            onPressed: () => Get.back(),
+          ),
+        ),
+        title:Text(widget.categoryName,style: const TextStyle(color: Colors.black),) ,
+      ),
+      bottomSheet: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
@@ -395,12 +452,13 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                 Text('Filters'),
               ],
             )),
-      ),*/
+      ),
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
-          _buildSliverAppBar(),
+          // _buildSliverAppBar(),
           // _buildFiltersBar(),
+          // _buildActiveFiltersChips(),
 
           Obx(() {
             if (categoryProductsController.isLoading.value) {
@@ -418,7 +476,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                 child: Center(
                     child: Padding(
                   padding: EdgeInsets.all(16.0),
-                  child: Text("No products found"),
+                  child: Text("No products found\nPlease wait or try again later",textAlign: TextAlign.center,),
                 )),
               );
             }

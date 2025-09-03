@@ -72,8 +72,12 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
             return const Center(child: Text('Product not found'));
           }
 
-          final discountedPrice = product.price -
-              (product.price * product.discountPercentage! / 100);
+          var discountedPrice;
+          if(product.discountPercentage!=null){
+             discountedPrice = product.price -
+                (product.price * product.discountPercentage! / 100);
+          }
+
 
           final sale = product.sale;
 
@@ -162,9 +166,9 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                         if(product.discountPercentage!=0)
                           PriceDisplay(
                             originalPrice: product.price,
-                            discountedPrice: discountedPrice,
-                            discountPercentage:
-                            (product.discountPercentage!).toDouble(),
+                            discountedPrice: discountedPrice??product.price,
+                            discountPercentage:product.discountPercentage!=null?
+                            (product.discountPercentage!).toDouble():0.0,
                           ),
                         if(product.discountPercentage==0&&sale==null)
                           PriceDisplay(

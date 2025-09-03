@@ -55,6 +55,8 @@ class CategoryProductsController extends GetxController {
   }
   void applyInitialFilters() {
     _applyAllFilters();
+    _initializeBrandFilters();
+
   }
 
   void _initializeBrandFilters() {
@@ -166,15 +168,12 @@ class CategoryProductsController extends GetxController {
           isEmpty.value = true;
         } else {
           allProducts.assignAll(data.map((e) => ProductDetailsData.fromJson(e)).toList());
-          products.assignAll(allProducts);
-          // products.value = data.map((e) => ProductDetailsData.fromJson(e)).toList();
-          // Initialize brand filters
-          _initializeBrandFilters();
 
-          // Initialize price range filters
+
           _initializePriceRangeFilters();
+          // Future.delayed(Duration(seconds: 5));
+          // products.assignAll(allProducts);
 
-          // Future.delayed(const Duration(seconds: 5));
         }
       } else {
         isError.value = true;

@@ -76,7 +76,7 @@ class HorizontalProductList extends StatelessWidget {
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      product['brand'],
+                      product['brand']['name'],
                       style: const TextStyle(color: Colors.grey, fontSize: 12),
                     ),
                     const Spacer(),

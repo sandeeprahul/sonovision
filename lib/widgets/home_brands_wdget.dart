@@ -175,7 +175,7 @@ class BrandCard extends StatelessWidget {
           ),
         );
       },
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(12),
       child: Container(
         width: 50,
         height: 50,
