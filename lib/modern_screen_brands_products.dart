@@ -65,7 +65,7 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
           final categories = brand.categories;
 
           return Container(
-            // margin: const EdgeInsets.all(16),
+            padding: const EdgeInsets.only(bottom: 16),
             decoration: BoxDecoration(
               // borderRadius: BorderRadius.circular(20),
               color: Colors.white,
@@ -171,6 +171,7 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
         );
       },
       child: Container(
+
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           color: Colors.white,
@@ -203,7 +204,7 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
                       filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
                       child: Container(
                         color: Colors.black
-                            .withOpacity(0.2), // Optional dark overlay
+                            .withOpacity(0.5), // Optional dark overlay
                       ),
                     ),
                   ],
@@ -245,22 +246,30 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
                       ),
                       // maxLines: 2,
                      /* overflow: TextOverflow.ellipsis,*/ text: '${ category.name}',
-                    ):Text(
-                      category.name,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 5.0,
-                            color: Colors.black,
-                            offset: Offset(1.0, 1.0),
+                    ):Row(
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            category.name,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 5.0,
+                                  color: Colors.black,
+                                  offset: Offset(1.0, 1.0),
+                                ),
+                              ],
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                        ],
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                        ),
+                        const Icon(Icons.arrow_forward,color: Colors.white,)
+                      ],
                     ),
                   ),
 
@@ -413,6 +422,8 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
                       ),
                     ),
                   ],
+
+                 // ElevatedButton(onPressed: (){}, child: Text('See all')),
                 ],
               ),
             ),

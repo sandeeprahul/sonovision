@@ -214,7 +214,7 @@ class CheckoutController extends GetxController {
         final orderId = responseData['_id']; // this is your actual order ID
 
         if (selectedPaymentMethod.value == "Cash on Delivery") {
-          Get.off(() => OrderSuccessPage(orderId: orderId));
+          Get.to(() => OrderSuccessPage(orderId: orderId));
         } else {
           // Online Payment via Razorpay
           final pg = paymentGateway.value;
@@ -225,6 +225,7 @@ class CheckoutController extends GetxController {
               var options = {
                 // 'key': '', // replace with your test key
                 'key': 'rzp_test_YkLFs7bxxbMl9I', // replace with your test key
+                // 'key': 'rzp_test_YkLFs7bxxbMl9I', // replace with your test key
                 'amount': cartController.total * 100, // in paise
                 'name': 'Sonovision Electronics Pvt. Ltd.',
                 'description': 'Order Payment',

@@ -180,7 +180,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     const SizedBox(height: 8),
                      Card(
                       child: Padding(
-                        padding: EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(16.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -220,7 +220,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                  Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('Subtotal'),
+                                    const Text('Subtotal'),
                                     Text(cartController.subtotal.toStringAsFixed(2)),
                                   ],
                                 ),
@@ -228,7 +228,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                  Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('Discount'),
+                                    const Text('Discount'),
                                     Text(cartController.discount.toStringAsFixed(2)),
                                   ],
                                 ),
@@ -236,7 +236,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                  Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('Delivery'),
+                                    const Text('Delivery'),
                                     Text(cartController.deliveryCharge.toStringAsFixed(2)),
                                   ],
                                 ),

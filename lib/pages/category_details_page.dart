@@ -15,8 +15,6 @@ class CategoryDetailsPage extends StatefulWidget {
   final String imageUrl;
   final String? brandName;
 
-
-
   const CategoryDetailsPage({
     Key? key,
     this.priceRangeMin,
@@ -25,7 +23,6 @@ class CategoryDetailsPage extends StatefulWidget {
     required this.categoryId,
     required this.categoryName,
     required this.imageUrl,
-
   }) : super(key: key);
 
   @override
@@ -45,7 +42,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
     categoryProductsController =
         Get.put(CategoryProductsController(widget.categoryId));
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-     await _loadProducts();
+      await _loadProducts();
       // Check and apply price range if provided
       final min = double.tryParse(widget.priceRangeMin ?? '');
       final max = double.tryParse(widget.priceRangeMax ?? '');
@@ -59,7 +56,6 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
       }
 
       categoryProductsController.applyInitialFilters();
-
     });
     _scrollController.addListener(_onScroll);
   }
@@ -84,6 +80,8 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
     setState(() {
       _isLoading = true;
     }); // TODO: Replace with actual API call
+    await Future.delayed(Duration(milliseconds: 100));
+
     categoryProductsController.fetchProductsByCategory(widget.categoryId);
     // Get.put(CategoryProductsController(widget.categoryId));
 
@@ -313,7 +311,6 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                   child: Column(
                     children: [
                       RangeSlider(
-
                         values: RangeValues(
                           categoryProductsController.selectedMinPrice.value,
                           categoryProductsController.selectedMaxPrice.value,
@@ -379,13 +376,16 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
       );
     }));
   }
+
   SliverToBoxAdapter _buildActiveFiltersChips() {
     return SliverToBoxAdapter(
       child: Obx(() {
         List<Widget> chips = [];
 
-        if (categoryProductsController.selectedMinPrice.value != categoryProductsController.minPrice.value ||
-            categoryProductsController.selectedMaxPrice.value != categoryProductsController.maxPrice.value) {
+        if (categoryProductsController.selectedMinPrice.value !=
+                categoryProductsController.minPrice.value ||
+            categoryProductsController.selectedMaxPrice.value !=
+                categoryProductsController.maxPrice.value) {
           chips.add(
             Chip(
               label: Text(
@@ -410,7 +410,8 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
           );
         }
 
-        if (chips.isEmpty) return SizedBox.shrink(); // Don't render anything if no chips
+        if (chips.isEmpty)
+          return SizedBox.shrink(); // Don't render anything if no chips
 
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -423,7 +424,6 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
       }),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -439,7 +439,10 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
             onPressed: () => Get.back(),
           ),
         ),
-        title:Text(widget.categoryName,style: const TextStyle(color: Colors.black),) ,
+        title: Text(
+          widget.categoryName,
+          style: const TextStyle(color: Colors.black),
+        ),
       ),
       bottomSheet: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -461,7 +464,13 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
           // _buildActiveFiltersChips(),
 
           Obx(() {
-            if (categoryProductsController.isLoading.value) {
+            print(
+                'isLoading: ${categoryProductsController.isLoading.value}, products length: ${categoryProductsController.products.length}');
+
+            final isLoading = categoryProductsController.isLoading.value;
+            final products = categoryProductsController.products;
+
+            if (isLoading) {
               return const SliverToBoxAdapter(
                 child: Center(
                     child: Padding(
@@ -470,13 +479,29 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                 )),
               );
             }
+            if (categoryProductsController.isError.value) {
+              return const SliverToBoxAdapter(
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      "An error occurred. Please try again later.",
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              );
+            }
 
-            if (categoryProductsController.products.isEmpty) {
+            if (products.isEmpty) {
               return const SliverToBoxAdapter(
                 child: Center(
                     child: Padding(
                   padding: EdgeInsets.all(16.0),
-                  child: Text("No products found\nPlease wait or try again later",textAlign: TextAlign.center,),
+                  child: Text(
+                    "No products found\nPlease wait or try again later",
+                    textAlign: TextAlign.center,
+                  ),
                 )),
               );
             }
@@ -925,7 +950,8 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Brand Name
-                      if (product.brand != null && product.brand!.name.isNotEmpty)
+                      if (product.brand != null &&
+                          product.brand!.name.isNotEmpty)
                         Text(
                           product.brand!.name.toUpperCase(),
                           style: TextStyle(

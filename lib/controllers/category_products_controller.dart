@@ -166,7 +166,13 @@ class CategoryProductsController extends GetxController {
         final List<dynamic> data = json.decode(response.body);
         if (data.isEmpty) {
           isEmpty.value = true;
+          products.clear(); // Already clear, but safe
+
         } else {
+          // products.clear();
+          // final parsed = data.map((e) => ProductDetailsData.fromJson(e)).toList();
+          // allProducts.assignAll(parsed);
+          //
           allProducts.assignAll(data.map((e) => ProductDetailsData.fromJson(e)).toList());
 
 
