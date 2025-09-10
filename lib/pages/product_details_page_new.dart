@@ -12,6 +12,7 @@ import '../models/product_details_data.dart';
 import '../utils/cart_bottom_sheet.dart';
 import '../widgets/product_details_widgets/FreedomSaleBanner.dart';
 import '../widgets/product_details_widgets/count_down_timer_widget.dart';
+import '../widgets/product_details_widgets/filters_or_specifications_widget.dart';
 import '../widgets/product_details_widgets/highlights_list.dart';
 import '../widgets/product_details_widgets/price_display.dart';
 import '../widgets/product_details_widgets/product_description.dart';
@@ -230,8 +231,9 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                   // CountdownTimer(endTime: saleEnd!), // Only one timer
 
 
-                  SpecificationsList(
-                      specifications: product.specifications ?? {}),
+                  // SpecificationsList(
+                  //     specifications: product.specifications ?? {}),
+                   FiltersList(filters: product.filters,),
                   HighlightsList(highlights: product.highlights),
                   product.highlights.isNotEmpty?
                   Padding(
@@ -255,16 +257,16 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                       // openGoogleMapDirections();
                     },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Text(
-                      'Recently Brought',
-                      style: theme.textTheme.headlineMedium!.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  HorizontalProductList(),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(20.0),
+                  //   child: Text(
+                  //     'Recently Brought',
+                  //     style: theme.textTheme.headlineMedium!.copyWith(
+                  //       fontWeight: FontWeight.bold,
+                  //     ),
+                  //   ),
+                  // ),
+                  // HorizontalProductList(),
                 ],
               ),
             ),
@@ -369,12 +371,22 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
                 final exists = controller.cartItems
                     .any((item) => item.productId == product.id);
 
-                var discountedPrice = product.price -
-                    (product.price * product.discountPercentage! / 100);
+                double discountedPrice;
 
-                if (product.sale!=null){
+                // 1️⃣ If product has active sale → use finalPrice
+                if (product.sale != null && product.finalPrice != null) {
                   discountedPrice = product.finalPrice!;
                 }
+                // 2️⃣ Else if discountPercentage exists → calculate
+                else if (product.discountPercentage != null && product.discountPercentage! > 0) {
+                  discountedPrice = product.price -
+                      (product.price * product.discountPercentage! / 100);
+                }
+                // 3️⃣ Else fallback to original price
+                else {
+                  discountedPrice = product.price;
+                }
+
 
                 if (exists) {
                   Get.snackbar(

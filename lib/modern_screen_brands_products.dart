@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:electronic_store/models/product_of_brands.dart';
 import 'package:electronic_store/pages/category_details_page.dart';
+import 'package:electronic_store/pages/products_from_brand_category_screen.dart';
 import 'package:electronic_store/price_extensions.dart';
 import 'package:electronic_store/widgets/filters_grid_widget.dart';
 import 'package:electronic_store/widgets/price_range_carousel_widget.dart';
@@ -131,7 +132,7 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
                 // 🔹 Categories Grid with Products and Price Ranges
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 6.0),
                     child: ListView.builder(
                       itemCount: categories.length,
                       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
@@ -172,11 +173,13 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CategoryDetailsPage(
+            builder: (context) => ProductsFromBrandCategoryScreen(
               categoryId: category.id,
               categoryName: category.name,
               imageUrl:  "http://sonovision.asquare.org.in/images/${category.icon}",
               brandName: brand.name,
+              brandId: brand.id
+              ,
             ),
           ),
         );
@@ -306,7 +309,7 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
                   PriceRangeCarousel(priceRanges: category.priceRanges,category:category),
 
                   const SizedBox(height: 10),
-                  _buildCompactFiltersGrid(category.filters),
+                  _buildCompactFiltersGrid(category.filters,category),
 
                   // Inject filters grid here
                   // FiltersGrid(filters: category.filters),
@@ -351,6 +354,15 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
 
                   // const SizedBox(height: 8),
 
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(onPressed: (){},style: ElevatedButton.styleFrom(backgroundColor: Colors.white,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),    minimumSize: Size.zero, // Set this
+                        padding: EdgeInsets.zero,), child: Text("View All",style: TextStyle(color: Colors.black)),),
+                      ElevatedButton(onPressed: (){}, child: const Text("Show Selected")),
+                    ],
+                  ),
+
                   // Products Horizontal List
                   if (category.products.isNotEmpty) ...[
                     // const SizedBox(height: 4),
@@ -373,7 +385,7 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => CategoryDetailsPage(
+                                    builder: (context) => ProductsFromBrandCategoryScreen(
                                       categoryId: category.id,
                                       categoryName: category.name,
                                       imageUrl:  "http://sonovision.asquare.org.in/images/${category.icon}",
@@ -450,7 +462,7 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
       ),
     );
   }
-  Widget _buildCompactFiltersGrid(List<Filter> filters) {
+  Widget _buildCompactFiltersGrid(List<Filter> filters, Category category) {
     final displayedFilters = filters.where((filter) => filter.showInUi).toList();
 
     if (displayedFilters.isEmpty) return const SizedBox.shrink();
@@ -479,7 +491,7 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
             spacing: 6,
             runSpacing: 6,
             children: displayedFilters
-                .map((filter) => _buildFilterChip(filter))
+                .map((filter) => _buildFilterChip(filter,category))
                 .toList(),
           ),
         ],
@@ -487,8 +499,8 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
     );
   }
 
-  Widget _buildFilterChip(Filter filter) {
-    final displayValues = filter.values.take(2).toList();
+  Widget _buildFilterChip(Filter filter, Category category) {
+    final List<FilterValue> displayValues = filter.values.take(2).toList();
     final hasMore = filter.values.length > 2;
 
     return Tooltip(
@@ -523,14 +535,53 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
                     ),
                   ),
                   const SizedBox(width: 4),
-                  Text(
-                    displayValues.map((v) => v.value).join(", "),
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: Colors.blue.shade700,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                  // Make each value clickable
+                  ...displayValues.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final value = entry.value;
+
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (index > 0)
+                          Text(
+                            ", ",
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: Colors.blue.shade700,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProductsFromBrandCategoryScreen(
+                                  categoryId: category.id,
+                                  categoryName: category.name,
+                                  imageUrl: "http://sonovision.asquare.org.in/images/${category.icon}",
+                                  brandName: category.name,
+                                  filterId: value.id, // Pass the specific filter value ID
+                                  filterTitle: filter.label,
+                                  brandId: widget.brandId,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            value.value,
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: Colors.blue.shade700,
+                              fontWeight: FontWeight.w500,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }).toList(),
                   if (hasMore)
                     Text(
                       " +${filter.values.length - 2}",
@@ -543,6 +594,85 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
                 ],
               ),
           ],
+        ),
+      ),
+    );
+  }
+  Widget _buildFilterChipOLD(Filter filter, Category category) {
+    final List<FilterValue> displayValues = filter.values.take(2).toList();
+    final hasMore = filter.values.length > 2;
+
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductsFromBrandCategoryScreen(
+              categoryId: category.id,
+              categoryName: category.name,
+              imageUrl:  "http://sonovision.asquare.org.in/images/${category.icon}",
+              brandName: category.name,
+              filterId: filter.label,
+              filterTitle: filter.label,
+              brandId: widget.brandId,
+              // priceRangeId:,
+            ),
+          ),
+        );
+      },
+      child: Tooltip(
+        message: filter.label,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.9),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                filter.label,
+                style: const TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
+                ),
+              ),
+              const SizedBox(width: 4),
+              if (displayValues.isNotEmpty)
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      ":",
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      displayValues.map((v) => v.value).join(", "),
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: Colors.blue.shade700,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    if (hasMore)
+                      Text(
+                        " +${filter.values.length - 2}",
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Colors.grey.shade600,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                  ],
+                ),
+            ],
+          ),
         ),
       ),
     );

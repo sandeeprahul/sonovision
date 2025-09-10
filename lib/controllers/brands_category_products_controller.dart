@@ -3,17 +3,18 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../models/product_details_data_from_brands_category.dart';
 import '../services/api_service.dart';
 
 
-class CategoryProductsController extends GetxController {
+class BrandsCategoryProductsController extends GetxController {
   final String categoryId;
 
-  CategoryProductsController(this.categoryId);
+  BrandsCategoryProductsController(this.categoryId);
 
 
-  final RxList<ProductDetailsData> products = <ProductDetailsData>[].obs;
-  final List<ProductDetailsData> allProducts = [];
+  final RxList<ProductDetailsDataFromBrandsCategory> products = <ProductDetailsDataFromBrandsCategory>[].obs;
+  final List<ProductDetailsDataFromBrandsCategory> allProducts = [];
   final RxBool isLoading = false.obs;
   final RxBool isError = false.obs;
   final RxString errorMessage = ''.obs;
@@ -103,7 +104,7 @@ class CategoryProductsController extends GetxController {
     print('came to_applyAllFilters ');
     print(selectedBrand.value );
     print(selectedMinPrice.value );
-    List<ProductDetailsData> filteredProducts = List.from(allProducts);
+    List<ProductDetailsDataFromBrandsCategory> filteredProducts = List.from(allProducts);
 
     // Apply brand filter
     if (selectedBrand.value != 'All') {
@@ -173,20 +174,23 @@ class CategoryProductsController extends GetxController {
       print(url);
 
       final response = await http.get(Uri.parse(url));
-      print("$response");
+      print("new $response");
 
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
 
         if (data.isEmpty) {
           isEmpty.value = true;
+          allProducts.clear();
           products.clear();
         } else {
           print(data.length);
 
           allProducts.assignAll(
-            data.map((e) => ProductDetailsData.fromJson(e)).toList(),
+            data.map((e) => ProductDetailsDataFromBrandsCategory.fromJson(e)).toList(),
           );
+          print("Parsed products: ${allProducts.map((e) => e.name).toList()}");
+
           print(allProducts.length);
         }
       } else {
@@ -204,88 +208,5 @@ class CategoryProductsController extends GetxController {
     }
   }
 
-  void fetchProductsByCategofry(String categoryId,String brandId,{
-  String? filterName,
-  String? filterId,
-  }) async
-  {
-    isLoading.value = true;
-    isError.value = false;
-    errorMessage.value = '';
-    isEmpty.value = false;
-    products.clear();
-    // allProducts.clear();
-
-    try {
-      // final filterParam = '$filterName:$filterId';
-      // final encodedFilter = Uri.encodeComponent(filterParam);
-
-      // Encode only spaces in the name, leave colon raw
-      final safeFilterName = filterName!.replaceAll(' ', '%20');
-      final filterParam = "$safeFilterName:$filterId";
-
-      final url = '${ApiService.baseUrl}/api/products?brand=68b2409ea98929799d4cc92e&category=680eeed3712a366bf3002809&filter=Battery capacity:68ba650cdda4a05113457879';
-      // final url = '${ApiService.baseUrl}/api/products'
-          // '?brand=$brandId'
-          // '&category=$categoryId'
-          // '&filter=$filterParam';
-
-      print(url);
-
-      final response = await http.get(Uri.parse(url));
-
-
-
-      // final response = await http.get(
-      //   Uri.parse('${ApiService.baseUrl}/api/products?brand=$brandId&category=$categoryId&filter=$filterParam'),
-      //   ///old
-      //   // Uri.parse('${ApiService.baseUrl}/api/products/category/$categoryId'),
-      // );
-      // print('${ApiService.baseUrl}/api/products?brand=$brandId&category=$categoryId&filter=$filterParam');
-
-      if (response.statusCode == 200) {
-        print( "if,$response");
-        print( "if,${response.toString()}");
-
-        final List<dynamic> data = json.decode(response.body);
-        print(data);
-        if (data.isEmpty) {
-          print( "if:isEmpty:data");
-
-          isEmpty.value = true;
-          products.clear(); // Already clear, but safe
-
-        } else {
-          print( "else");
-          print(  allProducts.length);
-
-          // products.clear();
-          // final parsed = data.map((e) => ProductDetailsData.fromJson(e)).toList();
-          // allProducts.assignAll(parsed);
-          //
-          allProducts.assignAll(data.map((e) => ProductDetailsData.fromJson(e)).toList());
-
-
-        print(  allProducts.length);
-          // _initializePriceRangeFilters();
-
-          // Future.delayed(Duration(seconds: 5));
-          // products.assignAll(allProducts);
-
-        }
-      } else {
-        isError.value = true;
-        errorMessage.value = 'Server error: ${response.statusCode}';
-        print('Failed to load products: ${response.statusCode}');
-      }
-    } catch (e) {
-      isError.value = true;
-      errorMessage.value = 'Something went wrong: $e';
-
-      print('Error fetching products: $e');
-    } finally {
-      isLoading.value = false;
-    }
-  }
 
 }

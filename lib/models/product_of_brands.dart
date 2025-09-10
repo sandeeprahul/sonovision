@@ -120,6 +120,16 @@ class Filter {
           .toList(),
     );
   }
+  Map<String, dynamic> toJson() {
+    return {
+      "_id": id,
+      "key": key,
+      "label": label,
+      "icon": icon,
+      "show_in_ui": showInUi,
+      "values": values.map((e) => e.toJson()).toList(),
+    };
+  }
 }
 
 class FilterValue {
@@ -136,6 +146,12 @@ class FilterValue {
       id: json["_id"],
       value: json["value"],
     );
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      "_id": id,
+      "value": value,
+    };
   }
 }
 

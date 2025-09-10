@@ -8,6 +8,7 @@ import '../services/api_service.dart';
 
 class ProductDetailsController extends GetxController {
   var isLoading = true.obs;
+  // var product = Rxn<ProductDetailsData>();
   var product = Rxn<ProductDetailsData>();
 
 
