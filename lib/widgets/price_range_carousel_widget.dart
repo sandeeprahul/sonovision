@@ -62,7 +62,7 @@ class _PriceRangeCarouselState extends State<PriceRangeCarousel> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 100, // Adjust as needed
+      height: 60,
       child: PageView.builder(
         controller: _pageController,
         itemCount: _pages.length,
@@ -74,10 +74,10 @@ class _PriceRangeCarouselState extends State<PriceRangeCarousel> {
             child: GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // 2 columns
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-                childAspectRatio: 2.2,
+                crossAxisCount: 4, // 2 columns
+                crossAxisSpacing: 4,
+                mainAxisSpacing: 4,
+                childAspectRatio: 3.5,
               ),
               itemCount: currentChunk.length,
               itemBuilder: (context, index) {

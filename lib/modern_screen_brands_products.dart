@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:electronic_store/models/product_of_brands.dart';
 import 'package:electronic_store/pages/category_details_page.dart';
 import 'package:electronic_store/price_extensions.dart';
+import 'package:electronic_store/widgets/filters_grid_widget.dart';
 import 'package:electronic_store/widgets/price_range_carousel_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -131,7 +132,17 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: GridView.builder(
+                    child: ListView.builder(
+                      itemCount: categories.length,
+                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                      itemBuilder: (context, index) {
+                        final category = categories[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 16.0), // spacing between items
+                          child: _buildCategoryCard(category, brand),
+                        );
+                      },
+                    )/*GridView.builder(
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
@@ -144,7 +155,7 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
                         final category = categories[index];
                         return _buildCategoryCard(category,brand);
                       },
-                    ),
+                    ),*/
                   ),
                 ),
               ],
@@ -294,7 +305,11 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
                   const SizedBox(height: 8),
                   PriceRangeCarousel(priceRanges: category.priceRanges,category:category),
 
-                  // Price Ranges Grid (2x2)
+                  const SizedBox(height: 10),
+                  _buildCompactFiltersGrid(category.filters),
+
+                  // Inject filters grid here
+                  // FiltersGrid(filters: category.filters),
                  /* Expanded(
                     child: GridView.builder(
                       physics: const NeverScrollableScrollPhysics(),
@@ -339,86 +354,89 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
                   // Products Horizontal List
                   if (category.products.isNotEmpty) ...[
                     // const SizedBox(height: 4),
-                    SizedBox(
-                      height: 98,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: category.products.length,
-                        itemBuilder: (context, index) {
-                          final product = category.products[index];
+                    Visibility(
+                      visible: false,
+                      child: SizedBox(
+                        height: 98,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: category.products.length,
+                          itemBuilder: (context, index) {
+                            final product = category.products[index];
 
-                          final value = num.tryParse(product.price.toString());
-                          final formattedSubtitle = value != null
-                              ? value.toINR() // your extension
-                              : product.price.toString();
-                          return InkWell(
-                            onTap: (){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => CategoryDetailsPage(
-                                    categoryId: category.id,
-                                    categoryName: category.name,
-                                    imageUrl:  "http://sonovision.asquare.org.in/images/${category.icon}",
+                            final value = num.tryParse(product.price.toString());
+                            final formattedSubtitle = value != null
+                                ? value.toINR() // your extension
+                                : product.price.toString();
+                            return InkWell(
+                              onTap: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CategoryDetailsPage(
+                                      categoryId: category.id,
+                                      categoryName: category.name,
+                                      imageUrl:  "http://sonovision.asquare.org.in/images/${category.icon}",
+                                    ),
                                   ),
+                                );
+                              },
+                              child: Container(
+                                width: 80,
+                                margin: const EdgeInsets.only(right: 8),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.9),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                              );
-                            },
-                            child: Container(
-                              width: 80,
-                              margin: const EdgeInsets.only(right: 8),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.9),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  // Product image
-                                  if(product.images.isNotEmpty)
-                                  Container(
-                                    height: 50,
-                                    width: 50,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      image: DecorationImage(
-                                        image: NetworkImage(product.images[0]),
-                                        fit: BoxFit.cover,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    // Product image
+                                    if(product.images.isNotEmpty)
+                                    Container(
+                                      height: 50,
+                                      width: 50,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        image: DecorationImage(
+                                          image: NetworkImage(product.images[0]),
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 4),
+                                    const SizedBox(height: 4),
 
-                                  // Product name
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(horizontal: 4.0),
-                                    child: Text(
-                                      product.name,
-                                      style: const TextStyle(
+                                    // Product name
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.symmetric(horizontal: 4.0),
+                                      child: Text(
+                                        product.name,
+                                        style: const TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+
+                                    // Product price
+                                    /*    Text(
+                                      formattedSubtitle,
+                                      style: TextStyle(
                                         fontSize: 10,
-                                        fontWeight: FontWeight.w600,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.blue.shade800,
                                       ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-
-                                  // Product price
-                                  /*    Text(
-                                    formattedSubtitle,
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.blue.shade800,
-                                    ),
-                                  ),*/
-                                ],
+                                    ),*/
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ],
@@ -427,6 +445,103 @@ class _ModernCategoryScreenState extends State<ModernCategoryScreen> {
                 ],
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+  Widget _buildCompactFiltersGrid(List<Filter> filters) {
+    final displayedFilters = filters.where((filter) => filter.showInUi).toList();
+
+    if (displayedFilters.isEmpty) return const SizedBox.shrink();
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(left: 8.0, bottom: 6),
+            child: Text(
+              "Key Features",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children: displayedFilters
+                .map((filter) => _buildFilterChip(filter))
+                .toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFilterChip(Filter filter) {
+    final displayValues = filter.values.take(2).toList();
+    final hasMore = filter.values.length > 2;
+
+    return Tooltip(
+      message: filter.label,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.9),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              filter.label,
+              style: const TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
+              ),
+            ),
+            const SizedBox(width: 4),
+            if (displayValues.isNotEmpty)
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    ":",
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Colors.grey.shade600,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    displayValues.map((v) => v.value).join(", "),
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Colors.blue.shade700,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  if (hasMore)
+                    Text(
+                      " +${filter.values.length - 2}",
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.grey.shade600,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                ],
+              ),
           ],
         ),
       ),

@@ -58,6 +58,8 @@ class Category {
   final bool isActive;
   final List<PriceRange> priceRanges;
   final List<Product> products;
+  final List<Filter> filters; // ✅ new field
+
 
   Category({
     required this.id,
@@ -67,6 +69,8 @@ class Category {
     required this.isActive,
     required this.priceRanges,
     required this.products,
+    required this.filters,
+
   });
 
   factory Category.fromJson(Map<String, dynamic> json) {
@@ -81,9 +85,60 @@ class Category {
           .toList(),
       products:
       (json["products"] as List).map((e) => Product.fromJson(e)).toList(),
+      filters: (json["filters"] as List)
+          .map((e) => Filter.fromJson(e))
+          .toList(),
     );
   }
 }
+class Filter {
+  final String id;
+  final String key;
+  final String label;
+  final String? icon;
+  final bool showInUi;
+  final List<FilterValue> values;
+
+  Filter({
+    required this.id,
+    required this.key,
+    required this.label,
+    required this.icon,
+    required this.showInUi,
+    required this.values,
+  });
+
+  factory Filter.fromJson(Map<String, dynamic> json) {
+    return Filter(
+      id: json["_id"],
+      key: json["key"],
+      label: json["label"],
+      icon: json["icon"],
+      showInUi: json["show_in_ui"],
+      values: (json["values"] as List)
+          .map((e) => FilterValue.fromJson(e))
+          .toList(),
+    );
+  }
+}
+
+class FilterValue {
+  final String id;
+  final String value;
+
+  FilterValue({
+    required this.id,
+    required this.value,
+  });
+
+  factory FilterValue.fromJson(Map<String, dynamic> json) {
+    return FilterValue(
+      id: json["_id"],
+      value: json["value"],
+    );
+  }
+}
+
 
 class Brand {
   final String id;
