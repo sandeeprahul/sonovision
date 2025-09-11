@@ -6,6 +6,7 @@ import '../controllers/brands_category_products_controller.dart';
 import '../controllers/cart_controller.dart';
 import '../controllers/category_products_controller.dart';
 import '../models/product_details_data_from_brands_category.dart';
+import '../models/product_of_brands.dart';
 import '../utils/cart_bottom_sheet.dart';
 
 class ProductsFromBrandCategoryScreen extends StatefulWidget {
@@ -19,6 +20,10 @@ class ProductsFromBrandCategoryScreen extends StatefulWidget {
   final String imageUrl;
   final String? brandName;
   final String?  brandId;
+  final List<FilterValue> selectedFilters;
+  final List<FilterValue> allFilters;       // from backend
+
+
 
   const ProductsFromBrandCategoryScreen({
     Key? key,
@@ -32,6 +37,9 @@ class ProductsFromBrandCategoryScreen extends StatefulWidget {
     required this.categoryId,
     required this.categoryName,
     required this.imageUrl,
+    this.selectedFilters = const [],
+    this.allFilters = const [],
+
   }) : super(key: key);
 
   @override
@@ -44,12 +52,16 @@ class _ProductsFromBrandCategoryScreenState extends State<ProductsFromBrandCateg
   final ScrollController _scrollController = ScrollController();
   bool _isLoading = false;
   List<dynamic> _products = [];
+  late List<FilterValue> activeFilters;
+
 
   @override
   void initState() {
     super.initState();
     categoryProductsController =
         Get.put(BrandsCategoryProductsController(widget.categoryId));
+    activeFilters = List.from(widget.selectedFilters);
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _loadProducts();
       // Check and apply price range if provided
@@ -67,6 +79,18 @@ class _ProductsFromBrandCategoryScreenState extends State<ProductsFromBrandCateg
       //   // categoryProductsController.applyInitialFilters();
     });
     _scrollController.addListener(_onScroll);
+  }
+
+  Future<void> _toggleFilter(FilterValue filter) async {
+    setState(() {
+      if (activeFilters.any((f) => f.id == filter.id)) {
+        activeFilters.removeWhere((f) => f.id == filter.id);
+      } else {
+        activeFilters.add(filter);
+      }
+    });
+   await  _loadProducts();
+
   }
 
   @override
@@ -92,14 +116,39 @@ class _ProductsFromBrandCategoryScreenState extends State<ProductsFromBrandCateg
     await Future.delayed(const Duration(milliseconds: 100));
 
 
-    categoryProductsController.fetchProductsByCategory(widget.categoryId,widget.brandId??'',filterId:widget.filterId,filterName: widget.filterTitle );
-    // categoryProductsController.fetchProductsByCategory(widget.categoryId,widget.filterTitle??'', widget.filterId??'');
-    // Get.put(CategoryProductsController(widget.categoryId));
+
+    if (activeFilters.isEmpty) {
+      // no filter → load normally
+       categoryProductsController.fetchProductsByCategory(
+        widget.categoryId,
+        widget.brandId??'',
+      );
+    } else {
+      // multiple filters → call API for each filter id
+      for (final f in activeFilters) {
+         categoryProductsController.fetchProductsByCategory(
+          widget.categoryId,
+          widget.brandId??'',
+          filterName: widget.filterTitle,
+          filterId: f.id,
+        );
+      }
+    }
+
+
+    // categoryProductsController.fetchProductsByCategory(widget.categoryId,widget.brandId??'',filterId:widget.filterId,filterName: widget.filterTitle );
 
     await Future.delayed(const Duration(seconds: 1));
     setState(() {
       _isLoading = false;
     });
+  }
+
+  void _removeFilter(int index) async {
+    setState(() {
+      activeFilters.removeAt(index);
+    });
+    await _loadProducts();
   }
 
   Future<void> _loadMoreProducts() async {
@@ -405,6 +454,7 @@ class _ProductsFromBrandCategoryScreenState extends State<ProductsFromBrandCateg
               ),
               onDeleted: () {
                 // categoryProductsController.resetFilters();
+                // _removeFilter();
               },
             ),
           );
@@ -475,6 +525,76 @@ class _ProductsFromBrandCategoryScreenState extends State<ProductsFromBrandCateg
           // _buildFiltersBar(),
           // _buildActiveFiltersChips(),
 
+          ///working new
+
+// ✅ This part shows currently active filters with delete option
+//           if (activeFilters.isNotEmpty)
+//             SliverToBoxAdapter(
+//               child: SizedBox(
+//                 height: 50,
+//                 child: ListView.separated(
+//                   scrollDirection: Axis.horizontal,
+//                   padding: const EdgeInsets.symmetric(horizontal: 8),
+//                   itemCount: activeFilters.length,
+//                   separatorBuilder: (_, __) => const SizedBox(width: 8),
+//                   itemBuilder: (context, index) {
+//                     final f = activeFilters[index];
+//                     return Chip(
+//                       label: Text(f.value),
+//                       onDeleted: () => _removeFilter(index), // ❌ delete here
+//                       backgroundColor: Colors.blue.shade100,
+//                     );
+//                   },
+//                 ),
+//               ),
+//             ),
+
+          ///working old
+          // if (activeFilters.isNotEmpty)
+          //   SliverToBoxAdapter(
+          //     child: SizedBox(
+          //       height: 50,
+          //       child: ListView.separated(
+          //         scrollDirection: Axis.horizontal,
+          //         padding: const EdgeInsets.symmetric(horizontal: 8),
+          //         itemCount: widget.allFilters.length,
+          //         separatorBuilder: (_, __) => const SizedBox(width: 8),
+          //         itemBuilder: (context, index) {
+          //           final f = widget.allFilters[index];
+          //           final isSelected = activeFilters.any((af) => af.id == f.id);
+          //
+          //           return ChoiceChip(
+          //             label: Text(f.value),
+          //             selected: isSelected,
+          //
+          //             selectedColor: Colors.blue.shade200,
+          //             backgroundColor: Colors.grey.shade200,
+          //             onSelected: (_) => _toggleFilter(f),
+          //
+          //
+          //           );
+          //         },
+          //       ),
+          //     ),
+          //   ),
+
+
+// ✅ This part shows ALL filters (tappable ChoiceChips)
+          SliverToBoxAdapter(
+            child: Wrap(
+              spacing: 8,
+              children: widget.allFilters.map((f) {
+                final isSelected = activeFilters.any((af) => af.id == f.id);
+                return ChoiceChip(
+                  label: Text(f.value),
+                  selected: isSelected,
+                  selectedColor: Colors.blue.shade200,
+                  backgroundColor: Colors.grey.shade200,
+                  onSelected: (_) => _toggleFilter(f), // toggle add/remove
+                );
+              }).toList(),
+            ),
+          ),
           Obx(() {
             print(
                 'isLoading: ${categoryProductsController.isLoading.value}, products length: ${categoryProductsController.allProducts.length}');

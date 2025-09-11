@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-import '../modern_screen_brands_products.dart';
+import '../brands_category_screen.dart';
 
 // Brand Model
 class Brand {
@@ -170,11 +170,14 @@ class BrandCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>  ModernCategoryScreen(brandId: brand.id,
+            builder: (context) =>  BrandsCategoryScreen(brandId: brand.id,
+
             ),
           ),
         );
+        // Get.to(() => BrandsCategoryScreen(brandId: brand.id), transition: Transition.rightToLeft);
       },
+
       borderRadius: BorderRadius.circular(12),
       child: Container(
         width: 50,

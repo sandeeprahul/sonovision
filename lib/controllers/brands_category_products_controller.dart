@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../models/product_details_data_from_brands_category.dart';
+import '../models/product_of_brands.dart';
 import '../services/api_service.dart';
 
 
@@ -152,6 +153,8 @@ class BrandsCategoryProductsController extends GetxController {
   void fetchProductsByCategory(String categoryId, String brandId, {
     String? filterName,
     String? filterId,
+    List<FilterValue>? selectedFilters,
+
   }) async {
     isLoading.value = true;
     isError.value = false;
@@ -162,13 +165,29 @@ class BrandsCategoryProductsController extends GetxController {
     try {
       String url;
 
-      if (filterName != null && filterId != null) {
+      // if (filterName != null && filterId != null) {
+      if (selectedFilters != null && selectedFilters.isNotEmpty) {
+        // final safeFilterName = filterName.replaceAll(' ', '%20');
+        // 🔹 Build multiple &filter=... params
+        final filterParams = selectedFilters.map((f) {
+          final safeName = f.value.replaceAll(' ', '%20');
+          return 'filter=$safeName:${f.id}';
+        }).join('&');
+
+        url =
+        '${ApiService.baseUrl}/api/products?brand=$brandId&category=$categoryId&$filterParams';
+
+        // final filterParam = "$safeFilterName:$filterId";
+        // url = '${ApiService.baseUrl}/api/products?brand=$brandId&category=$categoryId&filter=$filterParam';
+      }  else if (filterName != null && filterId != null) {
+        // 🔹 Single filter fallback
         final safeFilterName = filterName.replaceAll(' ', '%20');
-        // final filterParam = "Battery capacity:68ba650cdda4a05113457879";
         final filterParam = "$safeFilterName:$filterId";
-        //Battery capacity
-        url = '${ApiService.baseUrl}/api/products?brand=$brandId&category=$categoryId&filter=$filterParam';
-      } else {
+
+        url =
+        '${ApiService.baseUrl}/api/products?brand=$brandId&category=$categoryId&filter=$filterParam';
+      }
+      else {
         url = '${ApiService.baseUrl}/api/products?brand=$brandId&category=$categoryId';
       }
       print(url);

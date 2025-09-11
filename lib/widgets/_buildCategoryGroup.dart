@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import '../controllers/category_controller.dart';
-import '../modern_screen_brands_products.dart';
+import '../brands_category_screen.dart';
 import '../pages/category_details_page.dart';
 import '../pages/category_list_screen.dart';
 import 'package:get/get.dart';

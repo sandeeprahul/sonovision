@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../models/product_of_brands.dart';
 import '../pages/category_details_page.dart';
+import '../pages/products_from_brand_category_screen.dart';
 
 // Helper function to chunk list
 List<List<T>> chunkList<T>(List<T> list, int size) {
@@ -17,8 +18,9 @@ List<List<T>> chunkList<T>(List<T> list, int size) {
 class PriceRangeCarousel extends StatefulWidget {///
   final List<PriceRange> priceRanges; // your model
   final Category category; // your model
+  final Brand brand; // your model
 
-  const PriceRangeCarousel({super.key, required this.priceRanges, required this. category});
+  const PriceRangeCarousel({super.key, required this.priceRanges, required this. category,required this.brand});
 
   @override
   State<PriceRangeCarousel> createState() => _PriceRangeCarouselState();
@@ -77,7 +79,7 @@ class _PriceRangeCarouselState extends State<PriceRangeCarousel> {
                 crossAxisCount: 4, // 2 columns
                 crossAxisSpacing: 4,
                 mainAxisSpacing: 4,
-                childAspectRatio: 3.5,
+                childAspectRatio: 2,
               ),
               itemCount: currentChunk.length,
               itemBuilder: (context, index) {
@@ -90,35 +92,59 @@ class _PriceRangeCarouselState extends State<PriceRangeCarousel> {
 
                 return InkWell(
                   onTap: (){
+                    print("range.id");
+                    print(range.id);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CategoryDetailsPage(
+                        builder: (context) => ProductsFromBrandCategoryScreen(
                           categoryId: widget.category.id,
                           categoryName:widget. category.name,
                           imageUrl:  "http://sonovision.asquare.org.in/images/${widget.category.icon}",
                           priceRangeMin: '${range.min}',
                           priceRangeMax: '${range.max}',
+                          filterId: range.id,
+                          filterTitle: "Price",
+                          brandId: widget.brand.id,
                         ),
                       ),
                     );
                   },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.9),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                  child: Card(
+                    elevation: 2,
                     child: Center(
                       child: Text(
                         formattedSubtitle,
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 10,
                           fontWeight: FontWeight.w600,
                           color: Colors.blue.shade800,
                         ),
                       ),
                     ),
-                  ),
+                  )/*Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.6),
+                          blurRadius: 5,
+                          offset: Offset(0, 0),
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: Text(
+                        formattedSubtitle,
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.blue.shade800,
+                        ),
+                      ),
+                    ),
+                  ),*/
                 );
               },
             ),

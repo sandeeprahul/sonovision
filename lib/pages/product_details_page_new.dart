@@ -233,7 +233,10 @@ class _ProductDetailsScreenNewState extends State<ProductDetailsScreenNew> {
 
                   // SpecificationsList(
                   //     specifications: product.specifications ?? {}),
+                  if(product.filters.isNotEmpty)
                    FiltersList(filters: product.filters,),
+
+                  if(product.filters.isEmpty&& product.highlights.isNotEmpty)
                   HighlightsList(highlights: product.highlights),
                   product.highlights.isNotEmpty?
                   Padding(
