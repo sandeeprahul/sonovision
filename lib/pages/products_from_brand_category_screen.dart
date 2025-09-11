@@ -131,6 +131,7 @@ class _ProductsFromBrandCategoryScreenState extends State<ProductsFromBrandCateg
           widget.brandId??'',
           filterName: widget.filterTitle,
           filterId: f.id,
+           selectedFilters: activeFilters
         );
       }
     }
@@ -528,26 +529,26 @@ class _ProductsFromBrandCategoryScreenState extends State<ProductsFromBrandCateg
           ///working new
 
 // ✅ This part shows currently active filters with delete option
-//           if (activeFilters.isNotEmpty)
-//             SliverToBoxAdapter(
-//               child: SizedBox(
-//                 height: 50,
-//                 child: ListView.separated(
-//                   scrollDirection: Axis.horizontal,
-//                   padding: const EdgeInsets.symmetric(horizontal: 8),
-//                   itemCount: activeFilters.length,
-//                   separatorBuilder: (_, __) => const SizedBox(width: 8),
-//                   itemBuilder: (context, index) {
-//                     final f = activeFilters[index];
-//                     return Chip(
-//                       label: Text(f.value),
-//                       onDeleted: () => _removeFilter(index), // ❌ delete here
-//                       backgroundColor: Colors.blue.shade100,
-//                     );
-//                   },
-//                 ),
-//               ),
-//             ),
+          if (activeFilters.isNotEmpty)
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: 50,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  itemCount: activeFilters.length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 8),
+                  itemBuilder: (context, index) {
+                    final f = activeFilters[index];
+                    return Chip(
+                      label: Text(f.value),
+                      onDeleted: () => _removeFilter(index), // ❌ delete here
+                      backgroundColor: Colors.blue.shade100,
+                    );
+                  },
+                ),
+              ),
+            ),
 
           ///working old
           // if (activeFilters.isNotEmpty)

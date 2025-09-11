@@ -108,9 +108,9 @@ class BrandsCategoryProductsController extends GetxController {
     List<ProductDetailsDataFromBrandsCategory> filteredProducts = List.from(allProducts);
 
     // Apply brand filter
-    if (selectedBrand.value != 'All') {
-      filteredProducts = filteredProducts.where((p) => p.brand?.name == selectedBrand.value).toList();
-    }
+    // if (selectedBrand.value != 'All') {
+    //   filteredProducts = filteredProducts.where((p) => p.brand?.name == selectedBrand.value).toList();
+    // }
 
     // Apply price range filter
     filteredProducts = filteredProducts.where((p) =>
@@ -170,9 +170,11 @@ class BrandsCategoryProductsController extends GetxController {
         // final safeFilterName = filterName.replaceAll(' ', '%20');
         // 🔹 Build multiple &filter=... params
         final filterParams = selectedFilters.map((f) {
-          final safeName = f.value.replaceAll(' ', '%20');
+          final safeName = filterName!.replaceAll(' ', '%20');
           return 'filter=$safeName:${f.id}';
         }).join('&');
+        print("filterParams");
+        print(filterParams);
 
         url =
         '${ApiService.baseUrl}/api/products?brand=$brandId&category=$categoryId&$filterParams';
