@@ -10,75 +10,72 @@ import '../models/product_of_brands.dart';
 import '../utils/cart_bottom_sheet.dart';
 
 class ProductsFromBrandCategoryScreen extends StatefulWidget {
-  final String? priceRangeMin;
-  final String? priceRangeMax;
   final String? filterTitle;
   final String? filterId;
-  final String? priceRangeId;
+  final List<PriceRange> priceRanges; // all ranges
   final String categoryId;
   final String categoryName;
   final String imageUrl;
   final String? brandName;
-  final String?  brandId;
+  final String? brandId;
   final List<FilterValue> selectedFilters;
-  final List<FilterValue> allFilters;       // from backend
-
-
+  final List<FilterValue> allFilters;
+  final PriceRange? selectedRange; // chosen range
+// from backend
 
   const ProductsFromBrandCategoryScreen({
     Key? key,
-    this.priceRangeMin,
-    this.priceRangeMax,
     this.brandName,
     this.filterId,
-    this.priceRangeId,
     this.filterTitle,
     this.brandId,
+    this.selectedRange,
     required this.categoryId,
     required this.categoryName,
     required this.imageUrl,
     this.selectedFilters = const [],
     this.allFilters = const [],
-
+    this.priceRanges = const [],
   }) : super(key: key);
 
   @override
-  State<ProductsFromBrandCategoryScreen> createState() => _ProductsFromBrandCategoryScreenState();
+  State<ProductsFromBrandCategoryScreen> createState() =>
+      _ProductsFromBrandCategoryScreenState();
 }
 
-class _ProductsFromBrandCategoryScreenState extends State<ProductsFromBrandCategoryScreen> {
+class _ProductsFromBrandCategoryScreenState
+    extends State<ProductsFromBrandCategoryScreen> {
   final List<String> _filters = ['All', 'Popular', 'New', 'Price ↑', 'Price ↓'];
   String _selectedFilter = 'All';
   final ScrollController _scrollController = ScrollController();
   bool _isLoading = false;
-  List<dynamic> _products = [];
   late List<FilterValue> activeFilters;
+  late PriceRange activeRange;
 
+  List<Product> allProducts = [];
+  List<Product> filteredProducts = [];
 
   @override
   void initState() {
     super.initState();
+    if(widget.selectedRange!=null){
+      activeRange = widget.selectedRange!; // default
+    }
+
     categoryProductsController =
         Get.put(BrandsCategoryProductsController(widget.categoryId));
     activeFilters = List.from(widget.selectedFilters);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _loadProducts();
-      // Check and apply price range if provided
-      //   final min = double.tryParse(widget.priceRangeMin ?? '');
-      //   final max = double.tryParse(widget.priceRangeMax ?? '');
-      //
-      //   if (min != null && max != null) {
-      //     categoryProductsController.setInitialPriceRange(min, max);
-      //   }
-      //   // Set initial brand if available
-      //   if (widget.brandName != null && widget.brandName!.isNotEmpty) {
-      //     categoryProductsController.setInitialBrand(widget.brandName!);
-      //   }
-      //
-      //   // categoryProductsController.applyInitialFilters();
     });
     _scrollController.addListener(_onScroll);
+  }
+  void _changeRange(PriceRange newRange) {
+    setState(() {
+      activeRange = newRange;
+    });
+    _loadProducts();
   }
 
   Future<void> _toggleFilter(FilterValue filter) async {
@@ -89,8 +86,7 @@ class _ProductsFromBrandCategoryScreenState extends State<ProductsFromBrandCateg
         activeFilters.add(filter);
       }
     });
-   await  _loadProducts();
-
+    await _loadProducts();
   }
 
   @override
@@ -115,27 +111,44 @@ class _ProductsFromBrandCategoryScreenState extends State<ProductsFromBrandCateg
     }); // TODO: Replace with actual API call
     await Future.delayed(const Duration(milliseconds: 100));
 
-
-
     if (activeFilters.isEmpty) {
       // no filter → load normally
-       categoryProductsController.fetchProductsByCategory(
+      categoryProductsController.fetchProductsByCategory(
         widget.categoryId,
-        widget.brandId??'',
+        widget.brandId ?? '',
       );
     } else {
       // multiple filters → call API for each filter id
       for (final f in activeFilters) {
-         categoryProductsController.fetchProductsByCategory(
-          widget.categoryId,
-          widget.brandId??'',
-          filterName: widget.filterTitle,
-          filterId: f.id,
-           selectedFilters: activeFilters
-        );
+        categoryProductsController.fetchProductsByCategory(
+            widget.categoryId, widget.brandId ?? '',
+            filterName: widget.filterTitle,
+            filterId: f.id,
+            selectedFilters: activeFilters);
       }
     }
 
+
+    if (activeRange != null) {
+      final min = activeRange!.min;
+      final max = activeRange!.max;
+
+      final allProducts = categoryProductsController.products; // original list
+      final filtered = allProducts.where((p) {
+        final price = p.price ?? 0; // ensure safe
+        return price >= min && price <= max;
+      }).toList();
+
+      setState(() {
+        categoryProductsController.filteredProducts.value = filtered;
+      });
+    } else {
+      // no price range → show all
+      setState(() {
+        categoryProductsController.filteredProducts.value =
+            categoryProductsController.products;
+      });
+    }
 
     // categoryProductsController.fetchProductsByCategory(widget.categoryId,widget.brandId??'',filterId:widget.filterId,filterName: widget.filterTitle );
 
@@ -369,7 +382,7 @@ class _ProductsFromBrandCategoryScreenState extends State<ProductsFromBrandCateg
                     ),
                   ),
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   child: Column(
                     children: [
                       RangeSlider(
@@ -445,7 +458,7 @@ class _ProductsFromBrandCategoryScreenState extends State<ProductsFromBrandCateg
         List<Widget> chips = [];
 
         if (categoryProductsController.selectedMinPrice.value !=
-            categoryProductsController.minPrice.value ||
+                categoryProductsController.minPrice.value ||
             categoryProductsController.selectedMaxPrice.value !=
                 categoryProductsController.maxPrice.value) {
           chips.add(
@@ -526,6 +539,56 @@ class _ProductsFromBrandCategoryScreenState extends State<ProductsFromBrandCateg
           // _buildFiltersBar(),
           // _buildActiveFiltersChips(),
 
+
+          SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 🔹 Active filter chip
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                  child: Wrap(
+                    spacing: 8,
+                    children: [
+                      InputChip(
+                        label: Text("${activeRange.label}"),
+                        selected: true,
+                        onDeleted: () {
+                          setState(() {
+                            activeRange = widget.priceRanges.first; // reset
+                          });
+                          _loadProducts();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+
+                // 🔹 Price range chips (horizontal list)
+                SizedBox(
+                  height: 48,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    itemCount: widget.priceRanges.length,
+                    itemBuilder: (context, index) {
+                      final range = widget.priceRanges[index];
+                      final isSelected = range.id == activeRange.id;
+
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: ChoiceChip(
+                          label: Text(range.label),
+                          selected: isSelected,
+                          onSelected: (_) => _changeRange(range),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
           ///working new
 
 // ✅ This part shows currently active filters with delete option
@@ -579,7 +642,6 @@ class _ProductsFromBrandCategoryScreenState extends State<ProductsFromBrandCateg
           //     ),
           //   ),
 
-
 // ✅ This part shows ALL filters (tappable ChoiceChips)
           SliverToBoxAdapter(
             child: Wrap(
@@ -601,15 +663,17 @@ class _ProductsFromBrandCategoryScreenState extends State<ProductsFromBrandCateg
                 'isLoading: ${categoryProductsController.isLoading.value}, products length: ${categoryProductsController.allProducts.length}');
 
             final isLoading = categoryProductsController.isLoading.value;
-            final products = categoryProductsController.allProducts;
+            final products = categoryProductsController.filteredProducts;
+            // final products = categoryProductsController.allProducts;
+            // final filterProducts = categoryProductsController.filteredProducts;
 
             if (isLoading) {
               return const SliverToBoxAdapter(
                 child: Center(
                     child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: CircularProgressIndicator(),
-                    )),
+                  padding: EdgeInsets.all(16.0),
+                  child: CircularProgressIndicator(),
+                )),
               );
             }
             if (categoryProductsController.isError.value) {
@@ -630,14 +694,15 @@ class _ProductsFromBrandCategoryScreenState extends State<ProductsFromBrandCateg
               return const SliverToBoxAdapter(
                 child: Center(
                     child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        "No products found\nPlease wait or try again later",
-                        textAlign: TextAlign.center,
-                      ),
-                    )),
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    "No products found\nPlease wait or try again later",
+                    textAlign: TextAlign.center,
+                  ),
+                )),
               );
             }
+
 
             return _buildProductGrid(); // ✅ If products are loaded
           }),
@@ -703,6 +768,8 @@ class _ProductsFromBrandCategoryScreenState extends State<ProductsFromBrandCateg
   }
 
   Widget _buildProductGrid() {
+    final products = categoryProductsController.filteredProducts;
+
     return SliverPadding(
       padding: const EdgeInsets.all(16),
       sliver: SliverGrid(
@@ -713,9 +780,9 @@ class _ProductsFromBrandCategoryScreenState extends State<ProductsFromBrandCateg
           crossAxisSpacing: 16,
         ),
         delegate: SliverChildBuilderDelegate(
-              (context, index) =>
-              _buildProductCard(categoryProductsController.allProducts[index]),
-          childCount: categoryProductsController.allProducts.length,
+          (context, index) =>
+              _buildProductCard(products[index]),
+          childCount: products.length,
         ),
       ),
     );
@@ -886,7 +953,7 @@ class _ProductsFromBrandCategoryScreenState extends State<ProductsFromBrandCateg
                             name: product.name,
                             image: product.images[0],
                             color:
-                            product.colors.isEmpty ? '' : product.colors[0],
+                                product.colors.isEmpty ? '' : product.colors[0],
                             price: product.price,
                             productId: product.id,
                           ));
@@ -962,119 +1029,119 @@ class _ProductsFromBrandCategoryScreenState extends State<ProductsFromBrandCateg
                 // Image Section
                 product.images.isNotEmpty
                     ? Stack(
-                  children: [
-                    Container(
-                      height: 160,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(16)),
-                        color: Theme.of(context)
-                            .colorScheme
-                            .surfaceVariant
-                            .withOpacity(0.3),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(16)),
-                        child: Hero(
-                          tag:
-                          'product-${product.id}-${product.images[0]}',
-                          child: CachedNetworkImage(
-                            imageUrl: product.images[0],
-                            fit: BoxFit.contain,
-                            placeholder: (_, __) => Center(
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: Theme.of(context).primaryColor,
-                              ),
+                        children: [
+                          Container(
+                            height: 160,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.vertical(
+                                  top: Radius.circular(16)),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .surfaceVariant
+                                  .withOpacity(0.3),
                             ),
-                            errorWidget: (_, __, ___) => Center(
-                              child: Icon(
-                                Icons.shopping_bag_outlined,
-                                size: 40,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSurfaceVariant,
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.vertical(
+                                  top: Radius.circular(16)),
+                              child: Hero(
+                                tag:
+                                    'product-${product.id}-${product.images[0]}',
+                                child: CachedNetworkImage(
+                                  imageUrl: product.images[0],
+                                  fit: BoxFit.contain,
+                                  placeholder: (_, __) => Center(
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                  errorWidget: (_, __, ___) => Center(
+                                    child: Icon(
+                                      Icons.shopping_bag_outlined,
+                                      size: 40,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
 
-                    // Discount Badge
-                    if (discountPercentage > 0)
-                      Positioned(
-                        top: 12,
-                        left: 12,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [
-                                Color(0xFFFF5F6D),
-                                Color(0xFFFFC371),
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.red.withOpacity(0.2),
-                                blurRadius: 6,
-                                offset: const Offset(0, 2),
+                          // Discount Badge
+                          if (discountPercentage > 0)
+                            Positioned(
+                              top: 12,
+                              left: 12,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    colors: [
+                                      Color(0xFFFF5F6D),
+                                      Color(0xFFFFC371),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.red.withOpacity(0.2),
+                                      blurRadius: 6,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: Text(
+                                  '${discountPercentage.toStringAsFixed(0)}% OFF',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
-                            ],
-                          ),
-                          child: Text(
-                            '${discountPercentage.toStringAsFixed(0)}% OFF',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
                             ),
-                          ),
-                        ),
-                      ),
 
-                    // Favorite Button
-                    Visibility(
-                      visible: false,
-                      child: Positioned(
-                        top: 12,
-                        right: 12,
-                        child: Container(
-                          width: 32,
-                          height: 32,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 6,
-                                offset: const Offset(0, 2),
+                          // Favorite Button
+                          Visibility(
+                            visible: false,
+                            child: Positioned(
+                              top: 12,
+                              right: 12,
+                              child: Container(
+                                width: 32,
+                                height: 32,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 6,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.favorite_border,
+                                    size: 16,
+                                    color: Colors.grey[600],
+                                  ),
+                                  onPressed: () {},
+                                  padding: EdgeInsets.zero,
+                                ),
                               ),
-                            ],
-                          ),
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.favorite_border,
-                              size: 16,
-                              color: Colors.grey[600],
                             ),
-                            onPressed: () {},
-                            padding: EdgeInsets.zero,
                           ),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
+                        ],
+                      )
                     : const SizedBox(
-                  height: 160,
-                ),
+                        height: 160,
+                      ),
 
                 // Product Info Section
                 Padding(

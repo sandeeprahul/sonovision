@@ -56,7 +56,7 @@ class BrandsCategoryProductsController extends GetxController {
     print(brandName);
   }
   void applyInitialFilters() {
-    // _applyAllFilters();
+    _applyAllFilters();
     _initializeBrandFilters();
 
   }
@@ -101,11 +101,13 @@ class BrandsCategoryProductsController extends GetxController {
     // _applyAllFilters();
   }
 
-  void _applyAllFiltersf() {
+  final RxList<ProductDetailsDataFromBrandsCategory> filteredProducts = <ProductDetailsDataFromBrandsCategory>[].obs;
+
+  void _applyAllFilters() {
     print('came to_applyAllFilters ');
     print(selectedBrand.value );
     print(selectedMinPrice.value );
-    List<ProductDetailsDataFromBrandsCategory> filteredProducts = List.from(allProducts);
+      List<ProductDetailsDataFromBrandsCategory> filteredProducts = List.from(allProducts);
 
     // Apply brand filter
     // if (selectedBrand.value != 'All') {
@@ -210,6 +212,8 @@ class BrandsCategoryProductsController extends GetxController {
           allProducts.assignAll(
             data.map((e) => ProductDetailsDataFromBrandsCategory.fromJson(e)).toList(),
           );
+          filteredProducts.assignAll(allProducts);
+
           print("Parsed products: ${allProducts.map((e) => e.name).toList()}");
 
           print(allProducts.length);

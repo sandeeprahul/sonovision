@@ -101,10 +101,13 @@ class _PriceRangeCarouselState extends State<PriceRangeCarousel> {
                           categoryId: widget.category.id,
                           categoryName:widget. category.name,
                           imageUrl:  "http://sonovision.asquare.org.in/images/${widget.category.icon}",
-                          priceRangeMin: '${range.min}',
-                          priceRangeMax: '${range.max}',
-                          filterId: range.id,
-                          filterTitle: "Price",
+                /*          priceRangeMin: '${range.min}',
+                          priceRangeMax: '${range.max}',*/
+                          selectedRange: range, // send selected range
+
+                        priceRanges: widget.category.priceRanges, // send full list
+                          // filterId: range.id,
+                          // filterTitle: "Price",
                           brandId: widget.brand.id,
                         ),
                       ),
