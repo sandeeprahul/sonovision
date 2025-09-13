@@ -50,7 +50,7 @@ class _ProductsFromBrandCategoryScreenState
   final ScrollController _scrollController = ScrollController();
   bool _isLoading = false;
   late List<FilterValue> activeFilters;
-  late PriceRange activeRange;
+   PriceRange? activeRange;
 
   List<Product> allProducts = [];
   List<Product> filteredProducts = [];
@@ -129,26 +129,7 @@ class _ProductsFromBrandCategoryScreenState
     }
 
 
-    if (activeRange != null) {
-      final min = activeRange!.min;
-      final max = activeRange!.max;
 
-      final allProducts = categoryProductsController.products; // original list
-      final filtered = allProducts.where((p) {
-        final price = p.price ?? 0; // ensure safe
-        return price >= min && price <= max;
-      }).toList();
-
-      setState(() {
-        categoryProductsController.filteredProducts.value = filtered;
-      });
-    } else {
-      // no price range → show all
-      setState(() {
-        categoryProductsController.filteredProducts.value =
-            categoryProductsController.products;
-      });
-    }
 
     // categoryProductsController.fetchProductsByCategory(widget.categoryId,widget.brandId??'',filterId:widget.filterId,filterName: widget.filterTitle );
 
@@ -540,6 +521,7 @@ class _ProductsFromBrandCategoryScreenState
           // _buildActiveFiltersChips(),
 
 
+          if(activeRange!=null)
           SliverToBoxAdapter(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -551,8 +533,10 @@ class _ProductsFromBrandCategoryScreenState
                     spacing: 8,
                     children: [
                       InputChip(
-                        label: Text("${activeRange.label}"),
+
+                        label: Text("${activeRange!.label}",),
                         selected: true,
+
                         onDeleted: () {
                           setState(() {
                             activeRange = widget.priceRanges.first; // reset
@@ -564,6 +548,7 @@ class _ProductsFromBrandCategoryScreenState
                   ),
                 ),
 
+
                 // 🔹 Price range chips (horizontal list)
                 SizedBox(
                   height: 48,
@@ -573,19 +558,36 @@ class _ProductsFromBrandCategoryScreenState
                     itemCount: widget.priceRanges.length,
                     itemBuilder: (context, index) {
                       final range = widget.priceRanges[index];
-                      final isSelected = range.id == activeRange.id;
+                      final isSelected = range.id == activeRange!.id;
 
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4),
                         child: ChoiceChip(
                           label: Text(range.label),
                           selected: isSelected,
+                          selectedColor: Colors.blue.shade200,
+                          backgroundColor: Colors.grey.shade200,
                           onSelected: (_) => _changeRange(range),
                         ),
                       );
                     },
                   ),
                 ),
+                Obx(() {
+                  final products = categoryProductsController.filteredProducts;
+                  print("BBBBBBBB");
+                  print(products.length);
+                  return SizedBox(
+                    height: 40,
+                    child: ListView.builder(
+                      itemCount: products.length,
+                      itemBuilder: (_, i) {
+                        final product = products[i];
+                        return Text(product.name ?? "No name");
+                      },
+                    ),
+                  );
+                })
               ],
             ),
           ),
@@ -659,11 +661,11 @@ class _ProductsFromBrandCategoryScreenState
             ),
           ),
           Obx(() {
-            print(
-                'isLoading: ${categoryProductsController.isLoading.value}, products length: ${categoryProductsController.allProducts.length}');
+            // print(
+            //     'isLoading: ${categoryProductsController.isLoading.value}, products length: ${categoryProductsController.allProducts.length}');
 
             final isLoading = categoryProductsController.isLoading.value;
-            final products = categoryProductsController.filteredProducts;
+            final products = categoryProductsController.allProducts;
             // final products = categoryProductsController.allProducts;
             // final filterProducts = categoryProductsController.filteredProducts;
 
@@ -768,7 +770,7 @@ class _ProductsFromBrandCategoryScreenState
   }
 
   Widget _buildProductGrid() {
-    final products = categoryProductsController.filteredProducts;
+    final products = categoryProductsController.allProducts;
 
     return SliverPadding(
       padding: const EdgeInsets.all(16),

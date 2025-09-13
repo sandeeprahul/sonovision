@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:electronic_store/price_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../controllers/brands_category_products_controller.dart';
 import '../models/product_of_brands.dart';
 import '../pages/category_details_page.dart';
 import '../pages/products_from_brand_category_screen.dart';
@@ -92,6 +94,11 @@ class _PriceRangeCarouselState extends State<PriceRangeCarousel> {
 
                 return InkWell(
                   onTap: (){
+                    final categoryProductsController = Get.find<BrandsCategoryProductsController>();
+                    categoryProductsController.setActiveRange(
+                      range,
+                    );
+
                     print("range.id");
                     print(range.id);
                     Navigator.push(

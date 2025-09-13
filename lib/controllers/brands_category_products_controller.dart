@@ -7,15 +7,15 @@ import '../models/product_details_data_from_brands_category.dart';
 import '../models/product_of_brands.dart';
 import '../services/api_service.dart';
 
-
 class BrandsCategoryProductsController extends GetxController {
   final String categoryId;
 
   BrandsCategoryProductsController(this.categoryId);
 
+  final RxList<ProductDetailsDataFromBrandsCategory> products =
+      <ProductDetailsDataFromBrandsCategory>[].obs;
 
-  final RxList<ProductDetailsDataFromBrandsCategory> products = <ProductDetailsDataFromBrandsCategory>[].obs;
-  final List<ProductDetailsDataFromBrandsCategory> allProducts = [];
+  // final List<ProductDetailsDataFromBrandsCategory> allProducts = [];
   final RxBool isLoading = false.obs;
   final RxBool isError = false.obs;
   final RxString errorMessage = ''.obs;
@@ -31,8 +31,6 @@ class BrandsCategoryProductsController extends GetxController {
   final RxDouble maxPrice = 0.0.obs;
   final RxDouble selectedMinPrice = 0.0.obs;
   final RxDouble selectedMaxPrice = 0.0.obs;
-
-
 
   @override
   void onInit() {
@@ -50,18 +48,19 @@ class BrandsCategoryProductsController extends GetxController {
       maxPrice.value = max;
     }
   }
+
   void setInitialBrand(String brandName) {
     selectedBrand.value = brandName;
     print("brandNameINITAL SETUP");
     print(brandName);
   }
-  void applyInitialFilters() {
-    _applyAllFilters();
-    _initializeBrandFilters();
 
+  void applyInitialFilters() {
+    // _applyAllFilters();
+    // _initializeBrandFilters();
   }
 
-  void _initializeBrandFilters() {
+/*  void _initializeBrandFilters() {
     // Extract all unique brands from products
     final brands = allProducts
         .map((p) => p.brand?.name ?? 'Unknown')
@@ -70,8 +69,8 @@ class BrandsCategoryProductsController extends GetxController {
     // final brands = allProducts.map((p) => p.brand!.name??'Unknown').whereType<String>().toSet().toList();
     availableBrands.assignAll(['All', ...brands]);
     selectedBrand.value = 'All';
-  }
-
+  }*/
+/*
   void _initializePriceRangeFilters() {
     if (allProducts.isEmpty) return;
 
@@ -83,7 +82,7 @@ class BrandsCategoryProductsController extends GetxController {
     // Set initial selected range to full range
     selectedMinPrice.value = minPrice.value;
     selectedMaxPrice.value = maxPrice.value;
-  }
+  }*/
 
   void applyFilterf(String filter) {
     selectedFilter.value = filter;
@@ -101,47 +100,48 @@ class BrandsCategoryProductsController extends GetxController {
     // _applyAllFilters();
   }
 
-  final RxList<ProductDetailsDataFromBrandsCategory> filteredProducts = <ProductDetailsDataFromBrandsCategory>[].obs;
+  final RxList<ProductDetailsDataFromBrandsCategory> filteredProducts =
+      <ProductDetailsDataFromBrandsCategory>[].obs;
 
-  void _applyAllFilters() {
-    print('came to_applyAllFilters ');
-    print(selectedBrand.value );
-    print(selectedMinPrice.value );
-      List<ProductDetailsDataFromBrandsCategory> filteredProducts = List.from(allProducts);
-
-    // Apply brand filter
-    // if (selectedBrand.value != 'All') {
-    //   filteredProducts = filteredProducts.where((p) => p.brand?.name == selectedBrand.value).toList();
-    // }
-
-    // Apply price range filter
-    filteredProducts = filteredProducts.where((p) =>
-    p.price >= selectedMinPrice.value && p.price <= selectedMaxPrice.value
-    ).toList();
-
-    // Apply sorting filter
-    switch (selectedFilter.value) {
-      case 'Price ↓':
-        filteredProducts.sort((a, b) => a.price.compareTo(b.price));
-        break;
-      case 'Price ↑':
-        filteredProducts.sort((a, b) => b.price.compareTo(a.price));
-        break;
-      case 'Popular':
-        filteredProducts.sort((a, b) => b.discountPercentage!.compareTo(a.discountPercentage!));
-        break;
-      case 'New':
-      // If you have createdAt field, use: b.createdAt.compareTo(a.createdAt)
-        filteredProducts = filteredProducts.reversed.toList();
-        break;
-      case 'All':
-      default:
-      // No additional sorting needed
-        break;
-    }
-
-    products.assignAll(filteredProducts);
-  }
+  // void _applyAllFilters() {
+  //   print('came to_applyAllFilters ');
+  //   print(selectedBrand.value );
+  //   print(selectedMinPrice.value );
+  //     List<ProductDetailsDataFromBrandsCategory> filteredProducts = List.from(allProducts);
+  //
+  //   // Apply brand filter
+  //   // if (selectedBrand.value != 'All') {
+  //   //   filteredProducts = filteredProducts.where((p) => p.brand?.name == selectedBrand.value).toList();
+  //   // }
+  //
+  //   // Apply price range filter
+  //   filteredProducts = filteredProducts.where((p) =>
+  //   p.price >= selectedMinPrice.value && p.price <= selectedMaxPrice.value
+  //   ).toList();
+  //
+  //   // Apply sorting filter
+  //   switch (selectedFilter.value) {
+  //     case 'Price ↓':
+  //       filteredProducts.sort((a, b) => a.price.compareTo(b.price));
+  //       break;
+  //     case 'Price ↑':
+  //       filteredProducts.sort((a, b) => b.price.compareTo(a.price));
+  //       break;
+  //     case 'Popular':
+  //       filteredProducts.sort((a, b) => b.discountPercentage!.compareTo(a.discountPercentage!));
+  //       break;
+  //     case 'New':
+  //     // If you have createdAt field, use: b.createdAt.compareTo(a.createdAt)
+  //       filteredProducts = filteredProducts.reversed.toList();
+  //       break;
+  //     case 'All':
+  //     default:
+  //     // No additional sorting needed
+  //       break;
+  //   }
+  //
+  //   products.assignAll(filteredProducts);
+  // }
 
   void resetFiltersd() {
     selectedFilter.value = 'All';
@@ -151,12 +151,12 @@ class BrandsCategoryProductsController extends GetxController {
     // _applyAllFilters();
   }
 
-
-  void fetchProductsByCategory(String categoryId, String brandId, {
+  void fetchProductsByCategory(
+    String categoryId,
+    String brandId, {
     String? filterName,
     String? filterId,
     List<FilterValue>? selectedFilters,
-
   }) async {
     isLoading.value = true;
     isError.value = false;
@@ -179,20 +179,20 @@ class BrandsCategoryProductsController extends GetxController {
         print(filterParams);
 
         url =
-        '${ApiService.baseUrl}/api/products?brand=$brandId&category=$categoryId&$filterParams';
+            '${ApiService.baseUrl}/api/products?brand=$brandId&category=$categoryId&$filterParams';
 
         // final filterParam = "$safeFilterName:$filterId";
         // url = '${ApiService.baseUrl}/api/products?brand=$brandId&category=$categoryId&filter=$filterParam';
-      }  else if (filterName != null && filterId != null) {
+      } else if (filterName != null && filterId != null) {
         // 🔹 Single filter fallback
         final safeFilterName = filterName.replaceAll(' ', '%20');
         final filterParam = "$safeFilterName:$filterId";
 
         url =
-        '${ApiService.baseUrl}/api/products?brand=$brandId&category=$categoryId&filter=$filterParam';
-      }
-      else {
-        url = '${ApiService.baseUrl}/api/products?brand=$brandId&category=$categoryId';
+            '${ApiService.baseUrl}/api/products?brand=$brandId&category=$categoryId&filter=$filterParam';
+      } else {
+        url =
+            '${ApiService.baseUrl}/api/products?brand=$brandId&category=$categoryId';
       }
       print(url);
 
@@ -204,19 +204,33 @@ class BrandsCategoryProductsController extends GetxController {
 
         if (data.isEmpty) {
           isEmpty.value = true;
-          allProducts.clear();
+          // allProducts.clear();
           products.clear();
+          filteredProducts.clear();
         } else {
           print(data.length);
 
-          allProducts.assignAll(
+           allProducts.assignAll(
             data.map((e) => ProductDetailsDataFromBrandsCategory.fromJson(e)).toList(),
           );
-          filteredProducts.assignAll(allProducts);
+          filteredProducts.assignAll(
+            data
+                .map((e) => ProductDetailsDataFromBrandsCategory.fromJson(e))
+                .toList(),
+          );
 
-          print("Parsed products: ${allProducts.map((e) => e.name).toList()}");
-
-          print(allProducts.length);
+          // print("Parsed products: ${allProducts.map((e) => e.name).toList()}");
+          // print("filteredProductsLENGTH");
+          //
+          // print(allProducts.length);
+          // print(filteredProducts.length);
+          if (activeRange.value != null) {
+            // keep filtering if a range is active
+            applyFilter();
+          } else {
+            // no active range → show everything
+            filteredProducts.assignAll(allProducts);
+          }
         }
       } else {
         isError.value = true;
@@ -233,5 +247,31 @@ class BrandsCategoryProductsController extends GetxController {
     }
   }
 
+  final Rx<PriceRange?> activeRange = Rx<PriceRange?>(null); // reactive
 
+  var allProducts = <ProductDetailsDataFromBrandsCategory>[].obs;
+
+  void setProducts(List<ProductDetailsDataFromBrandsCategory> products) {
+    allProducts.assignAll(products);
+    applyFilter(); // ensures filteredProducts matches current activeRange
+  }
+
+  void setActiveRange(PriceRange range) {
+    activeRange.value = range;
+    applyFilter();
+  }
+
+  void applyFilter() {
+    if (activeRange == null) {
+      filteredProducts.assignAll(allProducts);
+    } else {
+      final min =  activeRange.value!.min;
+      final max =  activeRange.value!.max;
+      final filtered = allProducts.where((p) {
+        final price = p.price ?? 0;
+        return price >= min && price <= max;
+      }).toList();
+      filteredProducts.assignAll(filtered);
+    }
+  }
 }
