@@ -51,6 +51,7 @@ class _ProductsFromBrandCategoryScreenState
   bool _isLoading = false;
   late List<FilterValue> activeFilters;
    PriceRange? activeRange;
+   Product? product;
 
   List<Product> allProducts = [];
   List<Product> filteredProducts = [];
@@ -75,10 +76,14 @@ class _ProductsFromBrandCategoryScreenState
     setState(() {
       activeRange = newRange;
     });
+    final categoryProductsController = Get.find<BrandsCategoryProductsController>();
+    categoryProductsController.setActiveRange(
+      newRange,
+    );
     _loadProducts();
   }
 
-  Future<void> _toggleFilter(FilterValue filter) async {
+  Future<void> _toggleFilterOLD(FilterValue filter) async {
     setState(() {
       if (activeFilters.any((f) => f.id == filter.id)) {
         activeFilters.removeWhere((f) => f.id == filter.id);
@@ -86,6 +91,24 @@ class _ProductsFromBrandCategoryScreenState
         activeFilters.add(filter);
       }
     });
+    await _loadProducts();
+  }
+
+  Future<void> _toggleFilter(FilterValue filter) async {
+    setState(() {
+      final alreadySelected = activeFilters.any((f) => f.id == filter.id);
+
+      if (alreadySelected) {
+        // Deselect
+        activeFilters.clear();
+      } else {
+        // Only keep this filter
+        activeFilters
+          ..clear()
+          ..add(filter);
+      }
+    });
+
     await _loadProducts();
   }
 
@@ -501,18 +524,18 @@ class _ProductsFromBrandCategoryScreenState
           style: const TextStyle(color: Colors.black),
         ),
       ),
-      bottomSheet: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-            onPressed: openFilterBottomSheet,
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Filters'),
-              ],
-            )),
-      ),
+      // bottomSheet: Padding(
+      //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      //   child: ElevatedButton(
+      //       style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+      //       onPressed: openFilterBottomSheet,
+      //       child: const Row(
+      //         mainAxisAlignment: MainAxisAlignment.center,
+      //         children: [
+      //           Text('Filters'),
+      //         ],
+      //       )),
+      // ),
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
@@ -523,78 +546,47 @@ class _ProductsFromBrandCategoryScreenState
 
           if(activeRange!=null)
           SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // 🔹 Active filter chip
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                  child: Wrap(
-                    spacing: 8,
-                    children: [
-                      InputChip(
-
-                        label: Text("${activeRange!.label}",),
-                        selected: true,
-
-                        onDeleted: () {
-                          setState(() {
-                            activeRange = widget.priceRanges.first; // reset
-                          });
-                          _loadProducts();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-
-
-                // 🔹 Price range chips (horizontal list)
-                SizedBox(
-                  height: 48,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    itemCount: widget.priceRanges.length,
-                    itemBuilder: (context, index) {
-                      final range = widget.priceRanges[index];
-                      final isSelected = range.id == activeRange!.id;
-
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: ChoiceChip(
-                          label: Text(range.label),
-                          selected: isSelected,
-                          selectedColor: Colors.blue.shade200,
-                          backgroundColor: Colors.grey.shade200,
-                          onSelected: (_) => _changeRange(range),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                Obx(() {
-                  final products = categoryProductsController.filteredProducts;
-                  print("BBBBBBBB");
-                  print(products.length);
-                  return SizedBox(
-                    height: 40,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 🔹 Price range chips (horizontal list)
+                  SizedBox(
+                    height: 48,
                     child: ListView.builder(
-                      itemCount: products.length,
-                      itemBuilder: (_, i) {
-                        final product = products[i];
-                        return Text(product.name ?? "No name");
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      itemCount: widget.priceRanges.length,
+                      itemBuilder: (context, index) {
+                        final range = widget.priceRanges[index];
+                        final isSelected = range.id == activeRange!.id;
+
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: ChoiceChip(
+                            label: Text(range.label),
+                            selected: isSelected,
+                            selectedColor: Colors.blue.shade200,
+                            backgroundColor: Colors.grey.shade200,
+                            onSelected: (_) => _changeRange(range),
+                          ),
+                        );
                       },
                     ),
-                  );
-                })
-              ],
+                  ),
+
+                ],
+              ),
             ),
           ),
+
+
+
           ///working new
 
 // ✅ This part shows currently active filters with delete option
-          if (activeFilters.isNotEmpty)
+       /*   if (activeFilters.isNotEmpty)
             SliverToBoxAdapter(
               child: SizedBox(
                 height: 50,
@@ -613,7 +605,7 @@ class _ProductsFromBrandCategoryScreenState
                   },
                 ),
               ),
-            ),
+            ),*/
 
           ///working old
           // if (activeFilters.isNotEmpty)
@@ -644,28 +636,37 @@ class _ProductsFromBrandCategoryScreenState
           //     ),
           //   ),
 
-// ✅ This part shows ALL filters (tappable ChoiceChips)
+
           SliverToBoxAdapter(
-            child: Wrap(
-              spacing: 8,
-              children: widget.allFilters.map((f) {
-                final isSelected = activeFilters.any((af) => af.id == f.id);
-                return ChoiceChip(
-                  label: Text(f.value),
-                  selected: isSelected,
-                  selectedColor: Colors.blue.shade200,
-                  backgroundColor: Colors.grey.shade200,
-                  onSelected: (_) => _toggleFilter(f), // toggle add/remove
-                );
-              }).toList(),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 22.0),
+              child: Wrap(
+                spacing: 8,
+                children: widget.allFilters.map((f) {
+                  final isSelected = activeFilters.any((af) => af.id == f.id);
+                  return ChoiceChip(
+                    label: Text(f.value),
+                    selected: isSelected,
+                    selectedColor: Colors.blue.shade200,
+                    backgroundColor: Colors.grey.shade200,
+                    onSelected: (_) => _toggleFilter(f), // toggle add/remove
+                  );
+                }).toList(),
+              ),
             ),
           ),
+
+
+
           Obx(() {
             // print(
             //     'isLoading: ${categoryProductsController.isLoading.value}, products length: ${categoryProductsController.allProducts.length}');
 
             final isLoading = categoryProductsController.isLoading.value;
-            final products = categoryProductsController.allProducts;
+            final products = (activeRange == null)
+                ? categoryProductsController.allProducts
+                : categoryProductsController.filteredProducts;
+
             // final products = categoryProductsController.allProducts;
             // final filterProducts = categoryProductsController.filteredProducts;
 
@@ -706,7 +707,7 @@ class _ProductsFromBrandCategoryScreenState
             }
 
 
-            return _buildProductGrid(); // ✅ If products are loaded
+            return _buildProductGrid(products); // ✅ If products are loaded
           }),
           const SliverToBoxAdapter(
             child: SizedBox(height: 80), // This acts as bottom margin/padding
@@ -769,8 +770,8 @@ class _ProductsFromBrandCategoryScreenState
     );
   }
 
-  Widget _buildProductGrid() {
-    final products = categoryProductsController.allProducts;
+  Widget _buildProductGrid(RxList<ProductDetailsDataFromBrandsCategory> product) {
+    final products = product;
 
     return SliverPadding(
       padding: const EdgeInsets.all(16),
