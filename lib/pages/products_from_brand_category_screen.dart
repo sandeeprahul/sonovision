@@ -50,8 +50,8 @@ class _ProductsFromBrandCategoryScreenState
   final ScrollController _scrollController = ScrollController();
   bool _isLoading = false;
   late List<FilterValue> activeFilters;
-   PriceRange? activeRange;
-   Product? product;
+  PriceRange? activeRange;
+  Product? product;
 
   List<Product> allProducts = [];
   List<Product> filteredProducts = [];
@@ -59,7 +59,7 @@ class _ProductsFromBrandCategoryScreenState
   @override
   void initState() {
     super.initState();
-    if(widget.selectedRange!=null){
+    if (widget.selectedRange != null) {
       activeRange = widget.selectedRange!; // default
     }
 
@@ -72,11 +72,13 @@ class _ProductsFromBrandCategoryScreenState
     });
     _scrollController.addListener(_onScroll);
   }
+
   void _changeRange(PriceRange newRange) {
     setState(() {
       activeRange = newRange;
     });
-    final categoryProductsController = Get.find<BrandsCategoryProductsController>();
+    final categoryProductsController =
+        Get.find<BrandsCategoryProductsController>();
     categoryProductsController.setActiveRange(
       newRange,
     );
@@ -115,6 +117,10 @@ class _ProductsFromBrandCategoryScreenState
   @override
   void dispose() {
     _scrollController.dispose();
+    allProducts.clear();
+    filteredProducts.clear();
+    categoryProductsController.allProducts.clear();
+    categoryProductsController.filteredProducts.clear();
     super.dispose();
   }
 
@@ -150,9 +156,6 @@ class _ProductsFromBrandCategoryScreenState
             selectedFilters: activeFilters);
       }
     }
-
-
-
 
     // categoryProductsController.fetchProductsByCategory(widget.categoryId,widget.brandId??'',filterId:widget.filterId,filterName: widget.filterTitle );
 
@@ -543,50 +546,46 @@ class _ProductsFromBrandCategoryScreenState
           // _buildFiltersBar(),
           // _buildActiveFiltersChips(),
 
+          if (activeRange != null)
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // 🔹 Price range chips (horizontal list)
+                    SizedBox(
+                      height: 48,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        itemCount: widget.priceRanges.length,
+                        itemBuilder: (context, index) {
+                          final range = widget.priceRanges[index];
+                          final isSelected = range.id == activeRange!.id;
 
-          if(activeRange!=null)
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // 🔹 Price range chips (horizontal list)
-                  SizedBox(
-                    height: 48,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      itemCount: widget.priceRanges.length,
-                      itemBuilder: (context, index) {
-                        final range = widget.priceRanges[index];
-                        final isSelected = range.id == activeRange!.id;
-
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          child: ChoiceChip(
-                            label: Text(range.label),
-                            selected: isSelected,
-                            selectedColor: Colors.blue.shade200,
-                            backgroundColor: Colors.grey.shade200,
-                            onSelected: (_) => _changeRange(range),
-                          ),
-                        );
-                      },
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: ChoiceChip(
+                              label: Text(range.label),
+                              selected: isSelected,
+                              selectedColor: Colors.blue.shade200,
+                              backgroundColor: Colors.grey.shade200,
+                              onSelected: (_) => _changeRange(range),
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  ),
-
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-
-
 
           ///working new
 
 // ✅ This part shows currently active filters with delete option
-       /*   if (activeFilters.isNotEmpty)
+          /*   if (activeFilters.isNotEmpty)
             SliverToBoxAdapter(
               child: SizedBox(
                 height: 50,
@@ -636,7 +635,6 @@ class _ProductsFromBrandCategoryScreenState
           //     ),
           //   ),
 
-
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(left: 22.0),
@@ -655,8 +653,6 @@ class _ProductsFromBrandCategoryScreenState
               ),
             ),
           ),
-
-
 
           Obx(() {
             // print(
@@ -705,7 +701,6 @@ class _ProductsFromBrandCategoryScreenState
                 )),
               );
             }
-
 
             return _buildProductGrid(products); // ✅ If products are loaded
           }),
@@ -770,7 +765,8 @@ class _ProductsFromBrandCategoryScreenState
     );
   }
 
-  Widget _buildProductGrid(RxList<ProductDetailsDataFromBrandsCategory> product) {
+  Widget _buildProductGrid(
+      RxList<ProductDetailsDataFromBrandsCategory> product) {
     final products = product;
 
     return SliverPadding(
@@ -783,8 +779,7 @@ class _ProductsFromBrandCategoryScreenState
           crossAxisSpacing: 16,
         ),
         delegate: SliverChildBuilderDelegate(
-          (context, index) =>
-              _buildProductCard(products[index]),
+          (context, index) => _buildProductCard(products[index]),
           childCount: products.length,
         ),
       ),

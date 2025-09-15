@@ -146,7 +146,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         });
                       },
                     ),
-                    RadioListTile(
+                    /*RadioListTile(
                       value: 'Cash on Delivery',
                       groupValue: controller.selectedPaymentMethod.value,
                       title: const Text('Cash on Delivery'),
@@ -156,7 +156,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           controller.selectedPaymentMethod.value = value.toString();
                         });
                       },
-                    ),
+                    ),*/
                   ],
                 );
               }

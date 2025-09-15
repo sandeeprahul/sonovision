@@ -38,6 +38,15 @@ class BrandsCategoryProductsController extends GetxController {
     super.onInit();
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    allProducts.clear();
+    products.clear();
+    filteredProducts.clear();
+    super.dispose();
+  }
+
   void setInitialPriceRange(double min, double max) {
     selectedMinPrice.value = min;
     selectedMaxPrice.value = max;
@@ -202,9 +211,12 @@ class BrandsCategoryProductsController extends GetxController {
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
 
+        allProducts.clear();
+        products.clear();
+        filteredProducts.clear();
         if (data.isEmpty) {
           isEmpty.value = true;
-          // allProducts.clear();
+          allProducts.clear();
           products.clear();
           filteredProducts.clear();
         } else {

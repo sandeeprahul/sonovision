@@ -287,8 +287,8 @@ class _BrandsCategoryScreenState extends State<BrandsCategoryScreen> {
                               color: isDark
                                   ? Colors.black.withOpacity(0.6)
                                   : Colors.blueAccent.withOpacity(0.3),
-                              blurRadius: 12,
-                              offset: Offset(0, 6),
+                              blurRadius: 6,
+                              offset: Offset(0, 3),
                             ),
                           ],
                           border: Border.all(

@@ -224,8 +224,8 @@ class CheckoutController extends GetxController {
               ///pg.key=="KEY"
               var options = {
                 // 'key': '', // replace with your test key
+                // 'key': '', // replace with your test key
                 'key': 'rzp_test_YkLFs7bxxbMl9I', // replace with your test key
-                // 'key': 'rzp_test_YkLFs7bxxbMl9I', // replace with your test key
                 'amount': cartController.total * 100, // in paise
                 'name': 'Sonovision Electronics Pvt. Ltd.',
                 'description': 'Order Payment',
