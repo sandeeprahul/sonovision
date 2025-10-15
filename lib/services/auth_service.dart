@@ -69,6 +69,7 @@ class AuthController extends GetxController {
         'password': password,
       }),
     );
+    print(response.toString());
 
     if (response.statusCode == 200) {
       return json.decode(response.body);

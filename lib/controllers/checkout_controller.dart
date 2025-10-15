@@ -113,7 +113,7 @@ class CheckoutController extends GetxController {
     orderPaymentStatusUpdate(currentOrderId,"FAILED",pg!.key??"0","ONLINE",);
 
     // Get.back();
-    Get.snackbar("Payment Failed", "Order Successful. Payment Failed!",backgroundColor: Colors.red);
+    Get.snackbar("Payment Failed", "Order Successful. Payment Failed!",backgroundColor: Colors.red,colorText: Colors.white);
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
@@ -160,6 +160,7 @@ class CheckoutController extends GetxController {
   }
 
   Future<void> placeOrder() async {
+
     final cartController = Get.put(CartController());
     final token =
         await _authController.loadUserAndToken(); // uses your getToken method
@@ -225,8 +226,9 @@ class CheckoutController extends GetxController {
               var options = {
                 // 'key': '', // replace with your test key
                 // 'key': '', // replace with your test key
-                'key': 'rzp_test_YkLFs7bxxbMl9I', // replace with your test key
-                'amount': cartController.total * 100, // in paise
+                'key': '', // replace with your test key
+                'amount': (total * 100).round(), // Convert to paise
+                // 'amount': cartController.total * 100, // in paise
                 'name': 'Sonovision Electronics Pvt. Ltd.',
                 'description': 'Order Payment',
                 'prefill': {

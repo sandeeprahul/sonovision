@@ -55,8 +55,8 @@ class OtpController extends GetxController {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $tokenValue',
         },
-        body: jsonEncode({'phone':'8977771266'}),
-        // body: jsonEncode({'phone': phoneController.value}),
+        // body: jsonEncode({'phone':'8977771266'}),
+        body: jsonEncode({'phone': phoneController.value.text}),
       );
       print(response);
 

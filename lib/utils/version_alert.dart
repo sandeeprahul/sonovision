@@ -69,7 +69,7 @@ void showUpdateDialog() {
                         style: Get.theme.textTheme.labelSmall,
                       ),
                       Text(
-                        '1.0.0',
+                        '1.0.**',
                         style: Get.theme.textTheme.bodyLarge?.copyWith(
                           color: Get.theme.colorScheme.error,
                         ),
@@ -87,7 +87,7 @@ void showUpdateDialog() {
                         style: Get.theme.textTheme.labelSmall,
                       ),
                       Text(
-                        '1.0.1',
+                        '1.0.12',
                         style: Get.theme.textTheme.bodyLarge?.copyWith(
                           color: Get.theme.colorScheme.primary,
                         ),

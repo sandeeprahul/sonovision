@@ -12,11 +12,10 @@ class CheckoutPage extends StatefulWidget {
   _CheckoutPageState createState() => _CheckoutPageState();
 }
 
-class _CheckoutPageState extends State<CheckoutPage> {
+class _CheckoutPageState extends State<CheckoutPage> with WidgetsBindingObserver {
   int _currentStep = 0;
   String? selectedAddress;
   String selectedPaymentMethod = 'Credit Card';
-
 
   final controller = Get.put(CheckoutController());
   final cartController = Get.put(CartController());
@@ -26,6 +25,22 @@ class _CheckoutPageState extends State<CheckoutPage> {
     super.initState();
     controller.fetchAddresses();
   }
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // This runs only once, so you can track screen focus manually with a flag if needed
+    Future.microtask(() async {
+      // Wait for a route pushed from this page to complete
+      controller.fetchAddresses();
+
+    });
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,45 +72,44 @@ class _CheckoutPageState extends State<CheckoutPage> {
             title: const Text('Delivery Address'),
             content: Column(
               children: [
-                Obx(
-                   () {
-                     if (controller.isLoading.value) {
-                       return const CircularProgressIndicator();
-                     }
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: controller.addresses.length,
-                      itemBuilder: (context, index) {
-                        final address = controller.addresses[index];
-                        return Obx(
-                           () {
-                            return RadioListTile(
-                              value: address.id.toString(),
-                              activeColor: Colors.black,
-                              groupValue: controller.selectedAddressId.value, // <-- use this
-                              title: Text(address.name),
-                              subtitle: Text(
-                                '${address.addressLine1}, ${address.addressLine2}, ${address.city}, ${address.postalCode}',
-                              ),
-                              onChanged: (value) {
-                                controller.selectedAddressId.value = value;
-
-                                controller.selectedAddress.value =
-                                    controller.addresses.firstWhere((addr) => addr.id == value);
-                                print("SELECTED ADDRESS ID");
-                                print(controller.selectedAddress.value!.id);
-                                },
-                            );
-                          }
-                        );
-                      },
-                    );
+                Obx(() {
+                  if (controller.isLoading.value) {
+                    return const CircularProgressIndicator();
                   }
-                ),
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: controller.addresses.length,
+                    itemBuilder: (context, index) {
+                      final address = controller.addresses[index];
+                      return Obx(() {
+                        return RadioListTile(
+                          value: address.id.toString(),
+                          activeColor: Colors.black,
+                          groupValue: controller.selectedAddressId.value,
+                          // <-- use this
+                          title: Text(address.name),
+                          subtitle: Text(
+                            '${address.addressLine1}, ${address.addressLine2}, ${address.city}, ${address.postalCode}',
+                          ),
+                          onChanged: (value) {
+                            controller.selectedAddressId.value = value;
+
+                            controller.selectedAddress.value = controller
+                                .addresses
+                                .firstWhere((addr) => addr.id == value);
+                            print("SELECTED ADDRESS ID");
+                            print(controller.selectedAddress.value!.id);
+                          },
+                        );
+                      });
+                    },
+                  );
+                }),
                 ElevatedButton.icon(
-                  onPressed: () {
-                    Get.offNamed( '/add-address');
+                  onPressed: () async {
+                   Get.offNamed('/add-address');
+
                   },
                   icon: const Icon(Icons.add),
                   label: const Text('Add New Address'),
@@ -108,45 +122,47 @@ class _CheckoutPageState extends State<CheckoutPage> {
           // Payment Method Step
           Step(
             title: const Text('Payment Method'),
-            content: Obx(
-               () {
-                 final controller = Get.put(CheckoutController());
-                return Column(
-                  children: [
-                    RadioListTile(
-                      value: 'Credit Card',
-                      groupValue: controller.selectedPaymentMethod.value,
-                      title: const Text('Credit Card'),
-                      subtitle: const Text('Visa, MasterCard, RuPay'),
-                      onChanged: (value) {
-                        setState(() {
-                          controller.selectedPaymentMethod.value = value.toString();
-                        });
-                      },
-                    ),
-                    RadioListTile(
-                      value: 'UPI',
-                      groupValue: controller.selectedPaymentMethod.value,
-                      title: const Text('UPI'),
-                      subtitle: const Text('Google Pay, PhonePe, Paytm'),
-                      onChanged: (value) {
-                        setState(() {
-                          controller.selectedPaymentMethod.value = value.toString();
-                        });
-                      },
-                    ),
-                    RadioListTile(
-                      value: 'Net Banking',
-                      groupValue: controller.selectedPaymentMethod.value,
-                      title: const Text('Net Banking'),
-                      subtitle: const Text('All major banks supported'),
-                      onChanged: (value) {
-                        setState(() {
-                          controller.selectedPaymentMethod.value = value.toString();
-                        });
-                      },
-                    ),
-                    /*RadioListTile(
+            content: Obx(() {
+              final controller = Get.put(CheckoutController());
+              return Column(
+                children: [
+                  RadioListTile(
+                    value: 'Credit Card',
+                    groupValue: controller.selectedPaymentMethod.value,
+                    title: const Text('Credit Card'),
+                    subtitle: const Text('Visa, MasterCard, RuPay'),
+                    onChanged: (value) {
+                      setState(() {
+                        controller.selectedPaymentMethod.value =
+                            value.toString();
+                      });
+                    },
+                  ),
+                  RadioListTile(
+                    value: 'UPI',
+                    groupValue: controller.selectedPaymentMethod.value,
+                    title: const Text('UPI'),
+                    subtitle: const Text('Google Pay, PhonePe, Paytm'),
+                    onChanged: (value) {
+                      setState(() {
+                        controller.selectedPaymentMethod.value =
+                            value.toString();
+                      });
+                    },
+                  ),
+                  RadioListTile(
+                    value: 'Net Banking',
+                    groupValue: controller.selectedPaymentMethod.value,
+                    title: const Text('Net Banking'),
+                    subtitle: const Text('All major banks supported'),
+                    onChanged: (value) {
+                      setState(() {
+                        controller.selectedPaymentMethod.value =
+                            value.toString();
+                      });
+                    },
+                  ),
+                  /*RadioListTile(
                       value: 'Cash on Delivery',
                       groupValue: controller.selectedPaymentMethod.value,
                       title: const Text('Cash on Delivery'),
@@ -157,113 +173,113 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         });
                       },
                     ),*/
-                  ],
-                );
-              }
-            ),
+                ],
+              );
+            }),
             isActive: _currentStep >= 1,
           ),
 
           // Order Review Step
           Step(
             title: const Text('Review Order'),
-            content: Obx(
-              () {
-                final controller = Get.put(CheckoutController());
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Delivery Address',
-                      style: Theme.of(context).textTheme.titleMedium,
+            content: Obx(() {
+              final controller = Get.put(CheckoutController());
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Delivery Address',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(controller.selectedAddress.value!.name),
+                          Text(controller.selectedAddress.value!.addressLine1),
+                          Text(controller.selectedAddress.value!.addressLine2),
+                          // Text('${controller.selectedAddress.value!.}'),
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 8),
-                     Card(
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Payment Method',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.payment),
+                      title: Text(controller.selectedPaymentMethod.value),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Order Summary',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  Obx(() {
+                    return Card(
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(controller.selectedAddress.value!.name),
-                            Text(controller.selectedAddress.value!.addressLine1),
-                            Text(controller.selectedAddress.value!.addressLine2),
-                            // Text('${controller.selectedAddress.value!.}'),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Payment Method',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: 8),
-                    Card(
-                      child: ListTile(
-                        leading: const Icon(Icons.payment),
-                        title: Text(controller.selectedPaymentMethod.value),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Order Summary',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: 8),
-                    Obx(
-                       () {
-                        return Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text('Subtotal'),
-                                    Text(cartController.subtotal.toStringAsFixed(2)),
-                                  ],
+                                const Text('Subtotal'),
+                                Text(
+                                    cartController.subtotal.toStringAsFixed(2)),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Discount'),
+                                Text(
+                                    cartController.discount.toStringAsFixed(2)),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Delivery'),
+                                Text(cartController.deliveryCharge
+                                    .toStringAsFixed(2)),
+                              ],
+                            ),
+                            const Divider(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Total',
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
                                 ),
-                                const SizedBox(height: 8),
-                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text('Discount'),
-                                    Text(cartController.discount.toStringAsFixed(2)),
-                                  ],
-                                ),
-                                const SizedBox(height: 8),
-                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text('Delivery'),
-                                    Text(cartController.deliveryCharge.toStringAsFixed(2)),
-                                  ],
-                                ),
-                                const Divider(),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Total',
-                                      style: Theme.of(context).textTheme.titleMedium,
-                                    ),
-                                    Text(
-                                      cartController.total.toStringAsFixed(2),
-                                      style: Theme.of(context).textTheme.titleMedium,
-                                    ),
-                                  ],
+                                Text(
+                                  cartController.total.toStringAsFixed(2),
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
                                 ),
                               ],
                             ),
-                          ),
-                        );
-                      }
-                    ),
-                  ],
-                );
-              }
-            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+                ],
+              );
+            }),
             isActive: _currentStep >= 2,
           ),
         ],
@@ -286,17 +302,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
           ),
           ElevatedButton(
             onPressed: () async {
-
               // final controller = Get.put(CheckoutController());
               // if (controller.selectedPaymentMethod.value == "Cash on Delivery") {
               //   Get.off(() => OrderSuccessPage(orderId: orderId));
               // }
 
-             await controller.placeOrder();
-             Navigator.pop(context);
-             // Navigator.pop(context);
-
-
+              await controller.placeOrder();
+              Navigator.pop(context);
+              // Navigator.pop(context);
             },
             child: const Text('Place Order'),
           ),

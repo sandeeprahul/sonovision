@@ -238,6 +238,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                               Navigator.pop(context);
                                             }
                                           } catch (e) {
+                                            print(e);
                                             if (mounted) {
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(

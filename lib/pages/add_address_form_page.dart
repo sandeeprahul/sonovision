@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:electronic_store/services/auth_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -22,6 +23,7 @@ class _AddressFormPageState extends State<AddressFormPage> {
   String? _name = 'Home';
   String? _type = 'Home Address';
   String? _addressLine1;
+  String? _phone;
   String? _addressLine2;
   String? _city;
   String? _postalCode;
@@ -38,12 +40,12 @@ class _AddressFormPageState extends State<AddressFormPage> {
 
         print('Full Address: ${place.street}, ${place.locality}, ${place.postalCode}, ${place.country}');
 
-        setState(() {
-          _addressLine1 = place.street;
-          _addressLine2 = place.subLocality;
-          _city = place.locality;
-          _postalCode = place.postalCode;
-        });
+        // setState(() {
+        //   // _addressLine1 = place.street;
+        //   // _addressLine2 = place.subLocality;
+        //   // _city = place.locality;
+        //   // _postalCode = place.postalCode;
+        // });
       }
     } catch (e) {
       print('Failed to get address: $e');
@@ -138,19 +140,34 @@ class _AddressFormPageState extends State<AddressFormPage> {
                 children: [
                   _buildSegmentedControl(),
                   const SizedBox(height: 12),
+                  _buildTextField(Icons.phone, 'Phone Number', (val) => _phone = val,  keyboardType: TextInputType.phone, // Set correct keyboard
+                    maxLength: 10,
+                  ),
+
                   _buildTextField(Icons.location_on, 'Door no,Street', (val) => _addressLine1 = val),
 
                   _buildTextField(Icons.location_city, 'Landmark,Area,District', (val) => _addressLine2 = val),
 
+                  _buildTextField(Icons.local_post_office, 'Postal Code', (val) => _postalCode = val),
+
                   _buildTextField(Icons.map, 'City', (val) => _city = val),
 
-                  _buildTextField(Icons.local_post_office, 'Postal Code', (val) => _postalCode = val),
 
 
                   const SizedBox(height: 20),
                   Center(
                     child: ElevatedButton(
-                      onPressed: (){
+                      onPressed: isLoading?null:(){
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text('Please wait..'),
+                            behavior: SnackBarBehavior.floating, // Makes it float
+                            margin: const EdgeInsets.all(16), // Adds space around the snackbar
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        );
                         _submitForm();
                       },
                       // onPressed: _submitForm,
@@ -173,12 +190,23 @@ class _AddressFormPageState extends State<AddressFormPage> {
     );
   }
 
-  Widget _buildTextField(IconData icon, String label, Function(String) onSaved) {
+  Widget _buildTextField(IconData icon, String label, Function(String) onSaved,{
+  TextInputType keyboardType = TextInputType.text, // Optional keyboard type
+    int? maxLength,
+
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: TextFormField(
+        keyboardType: keyboardType, // Set the keyboard type
+        inputFormatters: [
+          if (maxLength != null) LengthLimitingTextInputFormatter(maxLength),
+          if (keyboardType == TextInputType.phone)
+            FilteringTextInputFormatter.digitsOnly, // Only allow digits for phone
+        ],
         decoration: InputDecoration(
           labelText: label,
+
           prefixIcon: Icon(icon),
           filled: true,
           fillColor: Colors.grey[200],
@@ -212,15 +240,20 @@ class _AddressFormPageState extends State<AddressFormPage> {
   }
 
 
+  bool isLoading = false;
   void _submitForm() async {
+    setState(() {
+      isLoading = true;
+    });
     await _getCurrentLocation();
+
 
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       final addressData = {
         "name": _name,
         "type": "$_name Address",
-        "addressLine1": _addressLine1,
+        "addressLine1": '${_phone ?? ''} - ${_addressLine1 ?? ''}', // 👈 Combine phone and address
         "addressLine2": _addressLine2,
         "city": _city,
         "postalCode": _postalCode,
@@ -236,6 +269,15 @@ class _AddressFormPageState extends State<AddressFormPage> {
       AuthController authController = Get.put(AuthController());
       await authController.loadUserAndToken();
       final tokenValue = authController.token.value;
+      _addressLine1 = '';
+      _phone = '';
+      _addressLine2 = '';
+      _city = '';
+      _postalCode = '';
+      latitude = 0.0;
+      longitude = 0.0;
+      _formKey.currentState!.reset();
+
       try {
         final response = await http.post(
           url,
@@ -246,23 +288,70 @@ class _AddressFormPageState extends State<AddressFormPage> {
           body: jsonEncode(addressData),
         );
 
+
         if (response.statusCode == 200 || response.statusCode == 201) {
+          setState(() {
+            isLoading = false;
+          });
+          Get.back();
+
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Address submitted successfully')),
           );
-          Get.back();
+
+          if(mounted){
+            showAlert(context, 'Address submitted successfully');
+
+          }
+
         } else {
+          setState(() {
+            isLoading = false;
+          });
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
                 content:
                     Text('Failed to submit. Status: ${response.statusCode}')),
           );
+          if(mounted){
+            showAlert(context, 'Failed to submit. Status: ${response.statusCode}\nPlease try again after sometime');
+
+          }
         }
       } catch (e) {
+        setState(() {
+          isLoading = false;
+        });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error: $e')),
         );
+        if(mounted){
+          showAlert(context, 'Error: $e\nPlease try again after sometime');
+
+        }
       }
     }
   }
+
+  void showAlert(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Success'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }
