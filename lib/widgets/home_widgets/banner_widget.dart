@@ -40,7 +40,8 @@ class _BannerCarouselNewState extends State<BannerCarouselNew> {
     final double margin = (widget.style['margin'] ?? 20).toDouble();
     final double spacing = (widget.style['spacing'] ?? 16).toDouble();
     final cardStyle = widget.style['cardStyle'] ?? {};
-    final double borderRadius = (cardStyle['borderRadius'] ?? 20).toDouble();
+    final double borderRadius = 6.0;
+    // final double borderRadius = (cardStyle['borderRadius'] ?? 20).toDouble();
     final double elevation = (cardStyle['elevation'] ?? 8).toDouble();
     final overlayGradient = cardStyle['overlayGradient'] ?? {};
     final titleStyle = cardStyle['titleStyle'] ?? {};

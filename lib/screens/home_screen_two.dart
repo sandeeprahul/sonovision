@@ -296,8 +296,10 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                                 Text(
                                   deal['product']?['name'] ?? '',
                                   style: const TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+
                                   ),
                                 ),
                                 const SizedBox(height: 8),
@@ -314,12 +316,12 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                                   children: [
 
                                     Text(
-                                '${deal['product']?['price']}',
+                                '₹${deal['product']?['price']}',
                                       // '₹${maskPrice(deal['product']?['price'],starsCount: 3) ?? ''}',
                                       style: const TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.green,
+                                        fontSize: 19,
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.black,
                                       ),
                                     ),
                                     const SizedBox(width: 8),
@@ -353,7 +355,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                       if (deal['product']?['discount'] != null &&
                           deal['product']?['discount'] != 0)
                         Positioned(
-                          top: 16,
+                          top: 20,
                           right: 16,
                           child: Container(
                             padding: const EdgeInsets.symmetric(
@@ -481,6 +483,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(
                         style['cardStyle']['borderRadius']?.toDouble() ?? 16.0,
+                        // 10.0,
                       ),
                       boxShadow: [
                         BoxShadow(

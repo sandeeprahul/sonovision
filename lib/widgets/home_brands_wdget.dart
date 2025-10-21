@@ -184,7 +184,8 @@ class BrandCard extends StatelessWidget {
         height: 50,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(6),
+          // borderRadius: BorderRadius.circular(12),
           // shape: BoxShape.circle,
           boxShadow: const [
             BoxShadow(
