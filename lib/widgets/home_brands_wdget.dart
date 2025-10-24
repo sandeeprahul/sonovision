@@ -42,6 +42,7 @@ class Brand {
       deepLink: json['deepLink'],
     );
   }
+
   factory Brand.fromMap(Map<String, dynamic> map) {
     return Brand(
       id: map['id'] ?? '',
@@ -58,6 +59,7 @@ class Brand {
       deepLink: map['deepLink'] ?? '',
     );
   }
+
   // Helper to convert hex to Color
   static Color _hexToColor(String hex) {
     hex = hex.replaceFirst('#', '');
@@ -68,11 +70,11 @@ class Brand {
   }
 }
 
-
 //  final rawList = group['data']?['data'] ?? [];
 // Main Widget
 class BrandGrid extends StatefulWidget {
- final Map<String, dynamic> group;
+  final Map<String, dynamic> group;
+
   const BrandGrid({Key? key, required this.group}) : super(key: key);
 
   @override
@@ -80,27 +82,28 @@ class BrandGrid extends StatefulWidget {
 }
 
 class _BrandGridState extends State<BrandGrid> {
-
   @override
   Widget build(BuildContext context) {
     final rawList = widget.group['data']?['data'];
+    final label = widget.group['label'];
     final brands = (rawList is List)
-        ? rawList.map((item) => Brand.fromMap(item as Map<String, dynamic>)).toList()
+        ? rawList
+            .map((item) => Brand.fromMap(item as Map<String, dynamic>))
+            .toList()
         : <Brand>[];
 
     return SizedBox(
-      height: 240,
+      height: 160,
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.only(left: 20, top: 20,bottom: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
               children: [
                 Text(
-                  'Discover top brands',
+                  label,
                   style: TextStyle(
                     fontSize: 20,
                     color: Colors.black,
@@ -110,44 +113,46 @@ class _BrandGridState extends State<BrandGrid> {
                         offset: const Offset(0, 0),
                         blurRadius: 8.0,
                         color: Colors.black.withOpacity(0.17),
-
                       ),
                     ],
-
                   ),
                 ),
                 TextButton(
                   onPressed: () {
-                    Get.to(() => AllBrandsScreen(brands: brands), transition: Transition.rightToLeft);
+                    Get.to(() => AllBrandsScreen(brands: brands),
+                        transition: Transition.rightToLeft);
                   },
                   child: Text(
-                    'See all',
+                    'More',
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.w500,
-                    ),
+                          color: Theme.of(context).colorScheme.primary,
+                          fontWeight: FontWeight.w500,
+                        ),
                   ),
                 ),
-
-
-
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 10),
             Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  childAspectRatio: 1.2,
-                ),
-                itemCount: brands.length,
-                itemBuilder: (context, index) {
-                  return BrandCard(brand: brands[index]);
-                },
-              ),
-            ),
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return BrandCard(brand: brands[index]);
+                    }))
+            // Expanded(
+            //   child: GridView.builder(
+            //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            //       crossAxisCount: 4,
+            //       crossAxisSpacing: 16,
+            //       mainAxisSpacing: 16,
+            //       childAspectRatio: 1.2,
+            //     ),
+            //     itemCount: brands.length,
+            //     itemBuilder: (context, index) {
+            //       return BrandCard(brand: brands[index]);
+            //     },
+            //   ),
+            // ),
           ],
         ),
       ),
@@ -170,18 +175,18 @@ class BrandCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>  BrandsCategoryScreen(brandId: brand.id,
-
+            builder: (context) => BrandsCategoryScreen(
+              brandId: brand.id,
             ),
           ),
         );
         // Get.to(() => BrandsCategoryScreen(brandId: brand.id), transition: Transition.rightToLeft);
       },
-
       borderRadius: BorderRadius.circular(12),
       child: Container(
-        width: 50,
-        height: 50,
+        width: 70,
+        height: 60,
+        margin: const EdgeInsets.only(right: 6,bottom: 4),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(6),
@@ -202,7 +207,11 @@ class BrandCard extends StatelessWidget {
             strokeWidth: 2,
             valueColor: AlwaysStoppedAnimation(Colors.grey[300]),
           ),
-          errorWidget: (context, url, error) =>  Center(child: Text(brand.name,style: const TextStyle(fontWeight: FontWeight.bold),)),
+          errorWidget: (context, url, error) => Center(
+              child: Text(
+            brand.name,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          )),
         ),
       ),
     );
@@ -211,7 +220,8 @@ class BrandCard extends StatelessWidget {
 
 class AllBrandsScreen extends StatefulWidget {
   final List<Brand> brands;
-  const AllBrandsScreen({Key? key, required this. brands}) : super(key: key);
+
+  const AllBrandsScreen({Key? key, required this.brands}) : super(key: key);
 
   @override
   State<AllBrandsScreen> createState() => _AllBrandsScreenState();
@@ -220,41 +230,39 @@ class AllBrandsScreen extends StatefulWidget {
 class _AllBrandsScreenState extends State<AllBrandsScreen> {
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'All Brands',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-            color: Colors.black87,
+        appBar: AppBar(
+          title: const Text(
+            'All Brands',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+              color: Colors.black87,
+            ),
+          ),
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+            onPressed: () => Get.back(),
           ),
         ),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () => Get.back(),
-        ),
-      ),
-      body:  Padding(
-        padding: const EdgeInsets.all(16),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 4, // You can change this to 3 for a different layout
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            childAspectRatio: 0.85,
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+              // You can change this to 3 for a different layout
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+              childAspectRatio: 0.85,
+            ),
+            itemCount: widget.brands.length,
+            itemBuilder: (context, index) {
+              return BrandCard(brand: widget.brands[index]);
+            },
           ),
-          itemCount: widget.brands.length,
-          itemBuilder: (context, index) {
-            return BrandCard(brand: widget. brands[index]);
-          },
-        ),
-      )
-    );
+        ));
   }
 }

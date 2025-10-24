@@ -2,6 +2,7 @@ import 'package:electronic_store/screens/search_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -44,6 +45,9 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle( const SystemUiOverlayStyle(
+        statusBarColor: Colors.black
+    ));
     return Scaffold(
       // extendBodyBehindAppBar: true, // this is key
       /*   appBar: AppBar(title: Text('Home'),
@@ -53,7 +57,8 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
         actions: [
         IconButton(onPressed: (){}, icon: Icon(Icons.notifications))
       ],),*/
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: const Color(0xfff6f5ef),
+      // backgroundColor: Colors.grey.shade100,
       body: Obx(
          () {
            if (controller.isLoading.value) {
@@ -67,17 +72,14 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
 
            return Stack(
             children: [
-              Image.asset(
-                'assets/sonovision_bg_homepage.png',
-                height: double.infinity,
-                // height: double.infinity,
-                fit: BoxFit.cover,
-              ),
+              // Image.asset(
+              //   'assets/sonovision_bg_homepage.png',
+              //   height: double.infinity,
+              //   // height: double.infinity,
+              //   fit: BoxFit.cover,
+              // ),
               SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: _buildHomeContent(context, controller),
-                ),
+                child: _buildHomeContent(context, controller),
               ),
             ],
           );
@@ -118,8 +120,9 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
           // Add SliverAppBar
 
           SliverAppBar(
-            expandedHeight: 86.0,
-            backgroundColor: Colors.transparent,
+            expandedHeight: 96.0,
+            backgroundColor: Colors.black,
+            // backgroundColor: Colors.transparent,
             // backgroundColor: Colors.grey.withAlpha(2),
             floating: false,
             pinned: false,
@@ -138,15 +141,18 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
               [
                 const SizedBox(height: 20),
                 ...widgets.map((widget) {
-                  return AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 500),
-                    transitionBuilder: (child, animation) {
-                      return FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      );
-                    },
-                    child: _buildDynamicWidget(context, widget),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 500),
+                      transitionBuilder: (child, animation) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                      child: _buildDynamicWidget(context, widget),
+                    ),
                   );
                 }).toList(),
                 const SizedBox(height: 20),
@@ -172,6 +178,8 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
 
       case 'group':
         return _buildGroupWidget(context, widget);
+        // case 'horizontal':
+        // return _buildGroupWidget(context, widget);
       case 'banners':
         final bannerData = widget['data']?['data'] ?? [];
         final style = widget['style'] ?? {};
@@ -429,20 +437,25 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
 
   Widget _buildRecentlyViewed(Map<String, dynamic> widget) {
     final style = widget['style'];
+    final title =  widget['label'];
     final products = widget['data']['data'] as List;
 
     return Container(
-      margin:
-          const EdgeInsets.symmetric(vertical:  10.0),/*  margin:
-          EdgeInsets.symmetric(vertical: style['margin']?.toDouble() ?? 20.0),*/
+      // color: Colors.white, .
+    /*  margin:
+          const EdgeInsets.symmetric(vertical:  20.0),*/
+        margin:
+          EdgeInsets.symmetric(vertical: style['margin']?.toDouble() ?? 20.0),
+
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+           Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Text(
-              'Trending Products',
-              style: TextStyle(
+              '$title',
+              // 'Trending Products',
+              style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.black),
@@ -478,18 +491,20 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                     width: 120,
                     margin: EdgeInsets.only(
                       right: style['spacing']?.toDouble() ?? 20.0,
+                      bottom: 6
                     ),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(
-                        style['cardStyle']['borderRadius']?.toDouble() ?? 16.0,
+                        6.0,
+                        // style['cardStyle']['borderRadius']?.toDouble() ?? 16.0,
                         // 10.0,
                       ),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.1),
-                          blurRadius: 8,
-                          offset: const Offset(0, 4),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
                         ),
                       ],
                     ),
@@ -500,9 +515,23 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                       child: Stack(
                         fit: StackFit.expand,
                         children: [
-                          CachedNetworkImage(
-                            imageUrl: product['image'],
-                            fit: BoxFit.contain,
+                          product['image']==null?Center(
+                            child: Text(
+                              product['name'],
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ):   Padding(
+                            padding: const EdgeInsets.only(top: 22,bottom: 42,),
+                            child: CachedNetworkImage(
+                              imageUrl: product['image'],
+                              fit: BoxFit.contain,
+                            ),
                           ),
                           /*   Container(
                             decoration: BoxDecoration(
@@ -539,10 +568,12 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
               },
             ),
           ),
+
         ],
       ),
     );
   }
+
 
   Widget _buildGroupWidget(BuildContext context, Map<String, dynamic> widget) {
     switch (widget['type']) {
@@ -944,6 +975,9 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
               ),
             )
           ],
+        ),
+        const SizedBox(
+          height: 12,
         ),
       ],
     );

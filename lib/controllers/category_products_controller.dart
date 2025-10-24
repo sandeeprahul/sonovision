@@ -161,7 +161,11 @@ class CategoryProductsController extends GetxController {
     try {
       String url;
 
-      if (filterName != null && filterId != null) {
+      if(brandId.isEmpty){
+        url = '${ApiService.baseUrl}/api/products/category/$categoryId';
+      }
+
+    else  if (filterName != null && filterId != null) {
         final safeFilterName = filterName.replaceAll(' ', '%20');
         // final filterParam = "Battery capacity:68ba650cdda4a05113457879";
         final filterParam = "$safeFilterName:$filterId";
