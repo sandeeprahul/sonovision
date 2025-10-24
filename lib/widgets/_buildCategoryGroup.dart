@@ -323,6 +323,7 @@ Widget buildCategoryGroupWidget(Map<String, dynamic> group) {
                 ),
               ),
 
+              const SizedBox(height: 16,),
             ],
           );
         }

@@ -91,7 +91,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
     await Future.delayed(const Duration(milliseconds: 100));
 
 
-    categoryProductsController.fetchProductsByCategory(widget.categoryId,widget.brandId??'',filterId:widget.filterId,filterName: widget.filterTitle );
+    categoryProductsController.fetchProductsByCategory(widget.categoryId,filterId:widget.filterId,filterName: widget.filterTitle );
     // categoryProductsController.fetchProductsByCategory(widget.categoryId,widget.filterTitle??'', widget.filterId??'');
     // Get.put(CategoryProductsController(widget.categoryId));
 
@@ -421,8 +421,9 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
           );
         }
 
-        if (chips.isEmpty)
-          return SizedBox.shrink(); // Don't render anything if no chips
+        if (chips.isEmpty) {
+          return const SizedBox.shrink(); // Don't render anything if no chips
+        }
 
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -455,39 +456,41 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
           style: const TextStyle(color: Colors.black),
         ),
       ),
-      bottomSheet: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-            onPressed: openFilterBottomSheet,
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Filters'),
-              ],
-            )),
-      ),
+      // bottomSheet: Padding(
+      //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      //   child: ElevatedButton(
+      //       style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+      //       onPressed: openFilterBottomSheet,
+      //       child: const Row(
+      //         mainAxisAlignment: MainAxisAlignment.center,
+      //         children: [
+      //           Text('Filters'),
+      //         ],
+      //       )),
+      // ),
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
           // _buildSliverAppBar(),
           // _buildFiltersBar(),
           // _buildActiveFiltersChips(),
-
           Obx(() {
-            print(
-                'isLoading: ${categoryProductsController.isLoading.value}, products length: ${categoryProductsController.products.length}');
+            // print(
+            //     'isLoading: ${categoryProductsController.isLoading.value}, products length: ${categoryProductsController.allProducts.length}');
 
             final isLoading = categoryProductsController.isLoading.value;
-            final products = categoryProductsController.products;
+            final products =
+                 categoryProductsController.allProducts;
+            // final products = categoryProductsController.allProducts;
+            // final filterProducts = categoryProductsController.filteredProducts;
 
             if (isLoading) {
               return const SliverToBoxAdapter(
                 child: Center(
                     child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: CircularProgressIndicator(),
-                )),
+                      padding: EdgeInsets.all(16.0),
+                      child: CircularProgressIndicator(),
+                    )),
               );
             }
             if (categoryProductsController.isError.value) {
@@ -508,17 +511,62 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
               return const SliverToBoxAdapter(
                 child: Center(
                     child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    "No products found\nPlease wait or try again later",
-                    textAlign: TextAlign.center,
-                  ),
-                )),
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        "No products found\nPlease wait or try again later",
+                        textAlign: TextAlign.center,
+                      ),
+                    )),
               );
             }
 
-            return _buildProductGrid(); // ✅ If products are loaded
+            return _buildProductGrid(products); // ✅ If products are loaded//products
           }),
+          // Obx(() {
+          //   print(
+          //       'isLoading: ${categoryProductsController.isLoading.value}, products length: ${categoryProductsController.allProducts.length}');
+          //
+          //   final isLoading = categoryProductsController.isLoading.value;
+          //   final products = categoryProductsController.allProducts;
+          //
+          //   if (isLoading) {
+          //     return const SliverToBoxAdapter(
+          //       child: Center(
+          //           child: Padding(
+          //         padding: EdgeInsets.all(16.0),
+          //         child: CircularProgressIndicator(),
+          //       )),
+          //     );
+          //   }
+          //   if (categoryProductsController.isError.value) {
+          //     return const SliverToBoxAdapter(
+          //       child: Center(
+          //         child: Padding(
+          //           padding: EdgeInsets.all(16.0),
+          //           child: Text(
+          //             "An error occurred. Please try again later.",
+          //             textAlign: TextAlign.center,
+          //           ),
+          //         ),
+          //       ),
+          //     );
+          //   }
+          //
+          //   if (products.isEmpty) {
+          //     return const SliverToBoxAdapter(
+          //       child: Center(
+          //           child: Padding(
+          //         padding: EdgeInsets.all(16.0),
+          //         child: Text(
+          //           "No products found\nPlease wait or try again later",
+          //           textAlign: TextAlign.center,
+          //         ),
+          //       )),
+          //     );
+          //   }
+          //
+          //   return _buildProductGrid(); // ✅ If products are loaded
+          // }),
           const SliverToBoxAdapter(
             child: SizedBox(height: 80), // This acts as bottom margin/padding
           ),
@@ -580,7 +628,28 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
     );
   }
 
-  Widget _buildProductGrid() {
+  Widget _buildProductGrid(
+      RxList<ProductDetailsData> product) {
+    final products = product;
+
+    return SliverPadding(
+      padding: const EdgeInsets.all(16),
+      sliver: SliverGrid(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.5,
+          mainAxisSpacing: 16,
+          crossAxisSpacing: 16,
+        ),
+        delegate: SliverChildBuilderDelegate(
+              (context, index) => _buildProductCard(products[index]),
+          childCount: products.length,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProductGridOLD() {
     return Obx(() {
       return SliverPadding(
         padding: const EdgeInsets.all(16),
@@ -593,8 +662,8 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
           ),
           delegate: SliverChildBuilderDelegate(
             (context, index) =>
-                _buildProductCard(categoryProductsController.products[index]),
-            childCount: categoryProductsController.products.length,
+                _buildProductCard(categoryProductsController.allProducts[index]),
+            childCount: categoryProductsController.allProducts.length,
           ),
         ),
       );

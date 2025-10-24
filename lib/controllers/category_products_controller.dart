@@ -13,7 +13,9 @@ class CategoryProductsController extends GetxController {
 
 
   final RxList<ProductDetailsData> products = <ProductDetailsData>[].obs;
-  final List<ProductDetailsData> allProducts = [];
+  // final List<ProductDetailsData> allProducts = [];
+  var allProducts = <ProductDetailsData>[].obs;
+
   final RxBool isLoading = false.obs;
   final RxBool isError = false.obs;
   final RxString errorMessage = ''.obs;
@@ -148,7 +150,8 @@ class CategoryProductsController extends GetxController {
   }
 
 
-  void fetchProductsByCategory(String categoryId, String brandId, {
+  void fetchProductsByCategory(String categoryId ,{
+   String? brandId,
     String? filterName,
     String? filterId,
   }) async {
@@ -161,7 +164,7 @@ class CategoryProductsController extends GetxController {
     try {
       String url;
 
-      if(brandId.isEmpty){
+      if(brandId==null){
         url = '${ApiService.baseUrl}/api/products/category/$categoryId';
       }
 
