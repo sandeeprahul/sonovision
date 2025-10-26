@@ -35,7 +35,7 @@ Widget buildCategoryGroupWidget(Map<String, dynamic> group) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // const SizedBox(height: 10),
+              const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.only(left: 16),
                 child: Row(
@@ -201,7 +201,7 @@ Widget buildCategoryGroupWidget(Map<String, dynamic> group) {
              //    },
              //  ),
               SizedBox(
-                height: 60,
+                height: 90,
                 child: ListView.builder(
                   shrinkWrap: true,
                   // physics: const NeverScrollableScrollPhysics(),
@@ -272,26 +272,26 @@ Widget buildCategoryGroupWidget(Map<String, dynamic> group) {
                       child: Container(
                         // width: itemWidth,
                         margin: const EdgeInsets.only(left: 8,right: 6),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-
-                          borderRadius: BorderRadius.circular(8),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.064),
-                              blurRadius: 10,
-                              offset: const Offset(0, 5),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        // decoration: BoxDecoration(
+                        //   color: Colors.white,
+                        //
+                        //   borderRadius: BorderRadius.circular(8),
+                        //   boxShadow: [
+                        //     BoxShadow(
+                        //       color: Colors.black.withOpacity(0.064),
+                        //       blurRadius: 10,
+                        //       offset: const Offset(0, 5),
+                        //     ),
+                        //   ],
+                        // ),
+                        child: Column(
+                          // mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(
 
                               // width: itemWidth * 0.8,
-                              width:  60,
-                              height:  60,
+                              width:  80,
+                              height:  54,
                               // height: itemWidth * 0.8,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(4),
@@ -301,19 +301,22 @@ Widget buildCategoryGroupWidget(Map<String, dynamic> group) {
                                 ),
                               ),
                             ),
-                            // const SizedBox(width: 4),
-                            // Text(
-                            //   category.name,
-                            //   style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                            //     fontWeight: FontWeight.w600,
-                            //     fontSize: 14,
-                            //     color: Colors.black87,
-                            //   ),
-                            //   textAlign: TextAlign.center,
-                            //   maxLines: 1,
-                            //   overflow: TextOverflow.ellipsis,
-                            // ),
-                            // const SizedBox(width: 4),
+                            const SizedBox(height: 4),
+                            SizedBox(
+                              width: 90,
+                              child: Text(
+                                category.name,
+                                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
+                                  color: Colors.black87,
+                                ),
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
 
                           ],
                         ),
@@ -323,7 +326,7 @@ Widget buildCategoryGroupWidget(Map<String, dynamic> group) {
                 ),
               ),
 
-              const SizedBox(height: 16,),
+              const SizedBox(height: 10,),
             ],
           );
         }

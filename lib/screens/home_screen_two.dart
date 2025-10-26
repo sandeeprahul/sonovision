@@ -1,4 +1,5 @@
 import 'package:electronic_store/screens/search_page.dart';
+import 'package:electronic_store/widgets/home_widgets/offers_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -45,9 +46,10 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle( const SystemUiOverlayStyle(
-        statusBarColor: Colors.black
-    ));
+    // SystemChrome.setSystemUIOverlayStyle( const SystemUiOverlayStyle(
+    //     statusBarColor: Colors.black,
+    //
+    // ));
     return Scaffold(
       // extendBodyBehindAppBar: true, // this is key
       /*   appBar: AppBar(title: Text('Home'),
@@ -185,7 +187,14 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
         final style = widget['style'] ?? {};
 
 
-        return BannerCarouselNew(banners: bannerData, style: style);
+        return OffersCarouselNew(banners: bannerData, style: style);
+
+        case 'offers':
+        final bannerData = widget['data']?['data'] ?? [];
+        final style = widget['style'] ?? {};
+
+
+        return BannersCarouselNew(banners: bannerData, style: style);
       case 'dealOfDay':
         return _buildDealOfDay(widget);
       /*  case 'brandStrip':
@@ -450,22 +459,27 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              '$title',
-              // 'Trending Products',
-              style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
+           Row(
+             children: [
+               Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  '$title',
+                  // 'Trending Products',
+                  style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
 
-              /*    style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),*/
-            ),
-          ),
+                  /*    style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),*/
+                ),
+                         ),
+
+             ],
+           ),
           const SizedBox(height: 16),
           SizedBox(
             height: 180.0,

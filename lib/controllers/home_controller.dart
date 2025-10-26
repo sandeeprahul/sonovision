@@ -34,7 +34,7 @@ class HomeController extends GetxController {
       homeData.value = jsonData;
       if (homeData.value.isNotEmpty) {
         if (homeData.value['version'].isNotEmpty) {
-          if (homeData.value['version'] != '1.0.13') {
+          if (homeData.value['version'] != '1.0.15') {
             showUpdateDialog();
           }
         }

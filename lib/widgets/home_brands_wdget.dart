@@ -108,13 +108,13 @@ class _BrandGridState extends State<BrandGrid> {
                     fontSize: 20,
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
-                    shadows: [
-                      Shadow(
-                        offset: const Offset(0, 0),
-                        blurRadius: 8.0,
-                        color: Colors.black.withOpacity(0.17),
-                      ),
-                    ],
+                    // shadows: [
+                    //   Shadow(
+                    //     offset: const Offset(0, 0),
+                    //     blurRadius: 8.0,
+                    //     color: Colors.black.withOpacity(0.17),
+                    //   ),
+                    // ],
                   ),
                 ),
                 TextButton(
@@ -254,9 +254,9 @@ class _AllBrandsScreenState extends State<AllBrandsScreen> {
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 4,
               // You can change this to 3 for a different layout
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              childAspectRatio: 0.85,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 12,
+              childAspectRatio: 0.95,
             ),
             itemCount: widget.brands.length,
             itemBuilder: (context, index) {

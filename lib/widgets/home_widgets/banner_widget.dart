@@ -15,21 +15,21 @@ import 'package:get/get.dart';
 
 import '../product_details_widgets/count_down_timer_widget.dart';
 
-class BannerCarouselNew extends StatefulWidget {
+class BannersCarouselNew extends StatefulWidget {
   final List<dynamic> banners;
   final Map<String, dynamic> style;
 
-  const BannerCarouselNew({
+  const BannersCarouselNew({
     Key? key,
     required this.banners,
     required this.style,
   }) : super(key: key);
 
   @override
-  State<BannerCarouselNew> createState() => _BannerCarouselNewState();
+  State<BannersCarouselNew> createState() => _BannersCarouselNewState();
 }
 
-class _BannerCarouselNewState extends State<BannerCarouselNew> {
+class _BannersCarouselNewState extends State<BannersCarouselNew> {
   @override
   Widget build(BuildContext context) {
     // Calculate height based on screen size for better visual appeal
