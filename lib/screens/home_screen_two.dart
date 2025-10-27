@@ -9,6 +9,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../controllers/cart_controller.dart';
+import '../pages/category_details_page.dart';
 import '../pages/login_page.dart';
 import '../premium_profile_page.dart';
 import '../price_extensions.dart';
@@ -46,10 +47,11 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
 
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle( const SystemUiOverlayStyle(
-    //     statusBarColor: Colors.black,
-    //
-    // ));
+    SystemChrome.setSystemUIOverlayStyle( const SystemUiOverlayStyle(
+        statusBarColor: Colors.black,
+      statusBarIconBrightness: Brightness.dark, // Android: black icons/text
+
+    ));
     return Scaffold(
       // extendBodyBehindAppBar: true, // this is key
       /*   appBar: AppBar(title: Text('Home'),
@@ -124,6 +126,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
           SliverAppBar(
             expandedHeight: 96.0,
             backgroundColor: Colors.black,
+
             // backgroundColor: Colors.transparent,
             // backgroundColor: Colors.grey.withAlpha(2),
             floating: false,
@@ -200,7 +203,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
       /*  case 'brandStrip':
         return buildBrandStripWidget(widget);*/
       case 'recentlyViewed':
-        return _buildRecentlyViewed(widget);
+        return widget['type']=='category'?_buildRecentlyViewedCategoryWidget(widget):_buildRecentlyViewed(widget);
       default:
         return const SizedBox.shrink();
     }
@@ -445,9 +448,12 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
   }
 
   Widget _buildRecentlyViewed(Map<String, dynamic> widget) {
+    final type = widget['type'];
+
     final style = widget['style'];
     final title =  widget['label'];
     final products = widget['data']['data'] as List;
+
 
     return Container(
       // color: Colors.white, .
@@ -525,6 +531,176 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(
                         style['cardStyle']['borderRadius']?.toDouble() ?? 16.0,
+                      ),
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          product['image']==null?Center(
+                            child: Text(
+                              product['name'],
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ):   Padding(
+                            padding: const EdgeInsets.only(top: 22,bottom: 42,),
+                            child: CachedNetworkImage(
+                              imageUrl: product['image'],
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                          /*   Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.transparent,
+                                  Colors.black.withOpacity(0.7),
+                                ],
+                              ),
+                            ),
+                          ),*/
+                          Positioned(
+                            bottom: 8,
+                            left: 8,
+                            right: 8,
+                            child: Text(
+                              product['name'],
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+
+        ],
+      ),
+    );
+  }
+  Widget _buildRecentlyViewedCategoryWidget(Map<String, dynamic> widget) {
+    final type = widget['type'];
+
+    final title =  widget['label'];
+    final id =  widget['id'];
+    final products = widget['data']['data'] as List;
+
+
+    return Container(
+      // color: Colors.white, .
+    /*  margin:
+          const EdgeInsets.symmetric(vertical:  20.0),*/
+        margin:
+          EdgeInsets.symmetric(vertical:  20.0),
+
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+           Row(
+             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+             children: [
+               Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  '$title',
+                  // 'Trending Products',
+                  style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+
+                  /*    style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),*/
+                ),
+                         ),
+               TextButton(
+                 onPressed: () {
+                   Navigator.push(
+                     context,
+                     MaterialPageRoute(
+                       builder: (context) => CategoryDetailsPage(
+                         categoryId: id,
+                         categoryName: title, imageUrl: '',
+                         // imageUrl:
+                         // "http://sonovision.asquare.org.in/images/${item.icon}",
+                       ),
+                     ),
+                   );
+                 },
+                 child: Text(
+                   'More',
+                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                     color: Theme.of(context).colorScheme.primary,
+                     fontWeight: FontWeight.w500,
+                   ),
+                 ),
+               ),
+
+             ],
+           ),
+          const SizedBox(height: 16),
+          SizedBox(
+            height: 180.0,
+            // height: style['height']?.toDouble() ?? 120.0,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.symmetric(
+                horizontal: 20.0,
+              ),
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                final product = products[index];
+                return InkWell(
+                  onTap: () {
+                    final productJson = {
+                      '_id': product['id'],
+                      // other fields if needed
+                    };
+
+                    Get.toNamed('/product-details', arguments: productJson);
+                  },
+                  child: Container(
+                    width: 120,
+                    margin: EdgeInsets.only(
+                      right: 20.0,
+                      bottom: 6
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(
+                        6.0,
+                        // style['cardStyle']['borderRadius']?.toDouble() ?? 16.0,
+                        // 10.0,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                       16.0,
                       ),
                       child: Stack(
                         fit: StackFit.expand,

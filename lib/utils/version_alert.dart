@@ -53,50 +53,50 @@ void showUpdateDialog() {
             ),
             const SizedBox(height: 24),
             // Version comparison
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Get.theme.colorScheme.surfaceContainer,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Column(
-                    children: [
-                      Text(
-                        'Current',
-                        style: Get.theme.textTheme.labelSmall,
-                      ),
-                      Text(
-                        '1.0.12',
-                        style: Get.theme.textTheme.bodyLarge?.copyWith(
-                          color: Get.theme.colorScheme.error,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Icon(
-                    Icons.arrow_forward_rounded,
-                    color: Get.theme.colorScheme.onSurfaceVariant,
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        'Available',
-                        style: Get.theme.textTheme.labelSmall,
-                      ),
-                      Text(
-                        '1.0.15',
-                        style: Get.theme.textTheme.bodyLarge?.copyWith(
-                          color: Get.theme.colorScheme.primary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            // Container(
+            //   padding: const EdgeInsets.all(16),
+            //   decoration: BoxDecoration(
+            //     color: Get.theme.colorScheme.surfaceContainer,
+            //     borderRadius: BorderRadius.circular(16),
+            //   ),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //     children: [
+            //       Column(
+            //         children: [
+            //           Text(
+            //             'Current',
+            //             style: Get.theme.textTheme.labelSmall,
+            //           ),
+            //           Text(
+            //             '1.0.12',
+            //             style: Get.theme.textTheme.bodyLarge?.copyWith(
+            //               color: Get.theme.colorScheme.error,
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //       Icon(
+            //         Icons.arrow_forward_rounded,
+            //         color: Get.theme.colorScheme.onSurfaceVariant,
+            //       ),
+            //       Column(
+            //         children: [
+            //           Text(
+            //             'Available',
+            //             style: Get.theme.textTheme.labelSmall,
+            //           ),
+            //           Text(
+            //             '1.0.15',
+            //             style: Get.theme.textTheme.bodyLarge?.copyWith(
+            //               color: Get.theme.colorScheme.primary,
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ],
+            //   ),
+            // ),
             FilledButton(
               onPressed: () {
                 // Launch app store/play store
