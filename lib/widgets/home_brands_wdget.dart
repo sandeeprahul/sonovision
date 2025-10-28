@@ -135,6 +135,7 @@ class _BrandGridState extends State<BrandGrid> {
             const SizedBox(height: 10),
             Expanded(
                 child: ListView.builder(
+                  itemCount: brands.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return BrandCard(brand: brands[index]);

@@ -6,8 +6,11 @@ import 'package:get/get.dart';
 import '../controllers/cart_controller.dart';
 import '../controllers/category_products_controller.dart';
 import '../utils/cart_bottom_sheet.dart';
+import '../widgets/home_brands_wdget.dart';
 
 class CategoryDetailsPage extends StatefulWidget {
+  final List<dynamic>? brandsList;
+
   final String? priceRangeMin;
   final String? priceRangeMax;
   final String? filterTitle;
@@ -17,7 +20,7 @@ class CategoryDetailsPage extends StatefulWidget {
   final String categoryName;
   final String imageUrl;
   final String? brandName;
-  final String?  brandId;
+  final String? brandId;
 
   const CategoryDetailsPage({
     Key? key,
@@ -31,6 +34,7 @@ class CategoryDetailsPage extends StatefulWidget {
     required this.categoryId,
     required this.categoryName,
     required this.imageUrl,
+    this.brandsList,
   }) : super(key: key);
 
   @override
@@ -52,18 +56,18 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _loadProducts();
       // Check and apply price range if provided
-    //   final min = double.tryParse(widget.priceRangeMin ?? '');
-    //   final max = double.tryParse(widget.priceRangeMax ?? '');
-    //
-    //   if (min != null && max != null) {
-    //     categoryProductsController.setInitialPriceRange(min, max);
-    //   }
-    //   // Set initial brand if available
-    //   if (widget.brandName != null && widget.brandName!.isNotEmpty) {
-    //     categoryProductsController.setInitialBrand(widget.brandName!);
-    //   }
-    //
-    //   // categoryProductsController.applyInitialFilters();
+      //   final min = double.tryParse(widget.priceRangeMin ?? '');
+      //   final max = double.tryParse(widget.priceRangeMax ?? '');
+      //
+      //   if (min != null && max != null) {
+      //     categoryProductsController.setInitialPriceRange(min, max);
+      //   }
+      //   // Set initial brand if available
+      //   if (widget.brandName != null && widget.brandName!.isNotEmpty) {
+      //     categoryProductsController.setInitialBrand(widget.brandName!);
+      //   }
+      //
+      //   // categoryProductsController.applyInitialFilters();
     });
     _scrollController.addListener(_onScroll);
   }
@@ -90,8 +94,8 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
     }); // TODO: Replace with actual API call
     await Future.delayed(const Duration(milliseconds: 100));
 
-
-    categoryProductsController.fetchProductsByCategory(widget.categoryId,filterId:widget.filterId,filterName: widget.filterTitle );
+    categoryProductsController.fetchProductsByCategory(widget.categoryId,
+        filterId: widget.filterId, filterName: widget.filterTitle);
     // categoryProductsController.fetchProductsByCategory(widget.categoryId,widget.filterTitle??'', widget.filterId??'');
     // Get.put(CategoryProductsController(widget.categoryId));
 
@@ -112,6 +116,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
         _isLoading = false;
       });
     }
+
   }
 
   // Widget buildFilterChips() {
@@ -334,7 +339,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
                           '₹${categoryProductsController.selectedMaxPrice.value.toStringAsFixed(0)}',
                         ),
                         onChanged: (RangeValues values) {
-                       /*   categoryProductsController.updatePriceRange(
+                          /*   categoryProductsController.updatePriceRange(
                               values.start, values.end);*/
                         },
                         activeColor: Theme.of(context).primaryColor,
@@ -474,13 +479,15 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
           // _buildSliverAppBar(),
           // _buildFiltersBar(),
           // _buildActiveFiltersChips(),
+          SliverToBoxAdapter(
+            child:    setBrandsListView(),
+          ),
           Obx(() {
             // print(
             //     'isLoading: ${categoryProductsController.isLoading.value}, products length: ${categoryProductsController.allProducts.length}');
 
             final isLoading = categoryProductsController.isLoading.value;
-            final products =
-                 categoryProductsController.allProducts;
+            final products = categoryProductsController.allProducts;
             // final products = categoryProductsController.allProducts;
             // final filterProducts = categoryProductsController.filteredProducts;
 
@@ -488,9 +495,9 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
               return const SliverToBoxAdapter(
                 child: Center(
                     child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: CircularProgressIndicator(),
-                    )),
+                  padding: EdgeInsets.all(16.0),
+                  child: CircularProgressIndicator(),
+                )),
               );
             }
             if (categoryProductsController.isError.value) {
@@ -511,16 +518,17 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
               return const SliverToBoxAdapter(
                 child: Center(
                     child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        "No products found\nPlease wait or try again later",
-                        textAlign: TextAlign.center,
-                      ),
-                    )),
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    "No products found\nPlease wait or try again later",
+                    textAlign: TextAlign.center,
+                  ),
+                )),
               );
             }
 
-            return _buildProductGrid(products); // ✅ If products are loaded//products
+            return _buildProductGrid(
+                products); // ✅ If products are loaded//products
           }),
           // Obx(() {
           //   print(
@@ -628,8 +636,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
     );
   }
 
-  Widget _buildProductGrid(
-      RxList<ProductDetailsData> product) {
+  Widget _buildProductGrid(RxList<ProductDetailsData> product) {
     final products = product;
 
     return SliverPadding(
@@ -642,7 +649,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
           crossAxisSpacing: 16,
         ),
         delegate: SliverChildBuilderDelegate(
-              (context, index) => _buildProductCard(products[index]),
+          (context, index) => _buildProductCard(products[index]),
           childCount: products.length,
         ),
       ),
@@ -661,8 +668,8 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
             crossAxisSpacing: 16,
           ),
           delegate: SliverChildBuilderDelegate(
-            (context, index) =>
-                _buildProductCard(categoryProductsController.allProducts[index]),
+            (context, index) => _buildProductCard(
+                categoryProductsController.allProducts[index]),
             childCount: categoryProductsController.allProducts.length,
           ),
         ),
@@ -1144,5 +1151,161 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
         ),
       ),
     );
+  }
+
+  int? _selectedIndex; // 👈 track selected brand index
+  Widget setBrandsListView() {
+    final brands = widget.brandsList ?? [];
+
+    if (brands.isEmpty) {
+      return const SizedBox();
+    }
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      height: 70,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: brands.length,
+        itemBuilder: (context, index) {
+          final brand = brands[index];
+          final bool isSelected = _selectedIndex == index; // 👈 check selected
+
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                _selectedIndex = index; // 👈 update selected index
+              });
+
+
+              categoryProductsController.fetchProductsByCategory(brandId:brand['_id'],widget.categoryId,
+                  filterId: widget.filterId, filterName: widget.filterTitle);
+
+              // Optional: perform some action when tapped
+              print("Selected brand: ${brand['name']}");
+            },
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              width: 70,
+              height: 68,
+              margin: const EdgeInsets.only(right: 6, bottom: 4),
+              decoration: BoxDecoration(
+                color: isSelected ? Colors.green[50] : Colors.white,
+                // color: isSelected ? Colors.green[50] : Colors.white,
+                borderRadius: BorderRadius.circular(6),
+                // border: Border.all(
+                //   color: isSelected ? Colors.green : Colors.transparent,
+                //   width: 2,
+                // ),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 2,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              padding: const EdgeInsets.all(8),
+              child: Stack(
+                children: [
+                  Center(
+                    child: CachedNetworkImage(
+                      imageUrl: brand['icon'],
+                      placeholder: (context, url) => CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation(Colors.grey[300]),
+                      ),
+                      errorWidget: (context, url, error) => Center(
+                        child: Text(
+                          brand['name'] ?? '',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ),
+                  // if (isSelected)
+                  //   Align(
+                  //     alignment: Alignment.bottomCenter,
+                  //     child: Container(
+                  //       width: 70,
+                  //       height: 4,
+                  //       color: Colors.green,
+                  //     ),
+                  //   ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+  Widget setBrandsListViefffffw() {
+    if (widget.brandsList != null) {
+      return Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16),
+        height: 70,
+        // width: 200,
+        child: ListView.builder(
+            itemCount: widget.brandsList!.length, // ✅ important
+          scrollDirection: Axis.horizontal,
+            itemBuilder: ( context,index) {
+            if(widget.brandsList==null){
+              var brand = widget.brandsList![index];
+              return Text( '');
+            }else{
+              var brand = widget.brandsList![index];
+              return Container(
+                width: 70,
+                height: 68,
+                margin: const EdgeInsets.only(right: 6,bottom: 4),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(6),
+                  // borderRadius: BorderRadius.circular(12),
+                  // shape: BoxShape.circle,
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 2,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                padding: const EdgeInsets.all(8),
+                child: Stack(
+                  children: [
+                    Center(
+                      child: CachedNetworkImage(
+                        imageUrl: brand['icon'],
+                        placeholder: (context, url) => CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation(Colors.grey[300]),
+                        ),
+                        errorWidget: (context, url, error) => Center(
+                            child: Text(
+                              brand['name'],
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            )),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        width: 70,
+                        height: 4,
+                        color: Colors.green,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+        }),
+      );
+    }
+    return Container();
   }
 }

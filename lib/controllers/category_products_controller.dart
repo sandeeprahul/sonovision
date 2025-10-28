@@ -160,6 +160,7 @@ class CategoryProductsController extends GetxController {
     errorMessage.value = '';
     isEmpty.value = false;
     products.clear();
+    allProducts.clear();
 
     try {
       String url;
@@ -188,6 +189,8 @@ class CategoryProductsController extends GetxController {
         if (data.isEmpty) {
           isEmpty.value = true;
           products.clear();
+          allProducts.clear();
+
         } else {
           print(data.length);
 

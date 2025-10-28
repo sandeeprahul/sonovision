@@ -207,9 +207,9 @@ Widget buildCategoryGroupWidget(Map<String, dynamic> group) {
                   // physics: const NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.all(6),
                   scrollDirection: Axis.horizontal,
-                  itemCount: 8, // +1 for "See All"
+                  // itemCount: 8, // +1 for "See All"
                   // itemCount: categories.length, // +1 for "See All"
-                  // itemCount: categories.length,
+                  itemCount: categories.length,
                   itemBuilder: (context, index) {
                     /*if (index == visibleItemCount) {
                       // Show "See All" tile
@@ -265,6 +265,7 @@ Widget buildCategoryGroupWidget(Map<String, dynamic> group) {
                               categoryId: category.id,
                               categoryName: category.name,
                               imageUrl: "http://sonovision.asquare.org.in/images/${category.icon}",
+                                brandsList:rawList[index]['brands']
                             ),
                           ),
                         );
