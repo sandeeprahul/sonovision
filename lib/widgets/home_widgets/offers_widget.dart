@@ -51,7 +51,7 @@ class _OffersCarouselNewState extends State<OffersCarouselNew> {
         CarouselSlider.builder(
           itemCount: widget.banners.length,
           options:CarouselOptions(
-            autoPlay: true,
+            autoPlay: widget.banners.length>1?true:false,
             height: height,
             // aspectRatio: aspectRatio,
             enableInfiniteScroll: true,

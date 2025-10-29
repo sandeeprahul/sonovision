@@ -27,6 +27,13 @@ void showUpdateDialog() {
           mainAxisSize: MainAxisSize.min,
           children: [
             // Replace Lottie with Flutter's built-in animations
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(onPressed: ()=>Get.back(), icon: Icon(Icons.close,color: Colors.red,))
+              ],
+            ),
+
             SizedBox(
               height: 150,
               child: Icon(

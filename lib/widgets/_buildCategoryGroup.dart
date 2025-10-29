@@ -12,6 +12,8 @@ import '../screens/categories_screen.dart';
 Widget buildCategoryGroupWidget(Map<String, dynamic> group) {
 
   final rawList = group['data']?['data'] ?? [];
+  final allCategories = group['data'] ?? {};
+
 
   final categories = List<Map<String, dynamic>>.from(rawList);
   // Ensure there's at least one item to replace
@@ -66,6 +68,7 @@ Widget buildCategoryGroupWidget(Map<String, dynamic> group) {
                           MaterialPageRoute(
                             builder: (context) => CategoryListScreen(
                               categories: categories,
+                                allCategories: allCategories,//sending full data
                             ),
                           ),
                         );

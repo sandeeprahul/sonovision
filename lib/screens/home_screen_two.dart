@@ -48,8 +48,9 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle( const SystemUiOverlayStyle(
-        statusBarColor: Colors.black,
-      statusBarIconBrightness: Brightness.dark, // Android: black icons/text
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        // / Android: black icons/text
 
     ));
     return Scaffold(
@@ -599,6 +600,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
     final title =  widget['label'];
     final id =  widget['id'];
     final products = widget['data']['data'] as List;
+    final brandsList = widget['brands'] as List;
 
 
     return Container(
@@ -639,6 +641,8 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                        builder: (context) => CategoryDetailsPage(
                          categoryId: id,
                          categoryName: title, imageUrl: '',
+                           brandsList:brandsList
+
                          // imageUrl:
                          // "http://sonovision.asquare.org.in/images/${item.icon}",
                        ),

@@ -166,7 +166,7 @@ class CategoryProductsController extends GetxController {
       String url;
 
       if(brandId==null){
-        url = '${ApiService.baseUrl}/api/products?category/$categoryId';
+        url = '${ApiService.baseUrl}/api/products?category=$categoryId';
       }
 
     else  if (filterName != null && filterId != null) {

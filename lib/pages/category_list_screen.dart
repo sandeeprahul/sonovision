@@ -88,11 +88,18 @@ import 'package:get/get.dart';
 import '../models/category.dart';
 import 'category_details_page.dart';
 
-class CategoryListScreen extends StatelessWidget {
+class CategoryListScreen extends StatefulWidget {
   final List<Category> categories;
+  final Map<String,dynamic>? allCategories;
 
-  const CategoryListScreen({super.key, required this.categories});
+  const CategoryListScreen({super.key, required this.categories, this. allCategories,
+  });
 
+  @override
+  State<CategoryListScreen> createState() => _CategoryListScreenState();
+}
+
+class _CategoryListScreenState extends State<CategoryListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,13 +138,19 @@ class CategoryListScreen extends StatelessWidget {
                       mainAxisSpacing: 16,
                       childAspectRatio: 1.90,
                     ),
-                    itemCount: categories.length,
+                    itemCount: widget.categories.length,
                     itemBuilder: (context, index) {
-                      final category = categories[index];
+                      final category = widget.categories[index];
+                      final allCategoriesData = widget.allCategories?['data'] as List<dynamic>? ?? [];
+
+                      print('allCategoriesData');
+                      print("${allCategoriesData[index]['brands'].length}");
                       return CategoryRowItem(
-                        name: categories[index].name,
-                        image: categories[index].icon,
-                        item:category
+                        name: widget.categories[index].name,
+                        image: widget.categories[index].icon,
+                        item:category,
+                        allCategories: widget.allCategories,
+                        indexx: index,
                       );
                       return GestureDetector(
                         onTap: () {
@@ -238,17 +251,25 @@ class CategoryListScreen extends StatelessWidget {
     );
   }
 }
-class CategoryRowItem extends StatelessWidget {
+class CategoryRowItem extends StatefulWidget {
   final String name;
   final String image;
   final Category item;
+  final Map<String,dynamic>? allCategories;
 
-  const CategoryRowItem({required this.name, required this.image, required this. item});
+  final int indexx;
 
+  const CategoryRowItem({super.key, required this.name, required this.image, required this. item,this.allCategories, required this.indexx});
+
+  @override
+  State<CategoryRowItem> createState() => _CategoryRowItemState();
+}
+
+class _CategoryRowItemState extends State<CategoryRowItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 6,right: 6),
+      padding: const EdgeInsets.only(left: 6,right: 6),
 
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -258,14 +279,26 @@ class CategoryRowItem extends StatelessWidget {
       //
       child: InkWell(
         onTap: () {
+          final allCategoriesss = widget.allCategories?['data'] as List<dynamic>? ?? [];
+
+          // Find the matching category data (by id or name)
+          final selectedCategoryData = allCategoriesss.firstWhere(
+                (cat) => cat['id'] ==  widget.item.id,
+            orElse: () => {},
+          );
+
+          // Extract its brands list safely
+          final brandsList = selectedCategoryData['brands'] as List<dynamic>? ?? [];
+
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => CategoryDetailsPage(
-                categoryId: item.id,
-                categoryName: item.name,
+                categoryId: widget.item.id,
+                categoryName: widget.item.name,
                 imageUrl:
-                "http://sonovision.asquare.org.in/images/${item.icon}",
+                "http://sonovision.asquare.org.in/images/${widget.item.icon}",
+                brandsList: brandsList,
               ),
             ),
           );
@@ -284,7 +317,7 @@ class CategoryRowItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 child: CachedNetworkImage(
                   imageUrl:
-                  "http://sonovision.asquare.org.in/images/$image",
+                  "http://sonovision.asquare.org.in/images/${widget.image}",
                   //http://sonovision.asquare.org.in/images/kitchen_appliances.jpeg
                   fit: BoxFit.cover,
                   width: 40,
@@ -297,12 +330,12 @@ class CategoryRowItem extends StatelessWidget {
               ),
             ),*/
             ),
-            SizedBox(width: 4),
+            const SizedBox(width: 4),
             // Category name on the right
             Expanded(
               child: Text(
-                name,
-                style: TextStyle(
+                widget.name,
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: Colors.black
