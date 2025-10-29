@@ -1169,8 +1169,7 @@ class _CategoryDetailsPageState extends State<CategoryDetailsPage> {
         itemCount: brands.length,
         itemBuilder: (context, index) {
           final brand = brands[index];
-          print("setBrandsListView");
-          print(brand);
+
           final bool isSelected = _selectedIndex == index; // 👈 check selected
 
           return GestureDetector(

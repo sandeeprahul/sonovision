@@ -433,7 +433,7 @@ class _SearchPageState extends State<SearchPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        product['brand'] ?? '',
+                        product['brand']['name'] ?? '',
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
                               color: Theme.of(context)
                                   .colorScheme
