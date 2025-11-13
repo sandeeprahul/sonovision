@@ -41,54 +41,57 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+          statusBarColor: Colors.black,
+          statusBarIconBrightness: Brightness.dark,
+    ));
   }
 
   final HomeController controller = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle( const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        // / Android: black icons/text
-
-    ));
-    return Scaffold(
-      // extendBodyBehindAppBar: true, // this is key
-      /*   appBar: AppBar(title: Text('Home'),
-        leading:         IconButton(onPressed: (){}, icon: Icon(Icons.menu)),
-
-
-        actions: [
-        IconButton(onPressed: (){}, icon: Icon(Icons.notifications))
-      ],),*/
-      backgroundColor: const Color(0xfff6f5ef),
-      // backgroundColor: Colors.grey.shade100,
-      body: Obx(
-         () {
-           if (controller.isLoading.value) {
-             return const Center(child: CircularProgressIndicator());
-           }
-
-           if (controller.error.isNotEmpty) {
-             return _buildErrorWidget(controller);
-           }
-
-
-           return Stack(
-            children: [
-              // Image.asset(
-              //   'assets/sonovision_bg_homepage.png',
-              //   height: double.infinity,
-              //   // height: double.infinity,
-              //   fit: BoxFit.cover,
-              // ),
-              SafeArea(
-                child: _buildHomeContent(context, controller),
-              ),
-            ],
-          );
-        }
+    // SystemChrome.setSystemUIOverlayStyle( const SystemUiOverlayStyle(
+    //     statusBarColor: Colors.black,
+    //     statusBarIconBrightness: Brightness.dark,
+    //     // / Android: black icons/text
+    //
+    // ));
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.black, // your desired color
+        statusBarIconBrightness: Brightness.dark, // light icons
+      ),
+      child: Scaffold(
+         
+        backgroundColor: const Color(0xfff6f5ef),
+        // backgroundColor: Colors.blue.shade800,
+        body: Obx(
+           () {
+             if (controller.isLoading.value) {
+               return const Center(child: CircularProgressIndicator());
+             }
+      
+             if (controller.error.isNotEmpty) {
+               return _buildErrorWidget(controller);
+             }
+      
+      
+             return Stack(
+              children: [
+                // Image.asset(
+                //   'assets/sonovision_bg_homepage.png',
+                //   height: double.infinity,
+                //   // height: double.infinity,
+                //   fit: BoxFit.cover,
+                // ),
+                SafeArea(
+                  child: _buildHomeContent(context, controller),
+                ),
+              ],
+            );
+          }
+        ),
       ),
     );
   }
@@ -120,12 +123,13 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
         return controller.refreshHomeData();
       },
       child: CustomScrollView(
+
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           // Add SliverAppBar
 
           SliverAppBar(
-            expandedHeight: 96.0,
+            expandedHeight: 110.0,
             backgroundColor: Colors.black,
 
             // backgroundColor: Colors.transparent,
@@ -133,6 +137,7 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
             floating: false,
             pinned: false,
             flexibleSpace: FlexibleSpaceBar(
+
               // collapseMode: CollapseMode.pin,
               background: Stack(
                 children: [
@@ -1040,14 +1045,16 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
     return Column(
       children: [
         const SizedBox(
-          height: 8,
+          height: 12,
         ),
         Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 12,
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+
               InkWell(
                 onTap: () {
                   controller.getCurrentLocation();
@@ -1075,6 +1082,25 @@ class _HomeScreenTwoState extends State<HomeScreenTwo> {
                         ),
                   );
                 }),
+              ),
+              Text(
+                'SONOVISION',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 4,
+                  // shadows: [
+                  //   Shadow(
+                  //     color: Colors.red.withOpacity(_glowController.value * 0.7),
+                  //     blurRadius: 20 + (20 * _glowController.value),
+                  //   ),
+                  //   Shadow(
+                  //     color: Colors.redAccent.withOpacity(_glowController.value * 0.5),
+                  //     blurRadius: 40 + (20 * _glowController.value),
+                  //   ),
+                  // ],
+                ),
               ),
             ],
           ),

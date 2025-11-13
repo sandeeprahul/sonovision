@@ -22,7 +22,7 @@ class OtpScreen extends StatelessWidget {
         centerTitle: true,
         leading:   IconButton(
           onPressed: () => Get.toNamed('/main'),
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
         ),
         actions: [
 

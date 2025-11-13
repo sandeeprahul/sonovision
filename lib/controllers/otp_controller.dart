@@ -27,6 +27,11 @@ class OtpController extends GetxController {
   final String sendOtpUrl = '$baseUrl/api/auth/send-otp';
   final String verifyOtpUrl = '$baseUrl/api/auth/verify-otp';
 
+  void clearPhone() {
+    phoneController.value.clear();
+  }
+
+
   // Send OTP method
   Future<void> sendOtp() async {
     try {
@@ -183,6 +188,7 @@ class OtpController extends GetxController {
   @override
   void onClose() {
     _clearTimer();
+    phoneController.value.dispose(); // very important!
     super.onClose();
   }
 }

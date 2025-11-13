@@ -150,7 +150,7 @@ class CheckoutController extends GetxController {
         final List data = json.decode(response.body);
         addresses.value = data.map((e) => AddressModel.fromJson(e)).toList();
       } else {
-        Get.snackbar('Error', 'Failed to load addresses');
+        // Get.snackbar('Error', 'Failed to load addresses',backgroundColor: Colors.red,colorText: Colors.white,overlayBlur: 2.0);
       }
     } catch (e) {
       Get.snackbar('Error', 'Something went wrong');

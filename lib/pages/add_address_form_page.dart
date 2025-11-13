@@ -288,6 +288,9 @@ class _AddressFormPageState extends State<AddressFormPage> {
           body: jsonEncode(addressData),
         );
 
+        print("AddAddressLog");
+        print(response.statusCode);
+        print(response.body);
 
         if (response.statusCode == 200 || response.statusCode == 201) {
           setState(() {
@@ -305,6 +308,8 @@ class _AddressFormPageState extends State<AddressFormPage> {
           }
 
         } else {
+          print(response.statusCode);
+          print(response.body);
           setState(() {
             isLoading = false;
           });
@@ -319,6 +324,7 @@ class _AddressFormPageState extends State<AddressFormPage> {
           }
         }
       } catch (e) {
+        print(e);
         setState(() {
           isLoading = false;
         });
