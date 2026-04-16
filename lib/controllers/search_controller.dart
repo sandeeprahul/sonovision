@@ -38,11 +38,10 @@ class SearchhController extends GetxController {
   Future<void> _loadPopularSearches() async {
     // Replace with actual API call if needed
     suggestions.value = [
-      'Galaxy S24',
+      'LED',
       'Washing Machine',
       'Apple',
       'Samsung',
-      'Soundbar',
     ];
   }
   final Debouncer _searchDebouncer = Debouncer(delay: const Duration(milliseconds: 500));

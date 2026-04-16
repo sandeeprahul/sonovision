@@ -116,6 +116,79 @@ class _SearchPageState extends State<SearchPage> {
   Widget _buildInitialState(BuildContext context) {
     return CustomScrollView(
       slivers: [
+        // Browse categories
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(24, 32, 24, 8),
+            child: Row(
+              children: [
+                Text(
+                  'Browse Categories',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w800, color: Colors.black),
+                ),
+                const SizedBox(
+                  width: 6,
+                ),
+                const Icon(
+                  Icons.category,
+                  size: 20,
+                )
+              ],
+            ),
+          ),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          sliver: SliverGrid(
+            delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                final category =
+                ['Led', 'Refrigerators', 'Washing Machines	', 'Air Conditioners'][index];
+                return InkWell(
+                  borderRadius: BorderRadius.circular(12),
+                  // onTap: () => controller.selectSuggestion(category),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          [
+                            Icons.tv,
+                            Icons.kitchen,
+                            Icons.local_laundry_service,
+                            Icons.ac_unit
+                          ][index],
+                          size: 32,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          category,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+              childCount: 4,
+            ),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 1.5,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+            ),
+          ),
+        ),
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(24, 24, 24, 8),
@@ -209,79 +282,7 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
         ),
-        // Browse categories
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 32, 24, 8),
-            child: Row(
-              children: [
-                Text(
-                  'Browse Categories',
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w800, color: Colors.black),
-                ),
-                const SizedBox(
-                  width: 6,
-                ),
-                const Icon(
-                  Icons.category,
-                  size: 20,
-                )
-              ],
-            ),
-          ),
-        ),
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          sliver: SliverGrid(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final category =
-                    ['Mobiles', 'Refrigerators', 'Tv', 'Accessories'][index];
-                return InkWell(
-                  borderRadius: BorderRadius.circular(12),
-                  onTap: () => controller.selectSuggestion(category),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Theme.of(context).colorScheme.surfaceContainerHigh,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          [
-                            Icons.phone_android,
-                            Icons.kitchen,
-                            Icons.electrical_services,
-                            Icons.watch
-                          ][index],
-                          size: 32,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          category,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(color: Colors.black),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-              childCount: 4,
-            ),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 1.5,
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-            ),
-          ),
-        ),
+
       ],
     );
   }
@@ -379,7 +380,7 @@ class _SearchPageState extends State<SearchPage> {
     final discountedPrice = price - (price * discount / 100);
 
     return GestureDetector(
-      onTap: () => Get.toNamed('/product-details', arguments: product),
+      // onTap: () => Get.toNamed('/product-details', arguments: product),
       child: Material(
         color: Theme.of(context).colorScheme.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(10),
@@ -516,7 +517,7 @@ class _SearchPageState extends State<SearchPage> {
                 final term = controller.suggestions[index];
                 return InkWell(
                   borderRadius: BorderRadius.circular(12),
-                  onTap: () => controller.selectSuggestion(term),
+                  // onTap: () => controller.selectSuggestion(term),
                   child: Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(

@@ -34,7 +34,7 @@ class HomeController extends GetxController {
       homeData.value = jsonData;
       if (homeData.value.isNotEmpty) {
         if (homeData.value['version'].isNotEmpty) {
-          if (homeData.value['version'] != '1.0.17') {
+          if (homeData.value['version'] != '1.0.18') {
             showUpdateDialog();
           }
         }
@@ -64,7 +64,7 @@ class HomeController extends GetxController {
         // findNearestStore();
       }
     } catch (e) {
-      error.value = 'Failed to load stores: ${e.toString()}';
+      error.value = 'Something went wrong\nPlease retry: ${e.toString()}';
       print('Failed to load stores: ${e.toString()}');
       stores.value = []; // Reset stores on error
     } finally {

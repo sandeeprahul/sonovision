@@ -162,7 +162,7 @@ class _CheckoutPageState extends State<CheckoutPage> with WidgetsBindingObserver
                       });
                     },
                   ),
-                  /*RadioListTile(
+                  RadioListTile(
                       value: 'Cash on Delivery',
                       groupValue: controller.selectedPaymentMethod.value,
                       title: const Text('Cash on Delivery'),
@@ -172,7 +172,7 @@ class _CheckoutPageState extends State<CheckoutPage> with WidgetsBindingObserver
                           controller.selectedPaymentMethod.value = value.toString();
                         });
                       },
-                    ),*/
+                    ),
                 ],
               );
             }),
@@ -302,10 +302,7 @@ class _CheckoutPageState extends State<CheckoutPage> with WidgetsBindingObserver
           ),
           ElevatedButton(
             onPressed: () async {
-              // final controller = Get.put(CheckoutController());
-              // if (controller.selectedPaymentMethod.value == "Cash on Delivery") {
-              //   Get.off(() => OrderSuccessPage(orderId: orderId));
-              // }
+
 
               await controller.placeOrder();
               Navigator.pop(context);
